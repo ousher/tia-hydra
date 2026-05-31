@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — HYDRA</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐉</text></svg>">
+<link rel="stylesheet" href="/style.css">
+<style>
+  .err-wrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .err-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(80px, 18vw, 180px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--hydra);
+    text-shadow: 0 0 40px var(--hydra-glow);
+    letter-spacing: -4px;
+  }
+  .err-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .err-mark::before { content: '◢ '; color: var(--hydra); }
+  .err-msg {
+    color: var(--text-dim);
+    font-size: 18px;
+    max-width: 480px;
+    margin: 18px 0 8px;
+  }
+  .err-msg .cz { display: block; font-size: 14px; color: var(--text-muted); margin-top: 6px; }
+  .err-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 32px; }
+</style>
+</head>
+<body>
+  <div class="err-wrap">
+    <div class="err-mark">HYDRA · 404</div>
+    <div class="err-code">404</div>
+    <p class="err-msg">
+      This trail went cold. The page you're looking for doesn't exist.
+      <span class="cz">Tahle stopa vychladla. Hledaná stránka neexistuje.</span>
+    </p>
+    <div class="err-actions">
+      <a href="/" class="btn-primary">Back to HYDRA</a>
+      <a href="/cs/" class="btn-secondary">Česká verze</a>
+    </div>
+  </div>
+</body>
+</html>
