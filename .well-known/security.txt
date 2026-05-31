@@ -1,0 +1,6 @@
+# HYDRA — security contact
+# https://hydra.tia-framework.com/.well-known/security.txt
+Contact: mailto:hydra@tia-framework.com
+Preferred-Languages: cs, en
+Canonical: https://hydra.tia-framework.com/.well-known/security.txt
+Expires: 2027-05-31T00:00:00.000Z
