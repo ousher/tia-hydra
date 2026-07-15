@@ -117,7 +117,9 @@
   /* WRAPPER (the "máčka" — site chrome + framing around the report) */
   .sr-head { max-width:760px; margin:0 auto 22px; }
   .sr-topbar { display:flex; justify-content:space-between; align-items:center; padding:14px 0 18px; border-bottom:1px solid #1a1420; margin-bottom:28px; }
-  .sr-logo { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; color:#ff5a4d; letter-spacing:2px; text-shadow:0 0 16px #ff5a4d55; }
+  .sr-logo { display:inline-flex; align-items:center; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; color:#ff5a4d; letter-spacing:2px; text-shadow:0 0 16px #ff5a4d55; }
+  .sr-logo-img { height:24px; width:24px; border-radius:5px; margin-right:9px; flex:none; }
+  .lm-img { height:18px; width:18px; border-radius:4px; vertical-align:-3px; margin-right:5px; }
   .sr-topnav { display:flex; gap:16px; align-items:center; }
   .sr-topnav a { font-size:11px; color:#8a8f98; letter-spacing:.5px; }
   .sr-topnav a:hover { color:#ff5a4d; }
@@ -143,7 +145,7 @@
 <body>
 <div class="sr-head">
   <div class="sr-topbar">
-    <a href="/" class="sr-logo">🐉 HYDRA</a>
+    <a href="/" class="sr-logo"><img src="/logo.png?v=2" class="sr-logo-img" alt="">HYDRA</a>
     <div class="sr-topnav">
       <a href="/">← Back to site</a>
       <a href="/sample-report.pdf" download>⬇ Download PDF</a>
@@ -174,7 +176,7 @@
         <div class="title">Sample Engagement Report</div>
         <div class="subtitle">Authorized passive external exposure analysis — 5-lane HYDRA methodology, evidence-first.</div>
       </div>
-      <div class="logo-mark">🐉 HYDRA<small>by TIA</small></div>
+      <div class="logo-mark"><img src="/logo.png?v=2" class="lm-img" alt="">HYDRA<small>by TIA</small></div>
     </div>
     <div class="meta-row">
       <div>Method: <span>Passive OSINT</span></div>
