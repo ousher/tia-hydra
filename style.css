@@ -137,6 +137,8 @@ nav .container {
 }
 
 .nav-logo {
+  display: inline-flex;
+  align-items: center;
   font-family: 'JetBrains Mono', monospace;
   font-size: 17px;
   font-weight: 700;
@@ -146,8 +148,12 @@ nav .container {
   text-shadow: 0 0 16px var(--hydra-glow);
 }
 
-.nav-logo::before {
-  content: '🐉 ';
+.nav-logo-img {
+  height: 26px;
+  width: 26px;
+  border-radius: 6px;
+  margin-right: 10px;
+  flex: none;
   filter: drop-shadow(0 0 6px var(--hydra-glow));
 }
 
