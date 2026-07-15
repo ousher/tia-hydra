@@ -401,6 +401,27 @@
       io.observe(el);
     });
   })();
+
+  // Google Ads conversion tracking — fires a lead event on real contact actions
+  // (WhatsApp / email / phone). Fill the LABEL from Google Ads to count these as
+  // formal conversions; until then they fire as 'generate_lead' (visible + promotable).
+  (function () {
+    var GADS = 'AW-18155860192';
+    var LABEL = '';   // ← paste Google Ads conversion label here, e.g. 'AbC-D_efGhIjKl'
+    function lead(method) {
+      if (typeof gtag !== 'function') return;
+      if (LABEL) gtag('event', 'conversion', { send_to: GADS + '/' + LABEL, event_label: method });
+      else gtag('event', 'generate_lead', { send_to: GADS, method: method });
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var h = a.getAttribute('href') || '';
+      if (/wa\.me\//i.test(h)) lead('whatsapp');
+      else if (/^mailto:/i.test(h)) lead('email');
+      else if (/^tel:/i.test(h)) lead('phone');
+    }, true);
+  })();
 </script>
 </body>
 </html>
