@@ -10,6 +10,10 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'AW-18155860192');
+  // GA4 — paste your Measurement ID (G-…) here to activate. Find it in
+  // Google Analytics → Admin → Data streams → your web stream.
+  var GA4_ID = 'G-XXXXXXXXXX';
+  if (GA4_ID.indexOf('XXXX') === -1) gtag('config', GA4_ID);
 </script>
 <title>HYDRA — Zpravodajské řezy, které uzavírají případy</title>
 <meta name="description" content="HYDRA — OSINT & Threat Intelligence pro CZ/EU. Reporty Tier 1-3 od 18 000 Kč. Pasivní průzkum, GDPR compliant, NDA-ready. Doručujeme za 2-15 dnů.">
@@ -410,8 +414,11 @@
     var LABEL = '';   // ← paste Google Ads conversion label here, e.g. 'AbC-D_efGhIjKl'
     function lead(method) {
       if (typeof gtag !== 'function') return;
+      // GA4 event — NO send_to → routes to ALL configured tags incl. GA4, so it
+      // shows up in Analytics events (promote there to a key event/conversion).
+      gtag('event', 'generate_lead', { method: method, currency: 'CZK', value: 0 });
+      // Google Ads formal conversion — active once LABEL is filled from Google Ads.
       if (LABEL) gtag('event', 'conversion', { send_to: GADS + '/' + LABEL, event_label: method });
-      else gtag('event', 'generate_lead', { send_to: GADS, method: method });
     }
     document.addEventListener('click', function (e) {
       var a = e.target.closest ? e.target.closest('a[href]') : null;
