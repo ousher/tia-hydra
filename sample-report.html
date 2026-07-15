@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) — Google Ads + GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18155860192"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18155860192');
+  var GA4_ID = 'G-VBWEDBCCER';
+  if (GA4_ID.indexOf('XXXX') === -1) gtag('config', GA4_ID);
+</script>
+<meta name="description" content="A real, anonymized HYDRA engagement report — see exactly what a HYDRA assessment delivers. OSINT & Threat Intelligence for CZ/EU by TIA.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
+<title>HYDRA — Sample Engagement Report (Anonymized)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#08080c; color:#d8dde3; padding:40px; font-size:12px; line-height:1.65; }
+  .page { max-width:760px; margin:0 auto; }
+  a { color:#ff5a4d; text-decoration:none; }
+
+  /* SAMPLE ribbon */
+  .sample-banner {
+    background:linear-gradient(135deg,#c41e1e12,#f59e0b12); border:1px solid #f59e0b44;
+    border-radius:6px; padding:12px 18px; margin-bottom:18px; font-size:11px; color:#f0c88a;
+    font-family:'JetBrains Mono',monospace; line-height:1.6;
+  }
+  .sample-banner b { color:#ffcf87; }
+
+  .header { border:1px solid #1a1420; background:linear-gradient(135deg,#0c0a10 0%,#180f14 100%);
+    padding:28px 30px; margin-bottom:22px; border-radius:6px; position:relative; overflow:hidden; }
+  .header::before { content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,#c41e1e,#ff5a4d,#f59e0b); }
+  .header-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+  .classification { font-family:'JetBrains Mono',monospace; font-size:9px; color:#ff5a4d; letter-spacing:3px; text-transform:uppercase; margin-bottom:6px; }
+  .title { font-size:22px; font-weight:900; color:#fff; margin-bottom:4px; letter-spacing:.5px; }
+  .subtitle { font-size:12px; color:#8a8f98; font-weight:300; }
+  .logo-mark { font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:#ff5a4d;
+    border:1px solid #ff5a4d44; padding:7px 15px; border-radius:6px; letter-spacing:2px; white-space:nowrap; }
+  .logo-mark small { display:block; font-size:7px; color:#6a6f78; letter-spacing:1px; text-align:center; margin-top:2px; }
+  .meta-row { display:flex; flex-wrap:wrap; gap:20px; font-family:'JetBrains Mono',monospace; font-size:9px; color:#666; }
+  .meta-row span { color:#ff5a4d; }
+
+  .section { border:1px solid #1a1420; background:#0c0a10; margin-bottom:16px; border-radius:6px; overflow:hidden; }
+  .section-body { padding:20px 24px; }
+  .kicker { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
+  .kicker.red { color:#ff5a4d; } .kicker.amber { color:#f59e0b; } .kicker.green { color:#00d68f; } .kicker.blue { color:#4aa8ff; }
+
+  .verdict-box { border-radius:8px; padding:24px; text-align:center;
+    background:linear-gradient(135deg,#c41e1e10,#f59e0b0a); border:2px solid #c41e1e33; }
+  .verdict-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:#8a8f98; letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; }
+  .verdict-text { font-size:30px; font-weight:900; color:#ff5a4d; letter-spacing:2px; }
+  .verdict-sub { font-size:12px; color:#a7adb5; margin-top:12px; line-height:1.7; }
+  .verdict-sub strong { color:#ffcf87; }
+
+  .stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .stat-card { background:#0a0810; border:1px solid #1a1420; border-radius:6px; padding:16px 10px; text-align:center; }
+  .stat-card .value { font-family:'JetBrains Mono',monospace; font-size:26px; font-weight:700; }
+  .value.red{color:#ff5a4d;} .value.amber{color:#f59e0b;} .value.green{color:#00d68f;} .value.blue{color:#4aa8ff;}
+  .stat-card .label { font-size:8px; text-transform:uppercase; letter-spacing:1px; color:#6a6f78; margin-top:5px; }
+
+  .summary-text { font-size:13px; line-height:1.8; color:#b8bec6; }
+  .summary-text strong { color:#e8ecf0; } .summary-text em { color:#ff5a4d; font-style:normal; }
+  .exec-list { list-style:none; margin-top:6px; }
+  .exec-list li { padding:9px 0 9px 30px; position:relative; border-top:1px solid #14101a; font-size:12.5px; color:#c2c8d0; }
+  .exec-list li:first-child { border-top:none; }
+  .exec-list li .n { position:absolute; left:0; top:9px; font-family:'JetBrains Mono',monospace; color:#ff5a4d; font-weight:700; }
+  .exec-list li b { color:#fff; }
+
+  .finding { background:#0a0810; border-left:3px solid #333; padding:13px 16px; margin:9px 0; border-radius:0 5px 5px 0; }
+  .finding.crit { border-left-color:#c41e1e; } .finding.high { border-left-color:#ff5a4d; }
+  .finding.med { border-left-color:#f59e0b; } .finding.good { border-left-color:#00d68f; }
+  .finding-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:5px; }
+  .finding-title { font-weight:700; font-size:12.5px; color:#e8ecf0; }
+  .finding-title .id { font-family:'JetBrains Mono',monospace; color:#ff5a4d; margin-right:6px; }
+  .lanes { font-family:'JetBrains Mono',monospace; font-size:8px; color:#6a6f78; letter-spacing:1px; white-space:nowrap; }
+  .finding-detail { color:#9aa0a8; font-size:11.5px; line-height:1.6; }
+  .finding-detail code { font-family:'JetBrains Mono',monospace; color:#f0c88a; font-size:11px; }
+  .sev-tag { font-family:'JetBrains Mono',monospace; font-size:8px; padding:1px 6px; border-radius:3px; letter-spacing:1px; }
+  .sev-crit{background:#c41e1e22;color:#ff8a7d;} .sev-med{background:#f59e0b22;color:#f0c88a;}
+
+  .remediation { display:grid; grid-template-columns:1fr; gap:10px; }
+  .rem-block { background:#0a0810; border:1px solid #1a1420; border-radius:5px; padding:13px 16px; }
+  .rem-block .rem-h { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .rem-block.now .rem-h{color:#ff5a4d;} .rem-block.soon .rem-h{color:#f59e0b;} .rem-block.hyg .rem-h{color:#ffcf5a;}
+  .rem-block ol { margin:0 0 0 16px; font-size:11.5px; color:#b0b6be; line-height:1.7; }
+
+  .callout { background:linear-gradient(135deg,#ff5a4d0c,#f59e0b08); border:1px solid #ff5a4d33; border-radius:6px; padding:16px 20px; margin-top:8px; }
+  .callout .co-h { font-family:'JetBrains Mono',monospace; font-size:10px; color:#ff5a4d; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+  .callout .co-t { font-size:12px; color:#c2c8d0; line-height:1.7; } .callout .co-t strong { color:#fff; }
+
+  .footer { text-align:center; padding:20px; font-family:'JetBrains Mono',monospace; font-size:8px; color:#555; letter-spacing:2px; margin-top:10px; }
+  .footer .legal { color:#4a4f58; margin-top:10px; font-size:8px; max-width:560px; margin-left:auto; margin-right:auto; line-height:1.6; letter-spacing:0; font-family:'Inter',sans-serif; }
+  .footer b { color:#ff5a4d; }
+
+  @media print { body { padding:0; background:#08080c; -webkit-print-color-adjust:exact; print-color-adjust:exact; } .page{max-width:100%;} .sr-topbar,.sr-final{display:none;} }
+
+  /* WRAPPER (the "máčka" — site chrome + framing around the report) */
+  .sr-head { max-width:760px; margin:0 auto 22px; }
+  .sr-topbar { display:flex; justify-content:space-between; align-items:center; padding:14px 0 18px; border-bottom:1px solid #1a1420; margin-bottom:28px; }
+  .sr-logo { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; color:#ff5a4d; letter-spacing:2px; text-shadow:0 0 16px #ff5a4d55; }
+  .sr-topnav { display:flex; gap:16px; align-items:center; }
+  .sr-topnav a { font-size:11px; color:#8a8f98; letter-spacing:.5px; }
+  .sr-topnav a:hover { color:#ff5a4d; }
+  .sr-cta-btn { background:#c41e1e; color:#fff !important; padding:8px 16px; border-radius:6px; font-weight:700; font-size:11px; }
+  .sr-cta-btn:hover { background:#ff5a4d; }
+  .sr-intro { text-align:center; padding:6px 0; }
+  .sr-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#f59e0b; margin-bottom:14px; }
+  .sr-h1 { font-size:30px; font-weight:900; color:#fff; line-height:1.15; letter-spacing:-.3px; max-width:620px; margin:0 auto 14px; }
+  .sr-sub { font-size:14px; color:#a7adb5; line-height:1.7; max-width:600px; margin:0 auto 20px; }
+  .sr-sub b { color:#e8ecf0; }
+  .sr-chips { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .sr-chips span { font-family:'JetBrains Mono',monospace; font-size:10px; color:#9aa0a8; border:1px solid #1a1420; background:#0c0a10; padding:6px 12px; border-radius:20px; }
+  .sr-final { max-width:760px; margin:22px auto 0; background:linear-gradient(135deg,#c41e1e14,#f59e0b0c); border:1px solid #c41e1e44; border-radius:8px; padding:30px 28px; text-align:center; }
+  .sr-final h2 { font-size:23px; color:#fff; font-weight:900; margin-bottom:8px; }
+  .sr-final p { font-size:13px; color:#b8bec6; margin-bottom:18px; max-width:500px; margin-left:auto; margin-right:auto; }
+  .sr-final .btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .sr-final a { padding:12px 22px; border-radius:6px; font-weight:700; font-size:13px; }
+  .sr-final .primary { background:#c41e1e; color:#fff; } .sr-final .primary:hover { background:#ff5a4d; }
+  .sr-final .secondary { border:1px solid #ff5a4d55; color:#ff5a4d; } .sr-final .secondary:hover { background:#ff5a4d11; }
+  @media (max-width:640px){ .sr-h1{font-size:24px;} .sr-topnav a:not(.sr-cta-btn){display:none;} }
+</style>
+</head>
+<body>
+<div class="sr-head">
+  <div class="sr-topbar">
+    <a href="/" class="sr-logo">🐉 HYDRA</a>
+    <div class="sr-topnav">
+      <a href="/">← Back to site</a>
+      <a href="/#tiers">Tiers</a>
+      <a href="/#contact" class="sr-cta-btn">Request a sample</a>
+    </div>
+  </div>
+  <div class="sr-intro">
+    <div class="sr-label">Sample Report · Anonymized</div>
+    <h1 class="sr-h1">See what an attacker already knows — before the strike.</h1>
+    <p class="sr-sub">Below is a <b>real, authorized HYDRA engagement</b> with the client fully anonymized — same
+      depth, same discipline, zero PII. This is exactly what lands in your inbox when you work with us.</p>
+    <div class="sr-chips"><span>🛡️ Passive only</span><span>🧾 Receipts-first</span><span>🔒 GDPR · NDA-ready</span><span>⏱ 2–3 days</span></div>
+  </div>
+</div>
+<div class="page">
+
+  <div class="sample-banner">
+    ⚠ <b>SAMPLE · ANONYMIZED · ILLUSTRATIVE.</b> This is a real HYDRA engagement with the client identity,
+    domains, IP addresses and personnel <b>fully redacted</b>. The structure, methodology, lane logic and
+    finding <b>types</b> are unchanged — this is exactly what a HYDRA report delivers. No live target is identified.
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="classification">Tier 3 · Full Intelligence · Passive External Exposure</div>
+        <div class="title">Sample Engagement Report</div>
+        <div class="subtitle">Authorized passive external exposure analysis — 5-lane HYDRA methodology, evidence-first.</div>
+      </div>
+      <div class="logo-mark">🐉 HYDRA<small>by TIA</small></div>
+    </div>
+    <div class="meta-row">
+      <div>Method: <span>Passive OSINT</span></div>
+      <div>Lanes: <span>5</span></div>
+      <div>Findings: <span>12</span></div>
+      <div>Basis: <span>real engagement, de-identified</span></div>
+    </div>
+  </div>
+
+  <!-- CLIENT (redacted) -->
+  <div class="section"><div class="section-body">
+    <div class="kicker blue">Engagement · Scope</div>
+    <div class="summary-text">
+      <p><strong>Client:</strong> [REDACTED] — a mid-size Prague-based multi-branch consumer group (~5 owned domains,
+      ~40 staff, a routine supplier-payment workflow). Identity, domains, IPs and people redacted for this sample.</p>
+      <p style="margin-top:8px;"><strong>Authorization:</strong> written owner consent (assessment of the client's own
+      public exposure). <strong>Method:</strong> 5-lane HYDRA — <em>PASSIVE only</em> (DNS/CT/DoH, public web, response
+      headers, RDAP/whois, OSINT). No active scanning, no authentication attempts, no exploitation. Receipts-first, zero fabrication.</p>
+      <p style="margin-top:8px;"><strong>Declared up front:</strong> account-level breach confirmation and active
+      characterization of the on-prem asset are <em>not</em> possible passively → scoped to a paid, signed Phase&nbsp;2.</p>
+    </div>
+  </div></div>
+
+  <!-- VERDICT -->
+  <div class="section"><div class="section-body">
+    <div class="verdict-box">
+      <div class="verdict-label">External Threat Exposure</div>
+      <div class="verdict-text">ELEVATED</div>
+      <div class="verdict-sub">Four critical exposures on an otherwise healthy perimeter. The realistic money-loss path —
+      <strong>email spoofing → fake supplier invoice</strong> — was confirmed independently across three lanes.</div>
+    </div>
+  </div></div>
+
+  <!-- STATS -->
+  <div class="section"><div class="section-body">
+    <div class="stat-row">
+      <div class="stat-card"><div class="value red">12</div><div class="label">Findings</div></div>
+      <div class="stat-card"><div class="value red">4</div><div class="label">Critical / High</div></div>
+      <div class="stat-card"><div class="value blue">5</div><div class="label">Recon Lanes</div></div>
+      <div class="stat-card"><div class="value green">Passive</div><div class="label">Method — 0 touch</div></div>
+    </div>
+  </div></div>
+
+  <!-- EXEC SUMMARY -->
+  <div class="section"><div class="section-body">
+    <div class="kicker red">Executive Summary — 4 real risks</div>
+    <p class="summary-text" style="margin-bottom:4px;">The rest of the perimeter is reassuringly healthy (see the honest-negatives section). Four exposures carry real, exploitable risk:</p>
+    <ul class="exec-list">
+      <li><span class="n">1</span><b>On-prem remote-access box exposed to the internet.</b> A management endpoint on consumer broadband, end-of-life web server, self-signed certificate — the single most attackable real asset. <span class="sev-tag sev-crit">CRITICAL</span></li>
+      <li><span class="n">2</span><b>Email spoofing wide open on both flagship domains</b> (DMARC <code>p=none</code>). Anyone can send mail that lands in the inbox appearing to come from the founder or any branch → Business Email Compromise / fake-invoice. <em>Triple-confirmed across infra + dark-int + people lanes.</em> <span class="sev-tag sev-crit">CRITICAL</span></li>
+      <li><span class="n">3</span><b>Third-party look-alike domain with live mail.</b> A recently-registered near-spelling of the brand, behind a privacy proxy, with active mail records — a ready-made phishing channel impersonating the client. <span class="sev-tag sev-crit">CRITICAL</span></li>
+      <li><span class="n">4</span><b>Shared branch mailboxes + no enforced MFA.</b> The credential-hygiene foothold that makes risk #2 trivial to weaponize. <span class="sev-tag sev-crit">HIGH</span></li>
+    </ul>
+  </div></div>
+
+  <!-- FINDINGS -->
+  <div class="section"><div class="section-body">
+    <div class="kicker red">Findings by severity</div>
+
+    <div class="finding crit">
+      <div class="finding-head"><div class="finding-title"><span class="id">F1</span>On-prem remote-access endpoint exposed</div><div class="lanes">[ INFRA ]</div></div>
+      <div class="finding-detail">A deliberate DNS record points a management hostname at <code>consumer broadband (not a datacenter)</code>. Passive fingerprint: end-of-life web server, self-signed certificate (multi-year). Classic on-prem management / VPN / back-office box on a flat office network likely touching POS, invoicing and payroll — internet-reachable, unadvertised in certificate transparency. → identify it, place behind a zero-trust broker, patch/replace, pull off the public net. <em>What it actually runs = Phase 2 (signed scope).</em></div>
+    </div>
+
+    <div class="finding crit">
+      <div class="finding-head"><div class="finding-title"><span class="id">F2</span>DMARC <code>p=none</code> on both flagship domains → BEC</div><div class="lanes">[ INFRA · DARK-INT · PEOPLE ]</div></div>
+      <div class="finding-detail">Both flagship domains publish <code>p=none</code> (monitor, no enforcement) despite valid SPF and DKIM. Anyone can send <code>From: &lt;anyone&gt;@[client-domain]</code> and land in the inbox. For a multi-branch business paying suppliers, this is a direct fake-invoice / payment-redirect vector. → add aggregate reporting, confirm sender alignment, then move <code>none → quarantine → reject</code> on both.</div>
+    </div>
+
+    <div class="finding crit">
+      <div class="finding-head"><div class="finding-title"><span class="id">F3</span>Look-alike domain, mail-capable</div><div class="lanes">[ BRAND · INFRA · WEB ]</div></div>
+      <div class="finding-detail">A near-spelling of the brand, registered ~6 months ago behind a US privacy proxy, on a different hosting stack than the client — every fingerprint diverges, so it is <em>not</em> theirs. Storefront disabled, but <code>live MX records</code> present: a disabled store ≠ disabled mail = a ready phishing/BEC channel. → attempt acquisition; else abuse-report + registry dispute; monitor records; warn staff and customers.</div>
+    </div>
+
+    <div class="finding high">
+      <div class="finding-head"><div class="finding-title"><span class="id">F4</span>Shared branch mailboxes + MFA hygiene</div><div class="lanes">[ DARK-INT · PEOPLE ]</div></div>
+      <div class="finding-detail">Multiple shared role mailboxes confirmed (branch + <code>info@ / orders@ / catering@</code>). These are the highest-reuse, lowest-rotation accounts — shared passwords, rarely changed on departure, reused as portal logins, seldom per-user MFA. One leaked branch password lets an attacker read supplier invoices and reservation PII → invoice fraud (amplifies F2). → enforce org-wide 2-step verification; migrate shared → owner+delegation; rotate now.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F5</span>Expired / wrong-owner TLS + HTTPS→HTTP downgrade</div><div class="lanes">[ WEB · INFRA ]</div></div>
+      <div class="finding-detail">Two secondary sites present an expired certificate for an unrelated owner and downgrade <code>https → plaintext http</code>. Erodes trust and trains users to click through certificate warnings. → valid certs or TLS-valid edge + clean redirects.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F6</span>Shop domain with no SPF / no DMARC</div><div class="lanes">[ INFRA ]</div></div>
+      <div class="finding-detail">A secondary shop domain is fully spoofable (no SPF, no DMARC) — a clean channel for customer-facing phishing. → <code>v=spf1 -all</code> + <code>p=reject</code>.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F7</span>Single publicly-named finance identity</div><div class="lanes">[ PEOPLE ]</div></div>
+      <div class="finding-detail">Public professional profiles name exactly one finance decision-maker — both an impersonation <em>target</em> and a spoofing <em>vector</em> for payment fraud. → authenticate finance comms; callback/codeword for any payment or bank-detail change; reduce public identifiability.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F8</span>Third-party processor cascade</div><div class="lanes">[ DARK-INT ]</div></div>
+      <div class="finding-detail">Several third-party processors sit in the CRM/POS/reservations/mail path (guest PII, payment context). A breach at any one leaks client data indirectly; password reuse turns it into a mail-tenant compromise. → inventory staff↔processor logins; unique passwords + MFA; breach-monitor admin accounts.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F9</span>Content-Security-Policy report-only; weak Referrer-Policy</div><div class="lanes">[ WEB · INFRA ]</div></div>
+      <div class="finding-detail">The primary site ships CSP in report-only mode and a permissive Referrer-Policy. → promote CSP to enforced (the sister site already does); tighten Referrer-Policy.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F10</span>Defensive-registration &amp; listing gaps</div><div class="lanes">[ BRAND ]</div></div>
+      <div class="finding-detail">Several obvious brand variants (.com/.eu/.net + alternate spellings) are unregistered and a social handle is unclaimed — open ground for impersonation. → register defensives, claim the handle, verify business listings.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F11</span>Broken backup MX record</div><div class="lanes">[ INFRA ]</div></div>
+      <div class="finding-detail">A secondary MX points to a non-resolving host (possibly tied to the F1 on-prem box). → fix or remove.</div>
+    </div>
+
+    <div class="finding med">
+      <div class="finding-head"><div class="finding-title"><span class="id">F12</span>Account-level breach exposure — UNVERIFIED</div><div class="lanes">[ DARK-INT ]</div></div>
+      <div class="finding-detail">Free-tier sources show <code>no public hit</code> (confirmed negative via dorks + public leak lists), but regional combolists sit behind paid databases. This is absence of public evidence, <em>not</em> evidence of absence. → Phase 2 paid pass (breach DBs, Split-Brain on any hit).</div>
+    </div>
+  </div></div>
+
+  <!-- REASSURING -->
+  <div class="section"><div class="section-body">
+    <div class="kicker green">Honest negatives — what's actually solid</div>
+    <div class="summary-text">
+      <p>A report that is all-red is selling fear, not truth. Here's the genuinely good news, evidence-backed:</p>
+      <ul class="exec-list" style="margin-top:6px;">
+        <li style="padding-left:22px;"><span class="n" style="color:#00d68f;">✓</span>Managed SaaS platforms eliminate whole classes of self-hosted vulnerability; card data sits with the payment provider.</li>
+        <li style="padding-left:22px;"><span class="n" style="color:#00d68f;">✓</span>No secrets, stack traces or sensitive paths exposed in page source or robots/sitemap.</li>
+        <li style="padding-left:22px;"><span class="n" style="color:#00d68f;">✓</span>Mail baseline is healthy — SPF + DKIM present on owned domains; two sub-brands already enforce DMARC.</li>
+        <li style="padding-left:22px;"><span class="n" style="color:#00d68f;">✓</span>No social-media impersonation found; aggregator listings consistent.</li>
+        <li style="padding-left:22px;"><span class="n" style="color:#00d68f;">✓</span>The owned domain portfolio is genuinely owned and correctly configured.</li>
+      </ul>
+    </div>
+  </div></div>
+
+  <!-- REMEDIATION -->
+  <div class="section"><div class="section-body">
+    <div class="kicker amber">Remediation plan — severity-ordered</div>
+    <div class="remediation">
+      <div class="rem-block now"><div class="rem-h">🔴 Now — quick wins</div>
+        <ol>
+          <li>Investigate + isolate the on-prem remote box (zero-trust, patch, off the public net).</li>
+          <li>DMARC <code>none → quarantine → reject</code> on both flagship domains (after alignment monitoring).</li>
+          <li>Decide the look-alike domain: acquire, or abuse-report + dispute; warn staff and customers.</li>
+          <li>Enforce org-wide 2-step verification; rotate shared branch passwords.</li>
+          <li>Callback-verification + two-person rule for ANY payment or bank-detail change — the single highest-leverage human control, and it defends even against look-alike-domain attacks that DMARC can't stop.</li>
+        </ol>
+      </div>
+      <div class="rem-block soon"><div class="rem-h">🟡 Soon</div>
+        <ol>
+          <li>Fix expired certs / HTTPS downgrade; add SPF + DMARC to the shop domain.</li>
+          <li>Enforce CSP + tighten Referrer-Policy; register defensive domains + claim listings/handle.</li>
+          <li>Inventory staff↔processor logins; unique passwords + MFA everywhere.</li>
+        </ol>
+      </div>
+      <div class="rem-block hyg"><div class="rem-h">🟢 Hygiene</div>
+        <ol>
+          <li>Remove the broken backup MX; consolidate the domain portfolio under one registrar with 2FA + auto-renew.</li>
+          <li>Verify DNSSEC on remaining domains; confirm consent-gating on tracking.</li>
+        </ol>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- PHASE 2 -->
+  <div class="section"><div class="section-body">
+    <div class="kicker blue">Phase 2 — where this goes next (paid, signed scope)</div>
+    <div class="summary-text">
+      <ul class="exec-list" style="margin-top:2px;">
+        <li style="padding-left:22px;"><span class="n" style="color:#4aa8ff;">→</span>Active vulnerability assessment of the on-prem box — what it runs, harden or remove.</li>
+        <li style="padding-left:22px;"><span class="n" style="color:#4aa8ff;">→</span>Paid breach-database pass — confirm or deny account-level credential exposure.</li>
+        <li style="padding-left:22px;"><span class="n" style="color:#4aa8ff;">→</span>DMARC enforcement rollout + staff BEC-awareness training ("finance never changes a bank account by message").</li>
+        <li style="padding-left:22px;"><span class="n" style="color:#4aa8ff;">→</span>Ongoing monitoring — DMARC aggregate reports + brand/domain monitoring.</li>
+      </ul>
+    </div>
+  </div></div>
+
+  <!-- METHOD / DISCIPLINE -->
+  <div class="section"><div class="section-body">
+    <div class="kicker">Methodology &amp; discipline</div>
+    <div class="summary-text" style="font-size:12px;">
+      <p><strong>Receipts-first, zero fabrication.</strong> Every 🔴/🟡 is backed by a passive DNS record, RDAP entry,
+      response header or certificate read. Honest negatives are stated as negatives. Explicitly-unverified items
+      (what the on-prem box runs; account-level breach; true owner of the look-alike domain) are flagged as
+      <em>unverified</em> and routed to a signed Phase 2 — never guessed, never inflated.</p>
+      <p style="margin-top:8px;"><strong>Passive only.</strong> No active exploitation was attempted. All findings derive
+      from publicly available information and open-source intelligence.</p>
+    </div>
+    <div class="callout">
+      <div class="co-h">HYDRA cuts heads of dragons — not merchants</div>
+      <div class="co-t">We find what an attacker already knows about you, prove it with evidence, and hand you a
+      closed-loop path to fix it. <strong>The first finding is free.</strong></div>
+    </div>
+  </div></div>
+
+  <!-- FINAL CTA -->
+  <div class="sr-final">
+    <h2>Want to see your own?</h2>
+    <p>We run this same 5-lane passive assessment on your domains. The first finding is free — no contract, no commitment.</p>
+    <div class="btns">
+      <a class="primary" href="https://wa.me/420603227456" target="_blank" rel="noopener">Request a sample →</a>
+      <a class="secondary" href="mailto:hydra@tia-framework.com">hydra@tia-framework.com</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    🐉 HYDRA &mdash; INTELLIGENCE CUTS THAT CLOSE CASES &nbsp;·&nbsp; AN INTELLIGENCE PRODUCT BY TIA
+    <div class="legal">
+      SAMPLE / ANONYMIZED. This document reproduces the structure, methodology and finding types of a real,
+      authorized HYDRA engagement; the client identity, domains, IP addresses, certificates and personnel have been
+      fully redacted or generalized, and no live target is identifiable. Assessment performed using passive
+      reconnaissance only — no active exploitation. hydra.tia-framework.com
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Google Ads / GA4 lead events on contact clicks (WhatsApp / email)
+  (function(){
+    var GADS='AW-18155860192', LABEL='';
+    function lead(m){ if(typeof gtag!=='function')return;
+      gtag('event','generate_lead',{method:m,currency:'CZK',value:0});
+      if(LABEL) gtag('event','conversion',{send_to:GADS+'/'+LABEL,event_label:m}); }
+    document.addEventListener('click',function(e){
+      var a=e.target.closest?e.target.closest('a[href]'):null; if(!a)return;
+      var h=a.getAttribute('href')||'';
+      if(/wa\.me\//i.test(h))lead('whatsapp'); else if(/^mailto:/i.test(h))lead('email');
+    },true);
+  })();
+</script>
+</body>
+</html>
