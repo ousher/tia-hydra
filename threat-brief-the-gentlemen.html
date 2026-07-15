@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) — Google Ads + GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18155860192"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18155860192');
+  var GA4_ID = 'G-VBWEDBCCER';
+  if (GA4_ID.indexOf('XXXX') === -1) gtag('config', GA4_ID);
+</script>
+<title>HYDRA Threat Brief — "The Gentlemen" Ransomware (RaaS)</title>
+<meta name="description" content="HYDRA threat brief: The Gentlemen ransomware-as-a-service — attribution, scale, TTPs, Go encryptor internals, IOCs, MITRE ATT&CK, and a defender playbook. Open-source, provenance-first.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="HYDRA Threat Brief — 'The Gentlemen' Ransomware (RaaS)">
+<meta property="og:description" content="Attribution, scale, TTPs, Go-encryptor internals, IOCs, MITRE ATT&CK and a defender playbook — provenance-first, open-source only.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HYDRA">
+<meta property="og:url" content="https://hydra.tia-framework.com/threat-brief-the-gentlemen.html">
+<meta property="og:image" content="https://hydra.tia-framework.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HYDRA Threat Brief — 'The Gentlemen' Ransomware (RaaS)">
+<meta name="twitter:image" content="https://hydra.tia-framework.com/og-image.png">
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#08080c; color:#d8dde3; padding:40px; font-size:12px; line-height:1.65; }
+  a { color:#ff5a4d; text-decoration:none; }
+  .sr-head { max-width:780px; margin:0 auto 22px; }
+  .sr-topbar { display:flex; justify-content:space-between; align-items:center; padding:14px 0 18px; border-bottom:1px solid #1a1420; margin-bottom:28px; }
+  .sr-logo { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; color:#ff5a4d; letter-spacing:2px; text-shadow:0 0 16px #ff5a4d55; }
+  .sr-topnav { display:flex; gap:16px; align-items:center; }
+  .sr-topnav a { font-size:11px; color:#8a8f98; letter-spacing:.5px; }
+  .sr-topnav a:hover { color:#ff5a4d; }
+  .sr-cta-btn { background:#c41e1e; color:#fff !important; padding:8px 16px; border-radius:6px; font-weight:700; font-size:11px; }
+  .sr-cta-btn:hover { background:#ff5a4d; }
+  .sr-intro { text-align:center; padding:6px 0; }
+  .sr-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#f59e0b; margin-bottom:14px; }
+  .sr-h1 { font-size:30px; font-weight:900; color:#fff; line-height:1.15; letter-spacing:-.3px; max-width:660px; margin:0 auto 14px; }
+  .sr-sub { font-size:14px; color:#a7adb5; line-height:1.7; max-width:620px; margin:0 auto 20px; }
+  .sr-sub b { color:#e8ecf0; }
+  .sr-chips { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .sr-chips span { font-family:'JetBrains Mono',monospace; font-size:10px; color:#9aa0a8; border:1px solid #1a1420; background:#0c0a10; padding:6px 12px; border-radius:20px; }
+
+  .page { max-width:780px; margin:0 auto; }
+  .tlp { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:2px; color:#00d68f; border:1px solid #00d68f44; background:#00d68f11; padding:4px 10px; border-radius:4px; }
+  .section { border:1px solid #1a1420; background:#0c0a10; margin-bottom:16px; border-radius:6px; }
+  .section-body { padding:20px 24px; }
+  .kicker { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
+  .kicker.red{color:#ff5a4d;} .kicker.amber{color:#f59e0b;} .kicker.green{color:#00d68f;} .kicker.blue{color:#4aa8ff;} .kicker.purple{color:#b07bff;}
+  .txt { font-size:13px; line-height:1.8; color:#b8bec6; }
+  .txt strong { color:#e8ecf0; } .txt em { color:#ff5a4d; font-style:normal; }
+  .txt code { font-family:'JetBrains Mono',monospace; color:#f0c88a; font-size:11.5px; }
+  .stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .stat-card { background:#0a0810; border:1px solid #1a1420; border-radius:6px; padding:16px 8px; text-align:center; }
+  .stat-card .value { font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:700; }
+  .value.red{color:#ff5a4d;} .value.amber{color:#f59e0b;} .value.blue{color:#4aa8ff;} .value.purple{color:#b07bff;}
+  .stat-card .label { font-size:8px; text-transform:uppercase; letter-spacing:1px; color:#6a6f78; margin-top:5px; }
+  table { width:100%; border-collapse:collapse; font-size:11.5px; margin-top:4px; }
+  th,td { text-align:left; padding:7px 10px; border-bottom:1px solid #14101a; vertical-align:top; }
+  th { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:#8a8f98; }
+  td { color:#b0b6be; } td code { font-family:'JetBrains Mono',monospace; color:#f0c88a; }
+  ul.tight { list-style:none; margin-top:4px; }
+  ul.tight li { padding:6px 0 6px 20px; position:relative; font-size:12.5px; color:#b8bec6; line-height:1.6; }
+  ul.tight li::before { content:'▸'; position:absolute; left:0; color:#ff5a4d; }
+  ul.tight li b { color:#fff; }
+  ol.steps { margin:4px 0 0 18px; font-size:12.5px; color:#b8bec6; line-height:1.8; }
+  ol.steps b { color:#fff; }
+  .callout { background:linear-gradient(135deg,#ff5a4d0c,#f59e0b08); border:1px solid #ff5a4d33; border-radius:6px; padding:16px 20px; }
+  .callout .co-h { font-family:'JetBrains Mono',monospace; font-size:10px; color:#ff5a4d; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+  .callout .co-t { font-size:12px; color:#c2c8d0; line-height:1.7; } .callout .co-t strong { color:#fff; }
+  .conf { display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  .conf span { font-size:10.5px; font-family:'JetBrains Mono',monospace; padding:4px 9px; border-radius:4px; }
+  .c-hi{background:#00d68f18;color:#00d68f;} .c-md{background:#f59e0b18;color:#f0c88a;} .c-lo{background:#c41e1e18;color:#ff8a7d;}
+  .sr-final { max-width:780px; margin:22px auto 0; background:linear-gradient(135deg,#c41e1e14,#f59e0b0c); border:1px solid #c41e1e44; border-radius:8px; padding:30px 28px; text-align:center; }
+  .sr-final h2 { font-size:23px; color:#fff; font-weight:900; margin-bottom:8px; }
+  .sr-final p { font-size:13px; color:#b8bec6; margin-bottom:18px; max-width:520px; margin-left:auto; margin-right:auto; }
+  .sr-final .btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .sr-final a { padding:12px 22px; border-radius:6px; font-weight:700; font-size:13px; }
+  .sr-final .primary { background:#c41e1e; color:#fff; } .sr-final .primary:hover { background:#ff5a4d; }
+  .sr-final .secondary { border:1px solid #ff5a4d55; color:#ff5a4d; }
+  .footer { text-align:center; padding:20px; font-family:'JetBrains Mono',monospace; font-size:8px; color:#555; letter-spacing:2px; margin-top:10px; }
+  .footer .legal { color:#4a4f58; margin-top:10px; font-size:8px; max-width:600px; margin:10px auto 0; line-height:1.6; letter-spacing:0; font-family:'Inter',sans-serif; }
+  .footer b { color:#ff5a4d; }
+  @media (max-width:640px){ .sr-h1{font-size:24px;} .stat-row{grid-template-columns:repeat(2,1fr);} .sr-topnav a:not(.sr-cta-btn){display:none;} }
+  @media print { body{padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;} .sr-topbar,.sr-final{display:none;} }
+</style>
+</head>
+<body>
+
+<div class="sr-head">
+  <div class="sr-topbar">
+    <a href="/" class="sr-logo">🐉 HYDRA</a>
+    <div class="sr-topnav">
+      <a href="/">← Back to site</a>
+      <a href="/sample-report.html">Sample report</a>
+      <a href="/#contact" class="sr-cta-btn">Talk to us</a>
+    </div>
+  </div>
+  <div class="sr-intro">
+    <div class="sr-label">HYDRA Threat Brief · Open-source · TLP:CLEAR</div>
+    <h1 class="sr-h1">"The Gentlemen" — the RaaS that scaled faster than almost anyone.</h1>
+    <p class="sr-sub">A Russian-speaking ransomware-as-a-service operation that went from closed crew to the
+      <b>second-most prolific gang on record</b> in months — then got breached itself, exposing that <b>~78% of
+      victims paid quietly</b>. Attribution, TTPs, encryptor internals, IOCs and a defender playbook. Every claim is sourced.</p>
+    <div class="sr-chips"><span>🧾 Provenance-first</span><span>🛰️ Open-source only</span><span>🎯 No fabricated IOCs</span><span>🛡️ Passive OSINT</span></div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- SUMMARY -->
+  <div class="section"><div class="section-body">
+    <div class="kicker red">Executive summary</div>
+    <p class="txt"><strong>The Gentlemen</strong> is a Russian-speaking RaaS operation that emerged <em>mid-2025</em> and
+    went RaaS in <em>September 2025</em>. It is run by the actor <code>hastalamuerte</code> (aka <code>zeta88</code>),
+    tracked as <strong>LARVA-368</strong> (PRODAFT) and <strong>Storm-2697</strong> (Microsoft) — a former Qilin affiliate
+    who split after a July 2025 payment dispute (~$48K unpaid commission, aired publicly on the RAMP forum).</p>
+    <ul class="tight" style="margin-top:8px;">
+      <li><b>320+ victims</b> on the public leak site — but Check Point found a SystemBC C2 holding <b>1,570+ compromised networks</b> not yet public. Real scale far exceeds the leak site.</li>
+      <li><b>Double extortion</b>, a <b>Go-based self-propagating encryptor</b> (Curve25519 + XChaCha20), multi-platform (Windows / Linux / NAS / BSD / <b>ESXi</b>).</li>
+      <li><b>OT-heavy, critical-sector focus</b>: energy, government, healthcare, education, transport, finance, manufacturing — 20+ industries, 15+ countries.</li>
+      <li><b>The hunters got hunted</b> — the operation itself was breached and its internal chats leaked, revealing <b>~78% of victims paid</b> and never appeared on any public list.</li>
+    </ul>
+  </div></div>
+
+  <!-- STATS -->
+  <div class="section"><div class="section-body">
+    <div class="stat-row">
+      <div class="stat-card"><div class="value red">1,570+</div><div class="label">Networks (hidden C2)</div></div>
+      <div class="stat-card"><div class="value amber">~78%</div><div class="label">Victims paid</div></div>
+      <div class="stat-card"><div class="value blue">20+</div><div class="label">Industries hit</div></div>
+      <div class="stat-card"><div class="value purple">90%</div><div class="label">Affiliate cut offered</div></div>
+    </div>
+  </div></div>
+
+  <!-- ATTRIBUTION -->
+  <div class="section"><div class="section-body">
+    <div class="kicker purple">Attribution &amp; origins</div>
+    <table>
+      <tr><th>Attribute</th><th>Detail</th></tr>
+      <tr><td>Primary alias</td><td><code>hastalamuerte</code> / <code>zeta88</code></td></tr>
+      <tr><td>Cluster tracking</td><td>LARVA-368 (PRODAFT <em>Phantom Mantis</em>) · Storm-2697 (Microsoft)</td></tr>
+      <tr><td>Origin</td><td>Russian-speaking; ran affiliate crew "ArmCorp" inside Qilin RaaS</td></tr>
+      <tr><td>Split catalyst</td><td>22 Jul 2025 RAMP arbitration vs Qilin — ~$48,000 unpaid commission</td></tr>
+      <tr><td>Emergence</td><td>Closed crew mid-2025 → RaaS Sept 2025; recruits via BreachForums</td></tr>
+      <tr><td>OPSEC irony</td><td>The operation itself was hacked and leaked; internal chats exposed</td></tr>
+    </table>
+    <p class="txt" style="margin-top:10px;font-size:12px;"><strong>Notable:</strong> Group-IB found the operator uploaded an
+    independent locker <em>5 days before</em> the public Qilin arbitration — i.e. was building The Gentlemen while still a
+    Qilin affiliate. A premeditated exit, not a reactive one.</p>
+  </div></div>
+
+  <!-- SCALE -->
+  <div class="section"><div class="section-body">
+    <div class="kicker red">Scale &amp; victimology</div>
+    <ul class="tight">
+      <li><b>Public leak site:</b> 320+ victims since July 2025.</li>
+      <li><b>Hidden scale:</b> a SystemBC C2 surfaced 1,570+ compromised networks not on any leak site — "significantly larger than what's publicly known, and still growing" (Check Point Research).</li>
+      <li><b>Payment rate:</b> leak analysis → ~78% of victims paid and were never listed (silent extortion).</li>
+      <li><b>Sectors:</b> disproportionately OT-heavy / high-downtime-cost verticals where restore-pressure is highest.</li>
+      <li><b>Geography:</b> 15+ countries across the Americas, EMEA and Asia-Pacific. Named victim geos include the US, UK, Germany, Australia and <b>Romania</b>.</li>
+    </ul>
+    <div class="callout" style="margin-top:12px;">
+      <div class="co-h">⚠ Supply-chain pivot — chain victimization</div>
+      <div class="co-t">Apr 2026: the group breached a UK software consultancy, then reused stolen credentials +
+      infrastructure docs + client-access info to compromise <strong>one of that consultancy's clients in Türkiye</strong>.
+      Treat any hit on an MSP or consultancy as a downstream blast-radius event.</div>
+    </div>
+  </div></div>
+
+  <!-- TTPs -->
+  <div class="section"><div class="section-body">
+    <div class="kicker amber">Attack lifecycle &amp; TTPs</div>
+    <table>
+      <tr><th>Stage</th><th>Observed</th></tr>
+      <tr><td>Initial access</td><td>Internet-facing services / stolen creds — <b>exposed firewall &amp; VPN management (FortiGate)</b> 🎯</td></tr>
+      <tr><td>Discovery</td><td><code>1.bat</code> enumerating 60+ domain accounts; Advanced IP Scanner, Nmap, AD + virtualization-group queries (VMware)</td></tr>
+      <tr><td>Priv-esc</td><td><code>PowerRun.exe</code> — UAC bypass, run as SYSTEM</td></tr>
+      <tr><td>Defense evasion</td><td><b>BYOVD:</b> <code>ThrottleBlood.sys</code> (abuses signed ThrottleStop driver) for kernel-level kill of security tools; PowerShell blinds Defender, re-enables SMB1, loosens LSA — then drops the payload</td></tr>
+      <tr><td>Lateral / persist</td><td>PsExec, AnyDesk; <b>GPO abuse</b> to push payloads domain-wide; self-propagating encryptor</td></tr>
+      <tr><td>C2</td><td>SystemBC (SOCKS5, RC4), Cobalt Strike, AnyDesk</td></tr>
+      <tr><td>Impact</td><td>Data theft before encryption → double extortion; ESXi variant kills VMs, inhibits recovery</td></tr>
+    </table>
+    <p class="txt" style="margin-top:10px;font-size:12px;">Signature strength = <strong>tailored defense evasion</strong> —
+    they iteratively fingerprint the victim's specific security stack and swap tooling when blocked.</p>
+  </div></div>
+
+  <!-- MALWARE -->
+  <div class="section"><div class="section-body">
+    <div class="kicker purple">The Go encryptor (Microsoft deep-dive)</div>
+    <ul class="tight">
+      <li><b>Language:</b> Go, obfuscated with Garble; variants for Windows / Linux / NAS / BSD / <b>ESXi</b>.</li>
+      <li><b>Crypto:</b> per-file ephemeral <b>Curve25519</b> keys + <b>XChaCha20</b> stream cipher; partial-encryption speed tiers for large files.</li>
+      <li><b>Self-propagation:</b> built in — <code>--spread &lt;domain/user:password&gt;</code>, falls back to the current session token.</li>
+      <li><b>Operator auth:</b> requires a build-specific <code>--password</code> (analyzed sample: <code>9VoAvR7G</code>).</li>
+      <li><b>Key flags:</b> <code>--full</code> (→ <code>--system</code> + <code>--shares</code>), <code>--fast/--superfast/--ultrafast</code> (coverage vs speed), <code>--wipe</code>, <code>--keep</code>, <code>--silent</code>.</li>
+      <li><b>Host artifacts:</b> scheduled task <code>gentlemen_system</code>; env var <code>LOCKER_BACKGROUND=1</code>; branded PowerShell console banner.</li>
+    </ul>
+  </div></div>
+
+  <!-- IOCs -->
+  <div class="section"><div class="section-body">
+    <div class="kicker red">Indicators of compromise</div>
+    <div class="callout" style="margin-bottom:12px;">
+      <div class="co-h">Read this first</div>
+      <div class="co-t">Public reporting lists <strong>no live/active C2 domains</strong> — these IOCs are
+      <strong>retro-hunt grade</strong> (historical). Best used for threat-hunting and detection-engineering,
+      <strong>not</strong> live blocklists. Hashes are build-specific; the group recompiles.</div>
+    </div>
+    <table>
+      <tr><th>Type</th><th>Value</th><th>Note</th></tr>
+      <tr><td>MD5</td><td><code>adf675ffc1acb357f2d9f1a94e016f52</code></td><td>Gentlemen sample</td></tr>
+      <tr><td>MD5</td><td><code>de1a114a2c5552387a1bbb61501bf129</code></td><td>Gentlemen sample</td></tr>
+      <tr><td>Filename</td><td><code>1.bat</code></td><td>mass account enum (60+)</td></tr>
+      <tr><td>Loader</td><td><code>All.exe</code></td><td>defense-evasion loader</td></tr>
+      <tr><td>Driver</td><td><code>ThrottleBlood.sys</code></td><td>BYOVD (ThrottleStop abuse)</td></tr>
+      <tr><td>Tool</td><td><code>PowerRun.exe</code></td><td>UAC bypass / priv-esc</td></tr>
+      <tr><td>Sched task</td><td><code>gentlemen_system</code></td><td>SYSTEM re-exec</td></tr>
+      <tr><td>Env var</td><td><code>LOCKER_BACKGROUND=1</code></td><td>background worker flag</td></tr>
+      <tr><td>C2 / proxy</td><td><code>SystemBC</code>, <code>Cobalt Strike</code></td><td>SOCKS5 / RC4</td></tr>
+    </table>
+    <p class="txt" style="margin-top:10px;font-size:11.5px;">Full structured IOC sets, ATT&CK mappings and Sigma rules:
+    Microsoft Defender IOCs + hunting queries, SOC Prime Sigma rules, Trend Micro appendix.</p>
+  </div></div>
+
+  <!-- DEFENDER PLAYBOOK -->
+  <div class="section"><div class="section-body">
+    <div class="kicker green">Defender playbook — mitigation (priority order)</div>
+    <ol class="steps">
+      <li><b>MFA + patch on all internet-facing edge — get FortiGate/VPN management off the public internet.</b> This is the front door. 🎯</li>
+      <li><b>Vulnerable-driver blocklist</b> (Microsoft HVCI / WDAC) to kill BYOVD (<code>ThrottleStop</code>/<code>ThrottleBlood.sys</code>).</li>
+      <li><b>EDR tamper-protection ON</b>; alert on AV-disable attempts.</li>
+      <li>Keep <b>SMB1 disabled</b>; harden LSA (anonymous access locked, RunAsPPL).</li>
+      <li>Restrict / monitor <b>PsExec, AnyDesk, Advanced IP Scanner</b> on servers.</li>
+      <li><b>GPO change monitoring</b> + least-privilege on GPO-edit rights.</li>
+      <li><b>Offline / immutable backups</b> + tested restore (ESXi-inclusive); protect vCenter/ESXi.</li>
+      <li>Treat a hit on any <b>MSP / consultancy</b> as a downstream supply-chain event — rotate creds for their clients.</li>
+    </ol>
+  </div></div>
+
+  <!-- CZ/EU RELEVANCE (sanitized) -->
+  <div class="section"><div class="section-body">
+    <div class="kicker blue">Why this matters for CZ / EU</div>
+    <ul class="tight">
+      <li><b>Exposed FortiGate / VPN management is the recurring initial-access door</b> — a concrete reason to look at your perimeter from the outside, the way an attacker does.</li>
+      <li><b>Romania is a confirmed victim geo</b> (Check Point) — Central &amp; Eastern Europe is in scope, not theoretical.</li>
+      <li>Target sectors — <b>energy, healthcare, finance, government, OT</b> — are exactly the <b>NIS2 / DORA</b>-regulated verticals. The question every board should ask: <em>are we exposed to a currently-active, top-tier actor?</em></li>
+    </ul>
+  </div></div>
+
+  <!-- SOURCES / CONFIDENCE -->
+  <div class="section"><div class="section-body">
+    <div class="kicker">Sources &amp; confidence</div>
+    <p class="txt" style="font-size:12px;">Primary / authoritative, all publicly published: <strong>Microsoft Security Blog</strong>
+    (Go-encryptor deep-dive), <strong>Trend Micro</strong> ("Unmasking The Gentlemen"), <strong>Check Point Research</strong> /
+    The Hacker News (SystemBC C2, 1,570+ networks, ESXi variant), <strong>Group-IB</strong> (attribution),
+    <strong>Halcyon</strong> / Analyst1 (Qilin split, RAMP arbitration), <strong>FortiGuard</strong>, <strong>SOC Prime</strong>
+    (detection rules). Supporting: SOCRadar, Cybereason, S-RM, CSO Online, Dark Reading, TechNadu, Cyberpress, Huntress.</p>
+    <div class="conf">
+      <span class="c-hi">🟢 HIGH — attribution, core TTPs, encryptor design</span>
+      <span class="c-md">🟡 MEDIUM — exact victim count, 78% payment rate (leak-derived)</span>
+      <span class="c-lo">🔴 RETRO-HUNT ONLY — IOC hashes (build-specific, no live C2)</span>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <div class="co-h">HYDRA discipline</div>
+      <div class="co-t">Every claim traces to a named public source; anything inferred is flagged. No fabricated IOCs.
+      This is passive OSINT on a documented adversary — <strong>no active engagement</strong>. We produce the same rigor on
+      <strong>your</strong> exposure. The first finding is free.</div>
+    </div>
+  </div></div>
+
+  <!-- FINAL CTA -->
+  <div class="sr-final">
+    <h2>Want to know if you're exposed to an active actor?</h2>
+    <p>We map your external perimeter the way an attacker does — passive, evidence-first, closed-loop remediation. The first finding is free.</p>
+    <div class="btns">
+      <a class="primary" href="https://wa.me/420603227456" target="_blank" rel="noopener">Talk to us →</a>
+      <a class="secondary" href="/sample-report.html">See a sample report</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    🐉 HYDRA &mdash; INTELLIGENCE CUTS THAT CLOSE CASES &nbsp;·&nbsp; AN INTELLIGENCE PRODUCT BY TIA
+    <div class="legal">
+      TLP:CLEAR — open-source threat intelligence compiled from publicly published vendor reporting; every claim is
+      source-attributed and no fabricated indicators are included. Passive OSINT on a documented adversary — no active
+      engagement. Indicators are historical (retro-hunt grade), not live blocklists. hydra.tia-framework.com
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    var GADS='AW-18155860192', LABEL='';
+    function lead(m){ if(typeof gtag!=='function')return;
+      gtag('event','generate_lead',{method:m,currency:'CZK',value:0});
+      if(LABEL) gtag('event','conversion',{send_to:GADS+'/'+LABEL,event_label:m}); }
+    document.addEventListener('click',function(e){
+      var a=e.target.closest?e.target.closest('a[href]'):null; if(!a)return;
+      var h=a.getAttribute('href')||'';
+      if(/wa\.me\//i.test(h))lead('whatsapp'); else if(/^mailto:/i.test(h))lead('email');
+    },true);
+  })();
+</script>
+</body>
+</html>
