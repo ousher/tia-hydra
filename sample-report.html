@@ -139,7 +139,17 @@
   .sr-final a { padding:12px 22px; border-radius:6px; font-weight:700; font-size:13px; }
   .sr-final .primary { background:#c41e1e; color:#fff; } .sr-final .primary:hover { background:#ff5a4d; }
   .sr-final .secondary { border:1px solid #ff5a4d55; color:#ff5a4d; } .sr-final .secondary:hover { background:#ff5a4d11; }
-  @media (max-width:640px){ .sr-h1{font-size:24px;} .sr-topnav a:not(.sr-cta-btn){display:none;} }
+  @media (max-width:640px){
+    body{padding:18px 14px;}
+    .sr-h1{font-size:23px;} .sr-topnav a:not(.sr-cta-btn){display:none;}
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .header,.section-body{padding:16px 15px;}
+    .header-top{flex-direction:column;gap:12px;}
+    .meta-row{flex-wrap:wrap;gap:8px 16px;}
+    .finding-head{flex-direction:column;align-items:flex-start;gap:2px;} .lanes{white-space:normal;}
+    .sr-final,.callout{padding:20px 16px;}
+    .finding-detail,.exec-list li{overflow-wrap:anywhere;}
+  }
 </style>
 </head>
 <body>
@@ -156,7 +166,7 @@
     <div class="sr-label">Sample Report · Anonymized</div>
     <h1 class="sr-h1">See what an attacker already knows — before the strike.</h1>
     <p class="sr-sub">Below is a <b>real, authorized HYDRA engagement</b> with the client fully anonymized — same
-      depth, same discipline, zero PII. This is exactly what lands in your inbox when you work with us.</p>
+      depth, same discipline, zero PII. This is exactly the kind of report you receive when you work with us.</p>
     <div class="sr-chips"><span>🛡️ Passive only</span><span>🧾 Receipts-first</span><span>🔒 GDPR · NDA-ready</span><span>⏱ 2–3 days</span></div>
   </div>
 </div>
@@ -190,8 +200,8 @@
   <div class="section"><div class="section-body">
     <div class="kicker blue">Engagement · Scope</div>
     <div class="summary-text">
-      <p><strong>Client:</strong> [REDACTED] — a mid-size Prague-based multi-branch consumer group (~5 owned domains,
-      ~40 staff, a routine supplier-payment workflow). Identity, domains, IPs and people redacted for this sample.</p>
+      <p><strong>Client:</strong> [REDACTED] — a European small-to-mid business running several brands and a routine
+      supplier-payment workflow. Sector, location, size, domains, IPs and people are generalized or redacted for this sample.</p>
       <p style="margin-top:8px;"><strong>Authorization:</strong> written owner consent (assessment of the client's own
       public exposure). <strong>Method:</strong> 5-lane HYDRA — <em>PASSIVE only</em> (DNS/CT/DoH, public web, response
       headers, RDAP/whois, OSINT). No active scanning, no authentication attempts, no exploitation. Receipts-first, zero fabrication.</p>
@@ -226,24 +236,25 @@
     <p class="summary-text" style="margin-bottom:4px;">The rest of the perimeter is reassuringly healthy (see the honest-negatives section). Four exposures carry real, exploitable risk:</p>
     <ul class="exec-list">
       <li><span class="n">1</span><b>On-prem remote-access box exposed to the internet.</b> A management endpoint on consumer broadband, end-of-life web server, self-signed certificate — the single most attackable real asset. <span class="sev-tag sev-crit">CRITICAL</span></li>
-      <li><span class="n">2</span><b>Email spoofing wide open on both flagship domains</b> (DMARC <code>p=none</code>). Anyone can send mail that lands in the inbox appearing to come from the founder or any branch → Business Email Compromise / fake-invoice. <em>Triple-confirmed across infra + dark-int + people lanes.</em> <span class="sev-tag sev-crit">CRITICAL</span></li>
+      <li><span class="n">2</span><b>Email authentication not enforced on both flagship domains</b> (DMARC <code>p=none</code>). This opens a <em>credible impersonation path</em> — mail that can appear to come from leadership or a team address, on the real domain → Business Email Compromise / fake-invoice. <em>Corroborated across infra + dark-int + people lanes.</em> <span class="sev-tag sev-crit">CRITICAL</span></li>
       <li><span class="n">3</span><b>Third-party look-alike domain with live mail.</b> A recently-registered near-spelling of the brand, behind a privacy proxy, with active mail records — a ready-made phishing channel impersonating the client. <span class="sev-tag sev-crit">CRITICAL</span></li>
-      <li><span class="n">4</span><b>Shared branch mailboxes + no enforced MFA.</b> The credential-hygiene foothold that makes risk #2 trivial to weaponize. <span class="sev-tag sev-crit">HIGH</span></li>
+      <li><span class="n">4</span><b>Shared role mailboxes; MFA posture not verifiable passively.</b> A credential-hygiene pattern that, if unaddressed, makes risk #2 far easier to weaponize. <span class="sev-tag sev-crit">HIGH</span></li>
     </ul>
   </div></div>
 
   <!-- FINDINGS -->
   <div class="section"><div class="section-body">
     <div class="kicker red">Findings by severity</div>
+    <p class="summary-text" style="font-size:11px;margin-bottom:14px;color:#8a8f98;line-height:1.7;"><b style="color:#b0b6be;">Lanes</b> — INFRA infrastructure · DARK-INT breach &amp; dark-web · WEB web surface · PEOPLE human/OSINT · BRAND domains &amp; impersonation.&nbsp;&nbsp;<b style="color:#b0b6be;">Severity</b> — <span class="sev-tag sev-crit">CRITICAL / HIGH</span> exploitable now · <span class="sev-tag sev-med">MEDIUM</span> hardening.</p>
 
     <div class="finding crit">
       <div class="finding-head"><div class="finding-title"><span class="id">F1</span>On-prem remote-access endpoint exposed</div><div class="lanes">[ INFRA ]</div></div>
-      <div class="finding-detail">A deliberate DNS record points a management hostname at <code>consumer broadband (not a datacenter)</code>. Passive fingerprint: end-of-life web server, self-signed certificate (multi-year). Classic on-prem management / VPN / back-office box on a flat office network likely touching POS, invoicing and payroll — internet-reachable, unadvertised in certificate transparency. → identify it, place behind a zero-trust broker, patch/replace, pull off the public net. <em>What it actually runs = Phase 2 (signed scope).</em></div>
+      <div class="finding-detail">A deliberate DNS record points a management hostname at <code>consumer broadband (not a datacenter)</code>. Passive fingerprint: end-of-life web server, self-signed certificate (multi-year). Consistent with an on-prem management / VPN / back-office box — internet-reachable and unadvertised in certificate transparency; its internal network adjacency is <em>inferred, not passively confirmed</em>. → identify it, place behind a zero-trust broker, patch/replace, pull off the public net. <em>What it actually runs = Phase 2 (signed scope).</em></div>
     </div>
 
     <div class="finding crit">
       <div class="finding-head"><div class="finding-title"><span class="id">F2</span>DMARC <code>p=none</code> on both flagship domains → BEC</div><div class="lanes">[ INFRA · DARK-INT · PEOPLE ]</div></div>
-      <div class="finding-detail">Both flagship domains publish <code>p=none</code> (monitor, no enforcement) despite valid SPF and DKIM. Anyone can send <code>From: &lt;anyone&gt;@[client-domain]</code> and land in the inbox. For a multi-branch business paying suppliers, this is a direct fake-invoice / payment-redirect vector. → add aggregate reporting, confirm sender alignment, then move <code>none → quarantine → reject</code> on both.</div>
+      <div class="finding-detail">Both flagship domains publish <code>p=none</code> (monitor, no enforcement) despite valid SPF and DKIM. Mail can be sent as <code>From: &lt;anyone&gt;@[client-domain]</code> with no cryptographic rejection — a <em>credible impersonation path</em> (final delivery still depends on the recipient's filtering, but the sender's own domain raises no barrier). For any business that pays suppliers, this is a fake-invoice / payment-redirect vector. → add aggregate reporting, confirm sender alignment, then move <code>none → quarantine → reject</code> on both.</div>
     </div>
 
     <div class="finding crit">
@@ -252,8 +263,8 @@
     </div>
 
     <div class="finding high">
-      <div class="finding-head"><div class="finding-title"><span class="id">F4</span>Shared branch mailboxes + MFA hygiene</div><div class="lanes">[ DARK-INT · PEOPLE ]</div></div>
-      <div class="finding-detail">Multiple shared role mailboxes confirmed (branch + <code>info@ / orders@ / catering@</code>). These are the highest-reuse, lowest-rotation accounts — shared passwords, rarely changed on departure, reused as portal logins, seldom per-user MFA. One leaked branch password lets an attacker read supplier invoices and reservation PII → invoice fraud (amplifies F2). → enforce org-wide 2-step verification; migrate shared → owner+delegation; rotate now.</div>
+      <div class="finding-head"><div class="finding-title"><span class="id">F4</span>Shared role mailboxes + MFA hygiene</div><div class="lanes">[ DARK-INT · PEOPLE ]</div></div>
+      <div class="finding-detail">Multiple shared role mailboxes are visible (generic function addresses such as <code>info@ / orders@</code>). These tend to be the highest-reuse, lowest-rotation accounts — shared passwords, reused as portal logins; per-user MFA cannot be confirmed passively and is a Phase-2 check. One leaked shared password would let an attacker read supplier correspondence → invoice fraud (amplifies F2). → enforce org-wide 2-step verification; migrate shared → owner+delegation; rotate now.</div>
     </div>
 
     <div class="finding med">
@@ -273,7 +284,7 @@
 
     <div class="finding med">
       <div class="finding-head"><div class="finding-title"><span class="id">F8</span>Third-party processor cascade</div><div class="lanes">[ DARK-INT ]</div></div>
-      <div class="finding-detail">Several third-party processors sit in the CRM/POS/reservations/mail path (guest PII, payment context). A breach at any one leaks client data indirectly; password reuse turns it into a mail-tenant compromise. → inventory staff↔processor logins; unique passwords + MFA; breach-monitor admin accounts.</div>
+      <div class="finding-detail">Several third-party processors sit in the CRM / payments / mail path (customer PII, payment context). A breach at any one leaks client data indirectly; password reuse turns it into a mail-tenant compromise. → inventory staff↔processor logins; unique passwords + MFA; breach-monitor admin accounts.</div>
     </div>
 
     <div class="finding med">
@@ -321,7 +332,7 @@
           <li>Investigate + isolate the on-prem remote box (zero-trust, patch, off the public net).</li>
           <li>DMARC <code>none → quarantine → reject</code> on both flagship domains (after alignment monitoring).</li>
           <li>Decide the look-alike domain: acquire, or abuse-report + dispute; warn staff and customers.</li>
-          <li>Enforce org-wide 2-step verification; rotate shared branch passwords.</li>
+          <li>Enforce org-wide 2-step verification; rotate shared mailbox passwords.</li>
           <li>Callback-verification + two-person rule for ANY payment or bank-detail change — the single highest-leverage human control, and it defends even against look-alike-domain attacks that DMARC can't stop.</li>
         </ol>
       </div>
@@ -368,14 +379,14 @@
     <div class="callout">
       <div class="co-h">HYDRA cuts heads of dragons — not merchants</div>
       <div class="co-t">We find what an attacker already knows about you, prove it with evidence, and hand you a
-      closed-loop path to fix it. <strong>The first finding is free.</strong></div>
+      closed-loop path to fix it. <strong>The first directional signal is free; full proof and remediation are scoped.</strong></div>
     </div>
   </div></div>
 
   <!-- FINAL CTA -->
   <div class="sr-final">
     <h2>Want to see your own?</h2>
-    <p>We run this same 5-lane passive assessment on your domains. The first finding is free — no contract, no commitment.</p>
+    <p>We run this same 5-lane passive assessment on your domains. The first directional signal is free — full proof and remediation are scoped.</p>
     <div class="btns">
       <a class="primary" href="https://wa.me/420603227456" target="_blank" rel="noopener">Request a sample →</a>
       <a class="secondary" href="mailto:hydra@tia-framework.com">hydra@tia-framework.com</a>

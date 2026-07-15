@@ -92,7 +92,13 @@
   .footer { text-align:center; padding:20px; font-family:'JetBrains Mono',monospace; font-size:8px; color:#555; letter-spacing:2px; margin-top:10px; }
   .footer .legal { color:#4a4f58; margin-top:10px; font-size:8px; max-width:600px; margin:10px auto 0; line-height:1.6; letter-spacing:0; font-family:'Inter',sans-serif; }
   .footer b { color:#ff5a4d; }
-  @media (max-width:640px){ .sr-h1{font-size:24px;} .stat-row{grid-template-columns:repeat(2,1fr);} .sr-topnav a:not(.sr-cta-btn){display:none;} }
+  @media (max-width:640px){
+    body{padding:18px 14px;}
+    .sr-h1{font-size:23px;} .stat-row{grid-template-columns:repeat(2,1fr);} .sr-topnav a:not(.sr-cta-btn){display:none;}
+    .section-body{padding:16px 15px;}
+    table{font-size:10.5px;} th,td{padding:6px 7px;} td code,.txt code{overflow-wrap:anywhere;}
+    .conf{flex-direction:column;}
+  }
   @media print { body{padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;} .sr-topbar,.sr-final{display:none;} }
 </style>
 </head>
