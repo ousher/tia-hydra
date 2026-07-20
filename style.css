@@ -797,3 +797,9 @@ body { counter-reset: sec; }
 .tw-caret { display: inline-block; color: var(--hydra); font-weight: 700; margin-left: 3px; animation: tw-blink 1.05s steps(1) infinite; }
 @keyframes tw-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .tw-caret { display: none; } }
+
+/* #4 live OSINT node-graph hero background — our product (entity/edge investigation graph), from scratch */
+.hero-graph { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: .5; }
+.hero-term { z-index: 2; }
+.hero .container { z-index: 3; }
+@media (max-width: 720px) { .hero-graph { opacity: .28; } }
