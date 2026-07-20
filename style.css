@@ -742,7 +742,37 @@ footer a:hover { color: var(--hydra); }
 @keyframes amber-bl { 50% { opacity: 0; } }
 
 /* accessibility — honor reduced-motion: freeze every new animation */
+/* distributed glitch — two flavors, spread evenly down the page, staggered via inline animation-delay */
+/* glr = chromatic "red wraps the letters" (the one the Architect loved, lighter for repeat use) */
+.glr { animation: glr-k 7s infinite steps(1); }
+@keyframes glr-k {
+  0%,90%,100% { text-shadow: none; transform: none; }
+  91% { text-shadow: -2px 0 var(--hydra), 2px 0 var(--ember); transform: translateX(-1px); }
+  93% { text-shadow:  2px 0 var(--hydra), -2px 0 var(--ember); transform: translateX(1px); }
+  95% { text-shadow: -1px 0 var(--hydra), 1px 0 var(--ember); }
+}
+/* glt = TV signal tear ("rozjede jak na televizi") — horizontal band slip + skew + brightness flash */
+.glt { animation: glt-k 8s infinite steps(1); will-change: transform, clip-path; }
+@keyframes glt-k {
+  0%,88%,100% { clip-path: none; transform: none; filter: none; opacity: 1; }
+  89% { clip-path: inset(8% 0 56% 0);  transform: translateX(-4px) skewX(8deg);  filter: brightness(1.35); }
+  90% { clip-path: inset(46% 0 24% 0); transform: translateX(5px);               opacity: .82; }
+  91% { clip-path: inset(26% 0 46% 0); transform: translateX(-2px) skewX(-6deg); }
+  92% { clip-path: inset(64% 0 8% 0);  transform: translateY(-2px);              filter: brightness(1.55); }
+  93% { clip-path: none; transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .nav-logo-svg .dia, .amber-strip .blink { animation: none; }
+  .nav-logo-svg .dia, .amber-strip .blink, .glr, .glt { animation: none; }
   .gl::before, .gl::after { animation: none; display: none; }
 }
+
+/* ===== D125 QUICK WINS (loot) — two-tone red depth · amber CRT glow · live UTC ops clock ===== */
+:root { --blood: #3d1113; }                              /* near-black-red for depth (Praetorian) */
+.hero-doctrine { background: linear-gradient(90deg, rgba(61,17,19,.42), transparent 72%); }
+.tier { transition: box-shadow .25s ease, border-color .25s ease, transform .25s ease; }
+.tier:hover { box-shadow: 0 12px 44px rgba(61,17,19,.55), 0 0 0 1px var(--hydra); transform: translateY(-3px); }
+.btn-primary { box-shadow: 0 6px 22px rgba(61,17,19,.55), 0 0 24px var(--hydra-glow); }
+/* amber CRT glow (Terminal-ref recipe) + live-ops ticker */
+.amber-strip { text-shadow: 0 0 5px rgba(255,140,0,.5), 0 0 18px rgba(255,140,0,.22); }
+.amber-strip .utc { color: var(--amber); font-variant-numeric: tabular-nums; letter-spacing: 1px; }
