@@ -140,6 +140,14 @@
     <script>(function(){var e=document.getElementById('utc');if(!e)return;function t(){e.textContent=new Date().toISOString().substr(11,8);}t();setInterval(t,1000);})();</script>
   </div>
 </section>
+<script>
+(function(){var h1=document.querySelector('.hero h1');if(!h1)return;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;}catch(e){}
+var segs=[{t:'Intelligence cuts'},{br:1},{t:'that '},{t:'close cases.',c:'accent'}],done='';
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function draw(cur){h1.innerHTML=done+cur+'<span class="tw-caret">▮</span>';}
+var si=0;function seg(){if(si>=segs.length)return;var s=segs[si++];if(s.br){done+='<br>';setTimeout(seg,170);return;}var i=0;(function ch(){if(i<=s.t.length){var part=esc(s.t.slice(0,i));draw(s.c?'<span class="'+s.c+'">'+part+'</span>':part);var last=s.t[i-1];i++;setTimeout(ch,last===' '?45:36);}else{done+=s.c?'<span class="'+s.c+'">'+esc(s.t)+'</span>':esc(s.t);setTimeout(seg,15);}})();}
+h1.innerHTML='<span class="tw-caret">▮</span>';setTimeout(seg,350);})();
+</script>
 
 <!-- TIERS -->
 <section id="tiers">
