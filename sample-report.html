@@ -4,10 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) — Google Ads + GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VBWEDBCCER"></script>
+<!-- Consent Mode v2 — defaults denied until the visitor chooses.
+     Must run BEFORE gtag.js. Google requires all four signals for EEA traffic
+     (mandatory since 2024-03-06) or remarketing + conversion modelling are off. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('hydra-consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted', ad_user_data: 'granted',
+        ad_personalization: 'granted', analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VBWEDBCCER"></script>
+<script>
   gtag('js', new Date());
   gtag('config', 'AW-18155860192');
   var GA4_ID = 'G-VBWEDBCCER';
@@ -31,8 +53,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <title>HYDRA — Sample Engagement Report (Anonymized)</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700;900&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Inter',sans-serif; background:#08080c; color:#d8dde3; padding:40px; font-size:12px; line-height:1.65; }
   .page { max-width:760px; margin:0 auto; }
@@ -420,5 +442,6 @@
     },true);
   })();
 </script>
+<script src="/consent.js" defer></script>
 </body>
 </html>
