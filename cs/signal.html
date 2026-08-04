@@ -8,19 +8,83 @@
 <link rel="icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:title" content="Cyber Signal — HYDRA">
-<meta property="og:description" content="Denní řez z veřejných zdrojů. Zdarma, a není se kam registrovat.">
+<meta property="og:description" content="Denní řez toho, co je v kyberbezpečnosti podstatné, z veřejných zdrojů. Zdarma — bez účtu, bez e-mailu, bez registrace.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hydra.tia-framework.com/cs/signal.html">
 <meta property="og:image" content="https://hydra.tia-framework.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://hydra.tia-framework.com/cs/signal.html">
 <link rel="stylesheet" href="/style.css">
+<style>
+  /* Cockpit for the daily cut. Scoped to #cut so it cannot reach the rest of the
+     site. Dense on purpose: the day should be legible without scrolling. */
+  #cut { padding: 24px 0 30px; }
+  .sg-top { display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+            border-bottom:1px solid var(--border); padding-bottom:11px; margin-bottom:18px; }
+  .sg-top h2 { margin:0; font-size:1.15rem; letter-spacing:.07em; }
+  .sg-n { font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--text-dim); }
+  .sg-days { display:flex; align-items:center; gap:14px; font-family:'JetBrains Mono',monospace;
+             font-size:.78rem; }
+  .sg-days a { color:var(--text-dim); text-decoration:none; }
+  .sg-days a:hover { color:var(--ember); }
+  .sg-days b { color:var(--gold); font-weight:400; }
+  .sg-days .sg-arch { letter-spacing:.12em; font-size:.68rem; color:var(--text-muted); }
+  .sg-cad { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:.7rem;
+            letter-spacing:.14em; color:var(--text-muted); }
+
+  .sg-wrap { display:grid; grid-template-columns:206px 1fr; gap:22px; align-items:start; }
+  .sg-rail h5 { font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.18em;
+                color:var(--text-muted); margin:0 0 7px; font-weight:600; }
+  .sg-rail section { margin-bottom:17px; padding:0; border:0; }
+  .sg-split { display:flex; height:8px; border-radius:2px; overflow:hidden; background:var(--surface); }
+  .sg-split i { display:block; height:100%; }
+  .sg-red { background:var(--hydra); } .sg-yellow { background:var(--gold); }
+  .sg-green { background:var(--steel); }
+  .sg-legend { display:flex; gap:12px; margin-top:7px; font-family:'JetBrains Mono',monospace;
+               font-size:.76rem; color:var(--text-dim); }
+  .sg-lg b { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; }
+  .sg-row { display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace;
+            font-size:.7rem; color:var(--text-dim); line-height:1.85; }
+  .sg-k { flex:0 0 84px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sg-bar { flex:1; height:5px; background:var(--surface); border-radius:2px; overflow:hidden; }
+  .sg-bar i { display:block; height:100%; background:var(--ember); opacity:.5; }
+  .sg-v { flex:0 0 14px; text-align:right; color:var(--text-muted); }
+  .sg-note { font-size:.68rem; line-height:1.5; color:var(--text-muted); margin-top:13px; }
+
+  .sg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .sg-card { position:relative; display:block; text-decoration:none; color:inherit;
+             background:var(--surface); border:1px solid var(--border); border-radius:7px;
+             padding:11px 12px 11px 16px; transition:border-color .15s, transform .15s; }
+  .sg-card:hover { border-color:var(--border-hot); transform:translateY(-1px); }
+  .sg-dot { position:absolute; left:0; top:10px; bottom:10px; width:3px; border-radius:0 2px 2px 0; }
+  .sg-card.sg-red .sg-dot { background:var(--hydra); }
+  .sg-card.sg-yellow .sg-dot { background:var(--gold); }
+  .sg-card.sg-green .sg-dot { background:var(--steel); }
+  .sg-card h4 { margin:0 0 5px; font-size:.83rem; line-height:1.3; font-weight:600; }
+  .sg-meta { font-family:'JetBrains Mono',monospace; font-size:.64rem; color:var(--text-muted);
+             margin:0 0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sg-why { font-size:.73rem; line-height:1.44; color:var(--text-dim); margin:0; }
+
+  .sg-idx { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; }
+  .sg-idx a { display:block; text-decoration:none; color:inherit; background:var(--surface);
+              border:1px solid var(--border); border-radius:7px; padding:13px 15px; }
+  .sg-idx a:hover { border-color:var(--border-hot); }
+  .sg-idx .d { font-family:'JetBrains Mono',monospace; font-size:.9rem; color:var(--gold); }
+  .sg-idx .c { font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--text-muted);
+               margin-top:5px; }
+
+  @media (max-width:1100px) { .sg-grid { grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:860px)  { .sg-wrap { grid-template-columns:1fr; }
+                              .sg-grid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px)  { .sg-grid { grid-template-columns:1fr; }
+                              .sg-cad { display:none; } }
+</style>
 </head>
 <body>
 
 <nav>
   <div class="container">
-    <a href="/" class="nav-logo"><svg class="nav-logo-svg" viewBox="0 0 64 64" role="img" aria-label="HYDRA logo"><defs><linearGradient id="hbar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c41e1e"/><stop offset="1" stop-color="#ff6b35"/></linearGradient><linearGradient id="hdg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e22a2a"/><stop offset="1" stop-color="#a81818"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="14" fill="#0c0c0e" stroke="rgba(255,255,255,.06)"/><rect x="10" y="7" width="44" height="5" rx="2.5" fill="url(#hbar)"/><g class="dia"><polygon points="32,20 47,39 32,58 17,39" fill="url(#hdg)"/><polygon points="32,29 40,39 32,49 24,39" fill="#6e0f0f"/></g></svg>HYDRA</a>
+    <a href="/cs/" class="nav-logo"><svg class="nav-logo-svg" viewBox="0 0 64 64" role="img" aria-label="HYDRA logo"><defs><linearGradient id="hbar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c41e1e"/><stop offset="1" stop-color="#ff6b35"/></linearGradient><linearGradient id="hdg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e22a2a"/><stop offset="1" stop-color="#a81818"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="14" fill="#0c0c0e" stroke="rgba(255,255,255,.06)"/><rect x="10" y="7" width="44" height="5" rx="2.5" fill="url(#hbar)"/><g class="dia"><polygon points="32,20 47,39 32,58 17,39" fill="url(#hdg)"/><polygon points="32,29 40,39 32,49 24,39" fill="#6e0f0f"/></g></svg>HYDRA</a>
     <div class="nav-links">
       <a href="/cs/#tiers">TIERY</a>
       <a href="/cs/#shield">SHIELD</a>
@@ -37,236 +101,132 @@
   </div>
 </nav>
 
-<section class="hero" id="main" style="min-height:auto;padding:96px 0 56px">
+<section class="hero" id="main" style="min-height:auto;padding:74px 0 22px">
   <div class="container">
-    <div class="hero-mark"><span class="gl" data-t="TIA · HYDRA · DENNĚ">TIA · HYDRA · DENNĚ</span></div>
-    <h1>Cyber&nbsp;Signal</h1>
-    <p class="hero-sub">
-      Denní řez toho, co je podstatné v kyberbezpečnosti a v rizicích agentní AI,
-      z veřejných zdrojů.
-      <br><br>
-      <strong>Neodebíráš to. Ono to prostě vychází.</strong>
-    </p>
-    <div class="hero-doctrine">
-      Bez účtu. Bez e-mailu. Bez sledování.<br>
-      Není se z čeho odhlásit, protože není kam se přihlásit.
-    </div>
-    <div class="status-strip">
-      <div class="status-row">
-        <div class="status-item hot">
-          <div class="label">Vychází od</div>
-          <div class="val mono">4. 8. 2026</div>
-        </div>
-        <div class="status-item">
-          <div class="label">Kadence</div>
-          <div class="val mono">Denně, 06:00 UTC</div>
-        </div>
-        <div class="status-item">
-          <div class="label">Zdroje</div>
-          <div class="val mono">Jen veřejné</div>
-        </div>
-        <div class="status-item">
-          <div class="label">Cena</div>
-          <div class="val mono">Zdarma</div>
-        </div>
-      </div>
-    </div>
+    <div class="hero-mark"><span class="gl" data-t="TIA · HYDRA">TIA · HYDRA</span></div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:10px">Cyber&nbsp;Signal</h1>
+    <p class="hero-sub" style="max-width:62ch">Denní řez z veřejných zdrojů. <strong>Neodebíráš to. Ono to prostě vychází.</strong><br>Bez účtu. Bez e-mailu. Bez sledování.</p>
   </div>
 </section>
 
-<!-- CUT:START -->
 <section id="cut">
   <div class="container">
-    <div class="section-mark glt">12 POLOŽEK · 4. 8. 2026 · Z VEŘEJNÝCH ZDROJŮ · TŘÍDY POZORNOSTI,</div>
-    <h2>Dnešní řez</h2>
-    <p class="section-lead">Třídy pozornosti popisují, kolik pozornosti jsme položce věnovali — nejsou to verdikty o závažnosti. Než se cokoli nazve hrozbou, prochází to člověkem.</p>
-    <div class="method-grid">
-      <article class="method-item">
-        <h4 class="hot">◢ VYSOKÁ POZORNOST</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://www.cisa.gov/news-events/alerts/2026/08/03/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener nofollow">CISA Adds One Known Exploited Vulnerability to Catalog</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">CISA Advisories · 2026-08-03 · exploited · CVE</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> CISA has added one new vulnerability to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="hot">◢ VYSOKÁ POZORNOST</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://www.securityweek.com/n-able-patches-vulnerability-exploited-to-hack-n-central-servers/" target="_blank" rel="noopener nofollow">N‑able Patches Vulnerability Exploited to Hack N-central Servers</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">SecurityWeek · 2026-08-03 · exploited · CVE</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> The N‑central vulnerability CVE-2026-18577 has been exploited in the wild after threat actors found a patch bypass.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="amb">◢ SLEDOVAT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://thehackernews.com/2026/08/google-password-manager-attacks-could.html" target="_blank" rel="noopener nofollow">Google Password Manager Attacks Could Let Malware Hijack Passkey-Protected Accounts</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">The Hacker News · 2026-08-03 · msft/identity · identity · cloud/AI-stack</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> Malware running as an ordinary user on a Windows machine can sign into a victim&#x27;s passkey-protected accounts without a fingerprint, a PIN, or anything at all appearing on the victim&#x27;s screen.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="amb">◢ SLEDOVAT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://thehackernews.com/2026/08/hugging-face-diffusers-flaws-could-let.html" target="_blank" rel="noopener nofollow">Hugging Face Diffusers Flaws Could Let Model Repositories Execute Arbitrary Code</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">The Hacker News · 2026-08-03 · AI/agent · supply-chain</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> Three high-severity security flaws have been disclosed in Hugging Face&#x27;s Diffusers library that could allow crafted model repositories to stealthily execute arbitrary code on machines that load it, opening the artificial intelligence (AI) supply chain to security risk.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="amb">◢ SLEDOVAT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://www.bleepingcomputer.com/news/security/new-pass-ta-key-attacks-let-malware-hijack-google-synced-passkeys/" target="_blank" rel="noopener nofollow">New Pass-ta-key attacks let malware hijack Google-synced passkeys</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">BleepingComputer · 2026-08-03 · msft/identity · identity</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> Security researchers have discovered three attacks that allow malware on already-compromised Windows devices to abuse Google Password Manager&#x27;s synced passkeys to take over accounts, bypass user verification, and extract passkey private keys.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="amb">◢ SLEDOVAT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://thehackernews.com/2026/08/inc-ransomware-emerges-as-dominant.html" target="_blank" rel="noopener nofollow">INC Ransomware Emerges as Dominant Actor Exploiting SonicWall SMA 1000 Flaws</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">The Hacker News · 2026-08-03 · crime · edge-vendor</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> The INC Ransomware operation has emerged as the &quot;dominant threat actor&quot; exploiting the recently disclosed security flaws in SonicWall Secure Mobile Access (SMA) 1000 series VPN appliances.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="amb">◢ SLEDOVAT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://www.bleepingcomputer.com/news/security/hotel-wi-fi-attacks-use-custom-malware-to-breach-microsoft-365-accounts/" target="_blank" rel="noopener nofollow">Hotel Wi-Fi attacks use custom malware to breach Microsoft 365 accounts</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">BleepingComputer · 2026-08-04 · crime · msft/identity</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> Microsoft has linked a global campaign targeting hospitality Wi-Fi networks to the Russian threat actor Midnight Blizzard, also known as APT29.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="amb">◢ SLEDOVAT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://www.darkreading.com/cyber-risk/anthropic-ai-issues-result-security-gaps" target="_blank" rel="noopener nofollow">Anthropic: Claude Attacks Result of Security Gaps, Not Model Issues</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">Dark Reading · 2026-08-03 · AI/agent · cloud/AI-stack</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> Last month&#x27;s incidents in which the AI model breached real-world systems derived from over-permissioning, especially with Internet access.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="amb">◢ SLEDOVAT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://www.securityweek.com/recent-sonicwall-vulnerabilities-exploited-in-ransomware-attacks/" target="_blank" rel="noopener nofollow">Recent SonicWall Vulnerabilities Exploited in Ransomware Attacks</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">SecurityWeek · 2026-08-03 · crime · edge-vendor</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> The INC Ransomware gang has been targeting vulnerable SMA1000 appliances for root access and lateral movement.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="dim">◢ KONTEXT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://thehackernews.com/2026/08/weekly-recap-rogue-ai-models-88m.html" target="_blank" rel="noopener nofollow">⚡ Weekly Recap: Rogue AI Models, $88M Bitcoin Theft, Water-System Attacks and Dangling DNS Hijacks</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">The Hacker News · 2026-08-03 · AI/agent</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> This week kept coming back to permission. A model crossed a boundary. A wallet trusted bad randomness. Webmail kept an intruder around. Public systems, package feeds, hotel networks, and login flows all gave away more than intended. Some of it was clever.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="dim">◢ KONTEXT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://thehackernews.com/2026/08/fomo-in-soc-where-ai-platforms-like.html" target="_blank" rel="noopener nofollow">FOMO in the SOC: Where AI Platforms like Claude Actually Fit</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">The Hacker News · 2026-08-03 · AI/agent</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> AI is moving incredibly fast, and every security leader is feeling the pressure to keep up. AI platforms like Claude, Codex and Cursor are already helping security teams write detections, investigate alerts, summarize incidents, and automate repetitive work.</p>
-      </article>
-      <article class="method-item">
-        <h4 class="dim">◢ KONTEXT</h4>
-        <p style="margin:.2rem 0 .55rem"><strong><a href="https://thehackernews.com/2026/08/thermo-fisher-patches-flaw-that-could.html" target="_blank" rel="noopener nofollow">Thermo Fisher Patches Flaw That Could Make DNA File Tampering Nearly Undetectable</a></strong></p>
-        <p class="mono" style="font-size:.78rem;opacity:.62;margin:0 0 .5rem">The Hacker News · 2026-08-03 · CVE</p>
-        <p style="font-size:.92rem"><em>Proč na tom záleží:</em> Thermo Fisher Scientific has patched a flaw in select Applied Biosystems human identification software that could allow data files to be altered before analysis software loads them.</p>
-      </article>
-    </div>
-  </div>
-</section>
-<!-- CUT:END -->
-
-<section>
-  <div class="container">
-    <div class="section-mark glr">CO VÁM NEPRODÁME</div>
-    <h2>Nebudeme tvrdit, že vidíme všechno.</h2>
-    <p class="section-lead">
-      Úplné pokrytí nemůže poctivě slíbit nikdo, a dodavatel, který to naznačuje,
-      vám prodává svoje sebevědomí, ne svoji práci. Nabízíme výběr, na který se
-      můžete podívat, hádat se s ním a ověřit si ho.
-    </p>
-  </div>
-</section>
-
-<section id="ledger">
-  <div class="container">
-    <div class="section-mark glt">STAV MĚŘENÍ</div>
-    <h2>Co zveřejňujeme a co zatím držíme.</h2>
-
-    <div class="method-grid">
-      <div class="method-item">
-        <h4>◢ DORUČENÍ — PROKÁZÁNO</h4>
-        <p>
-          Pět denních běhů po sobě, každý s dokladem: záznamem o vytvoření, stabilním
-          otiskem konfigurace a identifikátory odeslané zprávy. Žádné selhání načtení.
-          Kadence sedí na vteřinu.
-        </p>
-      </div>
-      <div class="method-item">
-        <h4>◢ KVALITA VÝBĚRU — NETVRDÍME</h4>
-        <p>
-          Během těch běhů jsme našli vadu ve vlastním skórování: neautentizované
-          vzdálené spuštění kódu s maximálním oborovým hodnocením závažnosti spadlo do
-          naší <em>nejnižší</em> třídy pozornosti. To je chyba ve vahách a našli jsme
-          ji sami.
-        </p>
-      </div>
-      <div class="method-item">
-        <h4>◢ ČÍSLA O ZAHOZENÉM — DRŽÍME</h4>
-        <p>
-          Chceme zveřejňovat, kolik toho denně zahodíme, protože to je číslo, které
-          nikdo jiný neukazuje. <strong>Zatím ho nezveřejňujeme.</strong> Míra zahození
-          spočítaná skorerem, kterému nevěříme, je měření o ničem — a vydat ji by bylo
-          horší než počkat.
-        </p>
-      </div>
-      <div class="method-item">
-        <h4>◢ PROČ TO TU STOJÍ</h4>
-        <p>
-          Protože jinak byste se to nedozvěděli. Přiznat vadu v den spuštění nás stojí
-          nejsilnější číslo, které máme — a je to jediná verze téhle stránky, které
-          bychom sami věřili, kdyby ji napsal někdo jiný.
-        </p>
-      </div>
+    <div class="sg-top">
+      <h2>DNEŠNÍ ŘEZ</h2>
+      <span class="sg-n">12 položek</span>
+      <nav class="sg-days"><b>4. srpna 2026</b><a href="/cs/signal/" class="sg-arch">ARCHIV</a></nav>
+      <span class="sg-cad">◢ Denně 06:00 UTC</span>
     </div>
 
-    <div class="hero-doctrine" style="margin-top:28px">
-      Netvrdíme, že vidíme všechno. Tvrdíme, že zveřejníme, co jsme vybrali, co jsme
-      zahodili a které pravidlo to zahodilo — <strong>počínaje tím pravidlem, které je
-      teď špatně.</strong>
-    </div>
-  </div>
-</section>
+    <div class="sg-wrap">
+      <div class="sg-rail">
+        <section>
+          <h5>POZORNOST</h5>
+          <div class="sg-split"><i class="sg-red" style="width:16.7%"></i><i class="sg-yellow" style="width:58.3%"></i><i class="sg-green" style="width:25.0%"></i></div>
+          <div class="sg-legend"><span class="sg-lg"><b class="sg-red"></b>2</span> <span class="sg-lg"><b class="sg-yellow"></b>7</span> <span class="sg-lg"><b class="sg-green"></b>3</span></div>
+        </section>
+        <section>
+          <h5>KATEGORIE</h5>
+        <div class="sg-row"><span class="sg-k">AI/agent</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">4</span></div>
+        <div class="sg-row"><span class="sg-k">CVE</span><span class="sg-bar"><i style="width:75%"></i></span><span class="sg-v">3</span></div>
+        <div class="sg-row"><span class="sg-k">crime</span><span class="sg-bar"><i style="width:75%"></i></span><span class="sg-v">3</span></div>
+        <div class="sg-row"><span class="sg-k">msft/identity</span><span class="sg-bar"><i style="width:75%"></i></span><span class="sg-v">3</span></div>
+        <div class="sg-row"><span class="sg-k">cloud/AI-stack</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">2</span></div>
+        <div class="sg-row"><span class="sg-k">edge-vendor</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">2</span></div>
+        </section>
+        <section>
+          <h5>ZDROJE</h5>
+        <div class="sg-row"><span class="sg-k">The Hacker News</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">6</span></div>
+        <div class="sg-row"><span class="sg-k">BleepingComputer</span><span class="sg-bar"><i style="width:33%"></i></span><span class="sg-v">2</span></div>
+        <div class="sg-row"><span class="sg-k">SecurityWeek</span><span class="sg-bar"><i style="width:33%"></i></span><span class="sg-v">2</span></div>
+        <div class="sg-row"><span class="sg-k">CISA Advisories</span><span class="sg-bar"><i style="width:17%"></i></span><span class="sg-v">1</span></div>
+        <div class="sg-row"><span class="sg-k">Dark Reading</span><span class="sg-bar"><i style="width:17%"></i></span><span class="sg-v">1</span></div>
+        </section>
+        <p class="sg-note">Třídy pozornosti = kolik pozornosti jsme položce věnovali. Nejsou to verdikty o závažnosti.</p>
+      </div>
 
-<section>
-  <div class="container">
-    <div class="section-mark glr">ZDARMA A NA MÍRU</div>
-    <h2>Stejný řez pro všechny. Nebo jeden řez pro vás.</h2>
-    <div class="tiers">
-      <div class="tier">
-        <div class="tier-mark">ZDARMA</div>
-        <div class="tier-name">Denní řez</div>
-        <div class="tier-tag">Stejný pro všechny</div>
-        <div class="tier-price">Bez poplatku</div>
-        <div class="tier-eta">⏱ každé ráno</div>
-        <ul class="tier-bullets">
-          <li>Obecný signál z kyberbezpečnosti a agentních rizik, z veřejných zdrojů</li>
-          <li>Třída pozornosti a kategorie u každé položky</li>
-          <li>Bez účtu, bez e-mailu, bez sledování</li>
-          <li>Než se něco nazve hrozbou, prochází to člověkem</li>
-        </ul>
-      </div>
-      <div class="tier">
-        <div class="tier-mark">NA MÍRU</div>
-        <div class="tier-name">Podle vaší expozice</div>
-        <div class="tier-tag">Na vyžádání · placené</div>
-        <div class="tier-price">Rozsah dle organizace</div>
-        <div class="tier-eta">⏱ dohodnuto písemně</div>
-        <ul class="tier-bullets">
-          <li>Stejná disciplína, mířená na <strong>vaše</strong> dodavatele a stack</li>
-          <li><strong>Míň položek, ne víc.</strong> Vašich, ne všech</li>
-          <li>Rozsah písemně, včetně toho, co v něm není</li>
-          <li>Předáno pod NDA</li>
-        </ul>
+      <div class="sg-grid">
+      <a class="sg-card sg-red" href="https://www.cisa.gov/news-events/alerts/2026/08/03/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>CISA Adds One Known Exploited Vulnerability to Catalog</h4>
+        <p class="sg-meta">CISA Advisories · exploited · CVE</p>
+        <p class="sg-why">CISA has added one new vulnerability to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active…</p>
+      </a>
+      <a class="sg-card sg-red" href="https://www.securityweek.com/n-able-patches-vulnerability-exploited-to-hack-n-central-servers/" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>N‑able Patches Vulnerability Exploited to Hack N-central Servers</h4>
+        <p class="sg-meta">SecurityWeek · exploited · CVE</p>
+        <p class="sg-why">The N‑central vulnerability CVE-2026-18577 has been exploited in the wild after threat actors found a patch bypass.</p>
+      </a>
+      <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/08/google-password-manager-attacks-could.html" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>Google Password Manager Attacks Could Let Malware Hijack Passkey-Protected Accounts</h4>
+        <p class="sg-meta">The Hacker News · msft/identity · identity</p>
+        <p class="sg-why">Malware running as an ordinary user on a Windows machine can sign into a victim&#x27;s passkey-protected accounts without a…</p>
+      </a>
+      <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/08/hugging-face-diffusers-flaws-could-let.html" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>Hugging Face Diffusers Flaws Could Let Model Repositories Execute Arbitrary Code</h4>
+        <p class="sg-meta">The Hacker News · AI/agent · supply-chain</p>
+        <p class="sg-why">Three high-severity security flaws have been disclosed in Hugging Face&#x27;s Diffusers library that could allow crafted model…</p>
+      </a>
+      <a class="sg-card sg-yellow" href="https://www.bleepingcomputer.com/news/security/new-pass-ta-key-attacks-let-malware-hijack-google-synced-passkeys/" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>New Pass-ta-key attacks let malware hijack Google-synced passkeys</h4>
+        <p class="sg-meta">BleepingComputer · msft/identity · identity</p>
+        <p class="sg-why">Security researchers have discovered three attacks that allow malware on already-compromised Windows devices to abuse Google…</p>
+      </a>
+      <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/08/inc-ransomware-emerges-as-dominant.html" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>INC Ransomware Emerges as Dominant Actor Exploiting SonicWall SMA 1000 Flaws</h4>
+        <p class="sg-meta">The Hacker News · crime · edge-vendor</p>
+        <p class="sg-why">The INC Ransomware operation has emerged as the &quot;dominant threat actor&quot; exploiting the recently disclosed security flaws in…</p>
+      </a>
+      <a class="sg-card sg-yellow" href="https://www.bleepingcomputer.com/news/security/hotel-wi-fi-attacks-use-custom-malware-to-breach-microsoft-365-accounts/" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>Hotel Wi-Fi attacks use custom malware to breach Microsoft 365 accounts</h4>
+        <p class="sg-meta">BleepingComputer · crime · msft/identity</p>
+        <p class="sg-why">Microsoft has linked a global campaign targeting hospitality Wi-Fi networks to the Russian threat actor Midnight Blizzard,…</p>
+      </a>
+      <a class="sg-card sg-yellow" href="https://www.darkreading.com/cyber-risk/anthropic-ai-issues-result-security-gaps" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>Anthropic: Claude Attacks Result of Security Gaps, Not Model Issues</h4>
+        <p class="sg-meta">Dark Reading · AI/agent · cloud/AI-stack</p>
+        <p class="sg-why">Last month&#x27;s incidents in which the AI model breached real-world systems derived from over-permissioning, especially with…</p>
+      </a>
+      <a class="sg-card sg-yellow" href="https://www.securityweek.com/recent-sonicwall-vulnerabilities-exploited-in-ransomware-attacks/" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>Recent SonicWall Vulnerabilities Exploited in Ransomware Attacks</h4>
+        <p class="sg-meta">SecurityWeek · crime · edge-vendor</p>
+        <p class="sg-why">The INC Ransomware gang has been targeting vulnerable SMA1000 appliances for root access and lateral movement.</p>
+      </a>
+      <a class="sg-card sg-green" href="https://thehackernews.com/2026/08/weekly-recap-rogue-ai-models-88m.html" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>⚡ Weekly Recap: Rogue AI Models, $88M Bitcoin Theft, Water-System Attacks and Dangling DNS Hijacks</h4>
+        <p class="sg-meta">The Hacker News · AI/agent</p>
+        <p class="sg-why">This week kept coming back to permission. A model crossed a boundary. A wallet trusted bad randomness. Webmail kept an…</p>
+      </a>
+      <a class="sg-card sg-green" href="https://thehackernews.com/2026/08/fomo-in-soc-where-ai-platforms-like.html" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>FOMO in the SOC: Where AI Platforms like Claude Actually Fit</h4>
+        <p class="sg-meta">The Hacker News · AI/agent</p>
+        <p class="sg-why">AI is moving incredibly fast, and every security leader is feeling the pressure to keep up. AI platforms like Claude, Codex…</p>
+      </a>
+      <a class="sg-card sg-green" href="https://thehackernews.com/2026/08/thermo-fisher-patches-flaw-that-could.html" target="_blank" rel="noopener nofollow">
+        <span class="sg-dot"></span>
+        <h4>Thermo Fisher Patches Flaw That Could Make DNA File Tampering Nearly Undetectable</h4>
+        <p class="sg-meta">The Hacker News · CVE</p>
+        <p class="sg-why">Thermo Fisher Scientific has patched a flaw in select Applied Biosystems human identification software that could allow data…</p>
+      </a>
       </div>
     </div>
-    <p style="margin-top:26px">
-      <a href="/cs/#contact" class="btn-primary">Zeptat se na řez na míru</a>
-    </p>
   </div>
 </section>
 
 <footer>
   <div class="container">
-    <div>
-      <span class="hot">HYDRA</span> · Zpravodajský produkt od <a href="https://www.tia-framework.com">TIA</a>
-    </div>
-    <div>
-      Prague · CZ/EU · Reg. No. 24974803<br>
-      © 2026 · Jen veřejné zdroje · Pasivní sběr · Na téhle stránce nikdy žádná klientská data
-    </div>
+    <div><span class="hot">HYDRA</span> · Zpravodajský produkt od <a href="https://www.tia-framework.com">TIA</a></div>
+    <div>Prague · CZ/EU · Reg. No. 24974803<br>© 2026 · Jen veřejné zdroje · Pasivní sběr · Na téhle stránce nikdy žádná klientská data</div>
   </div>
 </footer>
 

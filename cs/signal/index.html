@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Signal · Archiv — HYDRA</title>
+<meta name="description" content="Denní řez toho, co je v kyberbezpečnosti podstatné, z veřejných zdrojů. Zdarma — bez účtu, bez e-mailu, bez registrace.">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Cyber Signal · Archiv — HYDRA">
+<meta property="og:description" content="Denní řez toho, co je v kyberbezpečnosti podstatné, z veřejných zdrojů. Zdarma — bez účtu, bez e-mailu, bez registrace.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hydra.tia-framework.com/cs/signal/">
+<meta property="og:image" content="https://hydra.tia-framework.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://hydra.tia-framework.com/cs/signal/">
+<link rel="stylesheet" href="/style.css">
+<style>
+  /* Cockpit for the daily cut. Scoped to #cut so it cannot reach the rest of the
+     site. Dense on purpose: the day should be legible without scrolling. */
+  #cut { padding: 24px 0 30px; }
+  .sg-top { display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+            border-bottom:1px solid var(--border); padding-bottom:11px; margin-bottom:18px; }
+  .sg-top h2 { margin:0; font-size:1.15rem; letter-spacing:.07em; }
+  .sg-n { font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--text-dim); }
+  .sg-days { display:flex; align-items:center; gap:14px; font-family:'JetBrains Mono',monospace;
+             font-size:.78rem; }
+  .sg-days a { color:var(--text-dim); text-decoration:none; }
+  .sg-days a:hover { color:var(--ember); }
+  .sg-days b { color:var(--gold); font-weight:400; }
+  .sg-days .sg-arch { letter-spacing:.12em; font-size:.68rem; color:var(--text-muted); }
+  .sg-cad { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:.7rem;
+            letter-spacing:.14em; color:var(--text-muted); }
+
+  .sg-wrap { display:grid; grid-template-columns:206px 1fr; gap:22px; align-items:start; }
+  .sg-rail h5 { font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.18em;
+                color:var(--text-muted); margin:0 0 7px; font-weight:600; }
+  .sg-rail section { margin-bottom:17px; padding:0; border:0; }
+  .sg-split { display:flex; height:8px; border-radius:2px; overflow:hidden; background:var(--surface); }
+  .sg-split i { display:block; height:100%; }
+  .sg-red { background:var(--hydra); } .sg-yellow { background:var(--gold); }
+  .sg-green { background:var(--steel); }
+  .sg-legend { display:flex; gap:12px; margin-top:7px; font-family:'JetBrains Mono',monospace;
+               font-size:.76rem; color:var(--text-dim); }
+  .sg-lg b { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; }
+  .sg-row { display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace;
+            font-size:.7rem; color:var(--text-dim); line-height:1.85; }
+  .sg-k { flex:0 0 84px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sg-bar { flex:1; height:5px; background:var(--surface); border-radius:2px; overflow:hidden; }
+  .sg-bar i { display:block; height:100%; background:var(--ember); opacity:.5; }
+  .sg-v { flex:0 0 14px; text-align:right; color:var(--text-muted); }
+  .sg-note { font-size:.68rem; line-height:1.5; color:var(--text-muted); margin-top:13px; }
+
+  .sg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .sg-card { position:relative; display:block; text-decoration:none; color:inherit;
+             background:var(--surface); border:1px solid var(--border); border-radius:7px;
+             padding:11px 12px 11px 16px; transition:border-color .15s, transform .15s; }
+  .sg-card:hover { border-color:var(--border-hot); transform:translateY(-1px); }
+  .sg-dot { position:absolute; left:0; top:10px; bottom:10px; width:3px; border-radius:0 2px 2px 0; }
+  .sg-card.sg-red .sg-dot { background:var(--hydra); }
+  .sg-card.sg-yellow .sg-dot { background:var(--gold); }
+  .sg-card.sg-green .sg-dot { background:var(--steel); }
+  .sg-card h4 { margin:0 0 5px; font-size:.83rem; line-height:1.3; font-weight:600; }
+  .sg-meta { font-family:'JetBrains Mono',monospace; font-size:.64rem; color:var(--text-muted);
+             margin:0 0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sg-why { font-size:.73rem; line-height:1.44; color:var(--text-dim); margin:0; }
+
+  .sg-idx { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; }
+  .sg-idx a { display:block; text-decoration:none; color:inherit; background:var(--surface);
+              border:1px solid var(--border); border-radius:7px; padding:13px 15px; }
+  .sg-idx a:hover { border-color:var(--border-hot); }
+  .sg-idx .d { font-family:'JetBrains Mono',monospace; font-size:.9rem; color:var(--gold); }
+  .sg-idx .c { font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--text-muted);
+               margin-top:5px; }
+
+  @media (max-width:1100px) { .sg-grid { grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:860px)  { .sg-wrap { grid-template-columns:1fr; }
+                              .sg-grid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px)  { .sg-grid { grid-template-columns:1fr; }
+                              .sg-cad { display:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/cs/" class="nav-logo"><svg class="nav-logo-svg" viewBox="0 0 64 64" role="img" aria-label="HYDRA logo"><defs><linearGradient id="hbar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c41e1e"/><stop offset="1" stop-color="#ff6b35"/></linearGradient><linearGradient id="hdg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e22a2a"/><stop offset="1" stop-color="#a81818"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="14" fill="#0c0c0e" stroke="rgba(255,255,255,.06)"/><rect x="10" y="7" width="44" height="5" rx="2.5" fill="url(#hbar)"/><g class="dia"><polygon points="32,20 47,39 32,58 17,39" fill="url(#hdg)"/><polygon points="32,29 40,39 32,49 24,39" fill="#6e0f0f"/></g></svg>HYDRA</a>
+    <div class="nav-links">
+      <a href="/cs/#tiers">TIERY</a>
+      <a href="/cs/#shield">SHIELD</a>
+      <a href="/cs/#codesec">TALOS</a>
+      <a href="/cs/#method">METODIKA</a>
+      <a href="/resources.html">ZDROJE</a>
+      <a href="/cs/#contact" class="nav-cta">UKÁZKA</a>
+      <span class="lang-switch">
+        <a href="/signal.html">EN</a>
+        <span class="sep">/</span>
+        <a href="/cs/signal.html" class="active" aria-current="true" hreflang="cs">CZ</a>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="main" style="min-height:auto;padding:74px 0 22px">
+  <div class="container">
+    <div class="hero-mark"><span class="gl" data-t="TIA · HYDRA">TIA · HYDRA</span></div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:10px">Cyber&nbsp;Signal</h1>
+    <p class="hero-sub" style="max-width:62ch">Denní řez z veřejných zdrojů. <strong>Neodebíráš to. Ono to prostě vychází.</strong><br>Bez účtu. Bez e-mailu. Bez sledování.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-mark glt">ARCHIV</div>
+    <h2>Předchozí řezy</h2>
+    <p class="section-lead">Každý den má vlastní stránku. Nic se nepřepisuje.</p>
+    <div class="sg-idx">
+      <a href="/cs/signal/2026-08-04.html"><div class="d">4. srpna 2026</div><div class="c">12 položek · 2 vysoká pozornost</div></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div><span class="hot">HYDRA</span> · Zpravodajský produkt od <a href="https://www.tia-framework.com">TIA</a></div>
+    <div>Prague · CZ/EU · Reg. No. 24974803<br>© 2026 · Jen veřejné zdroje · Pasivní sběr · Na téhle stránce nikdy žádná klientská data</div>
+  </div>
+</footer>
+
+<script src="/consent.js" defer></script>
+</body>
+</html>
