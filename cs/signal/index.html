@@ -67,6 +67,29 @@
              margin:0 0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .sg-why { font-size:.73rem; line-height:1.44; color:var(--text-dim); margin:0; }
 
+  /* seven-day activity strip */
+  .sg-band { margin:0 0 18px; }
+  .sd-panel { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+              padding:13px 16px 11px; }
+  .sd-head { display:flex; align-items:baseline; gap:12px; margin-bottom:11px; }
+  .sd-head h5 { font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.18em;
+                color:var(--text-muted); margin:0; font-weight:600; }
+  .sd-sub { font-size:.68rem; color:var(--text-muted); }
+  .sd-next { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:.7rem;
+             color:var(--gold); }
+  .sd-strip { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; align-items:end; }
+  .sd-col { display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .sd-bars { display:flex; flex-direction:column-reverse; justify-content:flex-start;
+             width:100%; height:44px; border-radius:3px; overflow:hidden;
+             background:rgba(255,255,255,.03); }
+  .sd-bars i { display:block; width:100%; }
+  .sd-num { font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--text-dim); }
+  .sd-dow { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--text-muted);
+            letter-spacing:.08em; }
+  .sd-col.sd-now .sd-num { color:var(--gold); }
+  .sd-col.sd-none .sd-bars { background:rgba(255,255,255,.015); }
+  @media (max-width:560px) { .sd-sub { display:none; } }
+
   .sg-idx { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; }
   .sg-idx a { display:block; text-decoration:none; color:inherit; background:var(--surface);
               border:1px solid var(--border); border-radius:7px; padding:13px 15px; }
@@ -129,6 +152,14 @@
   </div>
 </footer>
 
-<script src="/consent.js" defer></script>
+<script>
+// Next cut at 06:00 UTC. Rendered client-side so a cached page never shows a
+// stale countdown — the one number on this page that must not rot.
+(function(){var e=document.querySelector('.sd-next');if(!e)return;
+function t(){var n=new Date(),x=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),6,0,0));
+if(x<=n)x=new Date(x.getTime()+864e5);var s=Math.floor((x-n)/1e3),h=Math.floor(s/3600),m=Math.floor(s%3600/60);
+e.textContent=e.dataset.next+' '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');}
+t();setInterval(t,3e4);})();
+</script><script src="/consent.js" defer></script>
 </body>
 </html>
