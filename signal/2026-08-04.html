@@ -68,7 +68,6 @@
   .sg-why { font-size:.73rem; line-height:1.44; color:var(--text-dim); margin:0; }
 
   /* seven-day activity strip */
-  .sg-band { margin:0 0 18px; }
   .sd-panel { background:var(--surface); border:1px solid var(--border); border-radius:8px;
               padding:13px 16px 11px; }
   .sd-head { display:flex; align-items:baseline; gap:12px; margin-bottom:11px; }
@@ -89,6 +88,21 @@
   .sd-col.sd-now .sd-num { color:var(--gold); }
   .sd-col.sd-none .sd-bars { background:rgba(255,255,255,.015); }
   @media (max-width:560px) { .sd-sub { display:none; } }
+
+  /* IN THE WILD — a count, never a grade */
+  .sg-band { margin:0 0 18px; display:grid; grid-template-columns:1fr 230px; gap:12px; }
+  .iw-panel { background:var(--surface); border:1px solid var(--border-hot);
+              border-radius:8px; padding:13px 16px; display:flex;
+              flex-direction:column; justify-content:center; }
+  .iw-panel.iw-calm { border-color:var(--border); }
+  .iw-panel h5 { font-family:'JetBrains Mono',monospace; font-size:.66rem;
+                 letter-spacing:.18em; color:var(--text-muted); margin:0 0 6px; font-weight:600; }
+  .iw-n { font-size:2.15rem; font-weight:800; line-height:1; letter-spacing:-.02em;
+          color:var(--hydra); }
+  .iw-n span { font-size:1rem; font-weight:400; color:var(--text-muted); margin-left:6px; }
+  .iw-n.iw-zero { color:var(--steel); }
+  .iw-t { font-size:.7rem; line-height:1.45; color:var(--text-dim); margin:7px 0 0; }
+  @media (max-width:860px) { .sg-band { grid-template-columns:1fr; } }
 
   .sg-idx { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; }
   .sg-idx a { display:block; text-decoration:none; color:inherit; background:var(--surface);
@@ -159,6 +173,10 @@
           <div class="sd-col"><span class="sd-bars"><i class="sg-yellow" style="height:8.3%"></i></span><span class="sd-num">1</span><span class="sd-dow">Mon</span></div>
           <div class="sd-col sd-now"><span class="sd-bars"><i class="sg-green" style="height:25.0%"></i><i class="sg-yellow" style="height:58.3%"></i><i class="sg-red" style="height:16.7%"></i></span><span class="sd-num">12</span><span class="sd-dow">Tue</span></div>
         </div>
+      </div>
+      <div class="iw-panel">
+        <h5>IN THE WILD</h5>
+        <div class="iw-n">4<span>/ 12</span></div><p class="iw-t">items report exploitation — not proof of concept</p>
       </div>
     </div>
 
