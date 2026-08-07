@@ -117,6 +117,33 @@
                               .sg-grid { grid-template-columns:repeat(2,1fr); } }
   @media (max-width:560px)  { .sg-grid { grid-template-columns:1fr; }
                               .sg-cad { display:none; } }
+
+  /* 🧬 D143 — trychtýř. Ta čísla jsou tvrzení, ne ozdoba, takže dostanou váhu
+     displeje a ne popisku. Klikatelné stupně, ne hover: tohle se čte i na mobilu. */
+  .sf-panel { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+              padding:13px 16px 12px; margin-top:14px; }
+  .sf-rail { display:flex; align-items:center; gap:4px; flex-wrap:wrap; margin:2px 0 12px; }
+  .sf-rail s { color:var(--text-muted); text-decoration:none; opacity:.5; padding:0 5px; }
+  .sf-step { background:none; border:1px solid transparent; border-radius:6px; cursor:pointer;
+             padding:5px 11px 4px; text-align:left; font:inherit; color:inherit;
+             display:flex; flex-direction:column; gap:1px; transition:all .15s; }
+  .sf-step b { font-family:'JetBrains Mono',monospace; font-size:1.32rem; font-weight:400;
+               color:var(--text-dim); line-height:1.1; letter-spacing:-.01em; }
+  .sf-step i { font-family:'JetBrains Mono',monospace; font-size:.62rem; font-style:normal;
+               letter-spacing:.13em; text-transform:uppercase; color:var(--text-muted); }
+  .sf-step:hover { border-color:var(--border); }
+  .sf-step.sf-on { border-color:var(--ember); background:rgba(0,0,0,.16); }
+  .sf-step.sf-on b { color:var(--ember); }
+  .sf-step.sf-on i { color:var(--text-dim); }
+  /* poslední stupeň = to, co vyšlo. Zlatě, protože to je jediné, co čtenář vidí jinde. */
+  .sf-step:last-of-type b { color:var(--gold); }
+  .sf-why { margin:0 0 8px; font-size:.86rem; color:var(--text-dim); min-height:1.2em; }
+  .sf-meta { margin:0 0 6px; font-family:'JetBrains Mono',monospace; font-size:.7rem;
+             color:var(--text-muted); letter-spacing:.03em; }
+  .sf-meta code { color:var(--text-dim); font-size:.95em; }
+  .sf-lim { margin:0; font-size:.74rem; color:var(--text-muted); opacity:.85; font-style:italic; }
+  @media (max-width:560px) { .sf-rail s { display:none; }
+                             .sf-step b { font-size:1.1rem; } }
 </style>
 </head>
 <body>
@@ -178,6 +205,21 @@ function t(){var n=new Date(),x=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMon
 if(x<=n)x=new Date(x.getTime()+864e5);var s=Math.floor((x-n)/1e3),h=Math.floor(s/3600),m=Math.floor(s%3600/60);
 e.textContent=e.dataset.next+' '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');}
 t();setInterval(t,3e4);})();
-</script><script src="/consent.js" defer></script>
+// 🧬 Trychtýř: kliknutí na stupeň vymění větu pod ním. Výchozí text je vyrenderovaný
+// na serveru, takže bez JS stránka pořád nese všechna čísla i první vysvětlení —
+// interakce věc ZPŘESŇUJE, nezpřístupňuje. Stránka o provenienci nesmí potřebovat skript.
+(function(){var r=document.querySelector('.sf-rail'),w=document.querySelector('.sf-why');
+if(!r||!w)return;r.addEventListener('click',function(ev){var b=ev.target.closest('.sf-step');
+if(!b)return;r.querySelectorAll('.sf-step').forEach(function(x){x.classList.remove('sf-on');});
+b.classList.add('sf-on');w.textContent=b.dataset.why;});})();
+</script><!-- 🪞 D143 — ŽÁDNÝ consent.js a žádné měření, ZÁMĚRNĚ.
+     Tahle stránka v patičce tvrdí „Bez účtu. Bez e-mailu. Bez sledování." a zároveň
+     tu do dneška visela lišta „Měříme návštěvnost a vyhodnocujeme reklamu". Dvě
+     neslučitelná tvrzení na jedné stránce — a to u produktu, jehož celá teze je
+     poctivé hlášení o sobě. Architect rozhodl (D143): Signal zůstává NESLEDOVANÝ.
+     Důsledek, který se dá ověřit: kromě odkazů na zdrojové články, které čtenář
+     sám klikne, tahle stránka nenačte JEDINÝ cizí zdroj. Žádné fonty, žádné CDN,
+     žádný skript. „Bez sledování" tím přestává být slib a stává se z toho něco,
+     co si kdokoli otevře v devtools. Než sem cokoli přidáš, oprav nejdřív patičku. -->
 </body>
 </html>
