@@ -21,7 +21,12 @@
      mu podstrčili vlastní formulaci jako by byla zdroj. */
   .sg-en { font-size:.62em; letter-spacing:.08em; padding:1px 4px; border:1px solid var(--border);
            border-radius:3px; color:var(--text-muted); vertical-align:middle; margin-left:6px; }
-  .sg-src-note { font-size:.82rem; color:var(--text-muted); margin:0 0 12px; line-height:1.5; }
+  .sg-src-warn { border-left:2px solid var(--red, #c33); padding-left:10px; }
+  /* 🇨🇿 Sedí v panelu trychtýře pod řádkem o mezích digestu — obojí říká
+     čtenáři totéž: co přesně dostáváš a co ne. Oddělená linkou, ne odsazením,
+     aby to nevypadalo jako další odstavec téže myšlenky. */
+  .sg-src-note { font-size:.8rem; color:var(--text-muted); line-height:1.55;
+                 margin:9px 0 0; padding-top:9px; border-top:1px solid var(--border); }
   /* Cockpit for the daily cut. Scoped to #cut so it cannot reach the rest of the
      site. Dense on purpose: the day should be legible without scrolling. */
   #cut { padding: 14px 0 30px; }

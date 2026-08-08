@@ -21,7 +21,12 @@
      mu podstrčili vlastní formulaci jako by byla zdroj. */
   .sg-en { font-size:.62em; letter-spacing:.08em; padding:1px 4px; border:1px solid var(--border);
            border-radius:3px; color:var(--text-muted); vertical-align:middle; margin-left:6px; }
-  .sg-src-note { font-size:.82rem; color:var(--text-muted); margin:0 0 12px; line-height:1.5; }
+  .sg-src-warn { border-left:2px solid var(--red, #c33); padding-left:10px; }
+  /* 🇨🇿 Sedí v panelu trychtýře pod řádkem o mezích digestu — obojí říká
+     čtenáři totéž: co přesně dostáváš a co ne. Oddělená linkou, ne odsazením,
+     aby to nevypadalo jako další odstavec téže myšlenky. */
+  .sg-src-note { font-size:.8rem; color:var(--text-muted); line-height:1.55;
+                 margin:9px 0 0; padding-top:9px; border-top:1px solid var(--border); }
   /* Cockpit for the daily cut. Scoped to #cut so it cannot reach the rest of the
      site. Dense on purpose: the day should be legible without scrolling. */
   #cut { padding: 14px 0 30px; }
@@ -222,6 +227,7 @@
         <p class="sf-why" data-default="položek prošlo čtečkou za posledních 30 hodin">položek prošlo čtečkou za posledních 30 hodin</p>
         <p class="sf-meta">11 zahozeno pravidlem · 10 zadrženo denním stropem · konfigurace <code>ADF1FE82</code> — ten den se s ní nehnulo</p>
         <p class="sf-lim">Digest nám předává počty, ne zahozené položky — ukazujeme tedy kolik a proč, ne co.</p>
+      <p class="sg-src-note">Český text je <b>shrnutí</b>. Zdrojem je článek, na který položka odkazuje — většinou anglicky. Položka označená <span class="sg-en">EN</span> neprošla kontrolou věrnosti překladu a necháváme ji v originále.</p>
       </div>
 
 
@@ -252,7 +258,6 @@
         <p class="sg-note">Třídy pozornosti = kolik pozornosti jsme položce věnovali. Nejsou to verdikty o závažnosti.</p>
       </div>
 
-      <p class="sg-src-note">Český text je <b>shrnutí</b>. Zdrojem je článek, na který položka odkazuje — většinou anglicky. Položka označená <span class="sg-en">EN</span> neprošla kontrolou věrnosti překladu a necháváme ji v originále.</p>
       <div class="sg-grid">
       <a class="sg-card sg-red" href="https://thehackernews.com/2026/08/new-wordpress-pre-auth-xss-could-lead.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
