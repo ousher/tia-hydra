@@ -16,6 +16,12 @@
 <link rel="canonical" href="https://hydra.tia-framework.com/cs/signal/2026-08-08.html">
 <link rel="stylesheet" href="/style.css">
 <style>
+  /* 🇨🇿 D144 — odznak u položky, která neprošla věrnostní branou.
+     Není to ozdoba: říká čtenáři, že tady překlad ZADRŽUJEME, místo abychom
+     mu podstrčili vlastní formulaci jako by byla zdroj. */
+  .sg-en { font-size:.62em; letter-spacing:.08em; padding:1px 4px; border:1px solid var(--border);
+           border-radius:3px; color:var(--text-muted); vertical-align:middle; margin-left:6px; }
+  .sg-src-note { font-size:.82rem; color:var(--text-muted); margin:0 0 12px; line-height:1.5; }
   /* Cockpit for the daily cut. Scoped to #cut so it cannot reach the rest of the
      site. Dense on purpose: the day should be legible without scrolling. */
   #cut { padding: 14px 0 30px; }
@@ -246,78 +252,79 @@
         <p class="sg-note">Třídy pozornosti = kolik pozornosti jsme položce věnovali. Nejsou to verdikty o závažnosti.</p>
       </div>
 
+      <p class="sg-src-note">Český text je <b>shrnutí</b>. Zdrojem je článek, na který položka odkazuje — většinou anglicky. Položka označená <span class="sg-en">EN</span> neprošla kontrolou věrnosti překladu a necháváme ji v originále.</p>
       <div class="sg-grid">
       <a class="sg-card sg-red" href="https://thehackernews.com/2026/08/new-wordpress-pre-auth-xss-could-lead.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🤖</span>New WordPress Pre-Auth XSS Could Lead to PHP Code Execution - Patch ASAP</h4>
+        <h4><span class="sg-gl">🤖</span>WordPress: pre-auth XSS na přihlašovací obrazovce může vést ke spuštění PHP kódu</h4>
         <p class="sg-meta">The Hacker News · AI/agent · CVE</p>
-        <p class="sg-why">WordPress has fixed a pre-authentication reflected cross-site scripting (XSS) flaw in its login screen that affects every…</p>
+        <p class="sg-why">WordPress opravil pre-autentizační odraženou XSS chybu v přihlašovací obrazovce, která se týká všech verzí systému.</p>
       </a>
       <a class="sg-card sg-red" href="https://thehackernews.com/2026/08/nearly-800-malicious-npm-packages.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">📦</span>Nearly 800 Malicious npm Packages Deliver Cross-Platform RAT and Infostealer</h4>
+        <h4><span class="sg-gl">📦</span>npm: téměř 800 škodlivých balíčků doručuje multiplatformní RAT a infostealer</h4>
         <p class="sg-meta">The Hacker News · AI/agent · crime</p>
-        <p class="sg-why">A cluster of nearly 800 malicious packages has been published to the npm registry as part of a new campaign designed to…</p>
+        <p class="sg-why">Do registru npm bylo v rámci nové kampaně vydáno téměř 800 škodlivých balíčků, které mají doručit multiplatformní malware na…</p>
       </a>
       <a class="sg-card sg-red" href="https://thehackernews.com/2026/08/claude-code-and-gemini-cli-flaws-let.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">📦</span>Claude Code and Gemini CLI Flaws Let a GitHub Issue Reach CI Workflow Secrets</h4>
+        <h4><span class="sg-gl">📦</span>Claude Code a Gemini CLI: issue na GitHubu od účtu bez práv dosáhlo na tajemství v CI</h4>
         <p class="sg-meta">The Hacker News · AI/agent · crime</p>
-        <p class="sg-why">A GitHub issue opened by an account with no repository privileges was enough to execute code on the CI runners behind…</p>
+        <p class="sg-why">Issue na GitHubu založené účtem bez práv k repozitáři stačilo ke spuštění kódu na CI runnerech za vlastními repozitáři…</p>
       </a>
       <a class="sg-card sg-red" href="https://www.cisa.gov/news-events/ics-advisories/icsa-26-219-01" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🩹</span>CPDLC over ATN-B1 Vulnerabilities</h4>
+        <h4><span class="sg-gl">🩹</span>Letecký datalink CPDLC nad ATN-B1: nešifrované a neautentizované spoje</h4>
         <p class="sg-meta">CISA Advisories · CVE · critical-infra/OT</p>
-        <p class="sg-why">View CSAF Summary ATN-B1 CPDLC relies on legacy clear text unauthenticated radio frequency links. Research demonstrates that…</p>
+        <p class="sg-why">ATN-B1 CPDLC stojí na starých nešifrovaných a neautentizovaných rádiových spojích. Výzkum ukazuje, že tyto vlastnosti…</p>
       </a>
       <a class="sg-card sg-yellow" href="https://www.cisa.gov/news-events/alerts/2026/08/07/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🎯</span>CISA Adds One Known Exploited Vulnerability to Catalog</h4>
+        <h4><span class="sg-gl">🎯</span>CISA přidala do katalogu KEV jednu aktivně zneužívanou zranitelnost</h4>
         <p class="sg-meta">CISA Advisories · exploited · CVE</p>
-        <p class="sg-why">CISA has added one new vulnerability to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active…</p>
+        <p class="sg-why">CISA přidala do katalogu známých zneužívaných zranitelností (KEV) jednu novou položku na základě důkazů o aktivním zneužívání.</p>
       </a>
       <a class="sg-card sg-yellow" href="https://www.securityweek.com/in-other-news-ai-slop-limits-apple-bounties-north-carolina-port-attacks-hackers-target-wall-street/" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">📦</span>In Other News: AI Slop Limits Apple Bounties, North Carolina Port Attacks, Hackers Target Wall Street</h4>
+        <h4><span class="sg-gl">📦</span>Souhrn: zákaz čínské techniky pro datacentra, útok na dodavatelský řetězec QuickFox VPN</h4>
         <p class="sg-meta">SecurityWeek · AI/agent · crime</p>
-        <p class="sg-why">Noteworthy stories that might have slipped under the radar: ban on Chinese data center tech, QuickFox VPN supply chain…</p>
+        <p class="sg-why">Zprávy, které mohly uniknout pozornosti: zákaz čínské technologie pro datová centra, útok na dodavatelský řetězec QuickFox…</p>
       </a>
       <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/08/ai-assisted-http-terminator-finds-novel.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🎯</span>AI-Assisted HTTP Terminator Finds Novel HTTP Desync Techniques and Apache Zero-Day</h4>
+        <h4><span class="sg-gl">🎯</span>PortSwigger: výzkumný systém s podporou AI našel nové techniky HTTP desync a zero-day v Apache</h4>
         <p class="sg-meta">The Hacker News · AI/agent · exploited</p>
-        <p class="sg-why">PortSwigger says HTTP Terminator, an artificial intelligence (AI)-assisted research system built by James Kettle, generated…</p>
+        <p class="sg-why">PortSwigger uvádí, že HTTP Terminator — výzkumný systém s podporou AI od Jamese Kettla — vygeneroval a prokázal nové…</p>
       </a>
       <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/08/unc6671-vishing-attacks-target-personal.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">☁️</span>UNC6671 Vishing Attacks Target Personal Phones to Steal SaaS Data</h4>
+        <h4><span class="sg-gl">☁️</span>UNC6671: vishing na soukromé telefony jako cesta k datům v SaaS</h4>
         <p class="sg-meta">The Hacker News · crime · cloud/AI-stack</p>
-        <p class="sg-why">A recent wave of cyber attacks targeting financial services, private equity, and professional services is attributed to a…</p>
+        <p class="sg-why">Nedávná vlna útoků na finanční služby, private equity a profesní služby je přisuzována vyděračské skupině označované jako…</p>
       </a>
       <a class="sg-card sg-yellow" href="https://www.bleepingcomputer.com/news/security/framework-tally-disclose-metabase-data-theft-attacks/" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🎯</span>Metabase SQLi zero-day exploited in customer data-theft attacks</h4>
+        <h4><span class="sg-gl">🎯</span>Metabase: zero-day SQL injection zneužita k průniku do zákaznických instancí</h4>
         <p class="sg-meta">BleepingComputer · exploited · crime</p>
-        <p class="sg-why">A critical Metabase SQL injection vulnerability was exploited in zero-day attacks to breach customer instances in data theft…</p>
+        <p class="sg-why">Kritická SQL injection zranitelnost v Metabase byla zneužita v zero-day útocích k průniku do zákaznických instancí; podle…</p>
       </a>
       <a class="sg-card sg-yellow" href="https://www.theguardian.com/technology/2026/aug/07/white-house-ai" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🤖</span>The White House’s plan to vet potentially dangerous AI is cloaked in secrecy</h4>
+        <h4><span class="sg-gl">🤖</span>Bílý dům dokončil rámec pro testování potenciálně nebezpečné AI za zavřenými dveřmi</h4>
         <p class="sg-meta">The Guardian Technology · AI/agent · msft/identity</p>
-        <p class="sg-why">A Trump administration framework on AI testing leaves a lack of transparency – and plenty of open questions After months of…</p>
+        <p class="sg-why">Rámec Trumpovy administrativy pro testování AI podle článku postrádá transparentnost a nechává řadu otevřených otázek.…</p>
       </a>
       <a class="sg-card sg-yellow" href="https://www.securityweek.com/microsoft-apple-release-fresh-security-updates/" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🪪</span>Microsoft, Apple Release Fresh Security Updates</h4>
+        <h4><span class="sg-gl">🪪</span>Microsoft a Apple vydaly bezpečnostní aktualizace</h4>
         <p class="sg-meta">SecurityWeek · msft/identity · auth-bypass</p>
-        <p class="sg-why">Microsoft fixed critical vulnerabilities across Azure, Entra, and SharePoint, while Apple patched a high-severity…</p>
+        <p class="sg-why">Microsoft opravil kritické zranitelnosti v Azure, Entra a SharePointu, Apple záplatoval obcházení autentizace s vysokou…</p>
       </a>
       <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/08/microsoft-365-aitm-phishing-hijacks.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🎣</span>Microsoft 365 AitM Phishing Hijacks Accounts to Collect Payroll and Finance Emails</h4>
+        <h4><span class="sg-gl">🎣</span>Microsoft 365: phishing typu adversary-in-the-middle přebírá účty kvůli mzdové a finanční poště</h4>
         <p class="sg-meta">The Hacker News · crime · msft/identity</p>
-        <p class="sg-why">Cybersecurity researchers have called attention to an active &quot;widespread email-driven phishing campaign&quot; that employs…</p>
+        <p class="sg-why">Výzkumníci upozornili na aktivní „rozsáhlou e-mailovou phishingovou kampaň&quot;, která technikami adversary-in-the-middle…</p>
       </a>
       </div>
     </div>
