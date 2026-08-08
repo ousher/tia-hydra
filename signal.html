@@ -21,6 +21,15 @@
      mu podstrčili vlastní formulaci jako by byla zdroj. */
   .sg-en { font-size:.62em; letter-spacing:.08em; padding:1px 4px; border:1px solid var(--border);
            border-radius:3px; color:var(--text-muted); vertical-align:middle; margin-left:6px; }
+  /* 📦 D144 ekosystémový pruh — sloupce nesou baseline, ne jen dnešek */
+  .eco { margin-top:14px; }
+  .eco-chart { display:flex; align-items:flex-end; gap:5px; height:50px; margin:12px 0 3px; }
+  .eco-b { flex:1; background:linear-gradient(180deg,var(--red,#c33),#7a1f1f); border-radius:2px 2px 0 0; }
+  .eco-part { opacity:.42; }
+  .eco-labs { display:flex; gap:5px; font-size:.62rem; color:var(--text-muted); margin-bottom:10px; }
+  .eco-labs span { flex:1; text-align:center; }
+  .eco-l { font-size:.84rem; line-height:1.55; margin:0 0 6px; }
+  .eco-l code { font-size:.92em; }
   .sg-src-warn { border-left:2px solid var(--red, #c33); padding-left:10px; }
   /* 🇨🇿 Sedí v panelu trychtýře pod řádkem o mezích digestu — obojí říká
      čtenáři totéž: co přesně dostáváš a co ne. Oddělená linkou, ne odsazením,
@@ -228,6 +237,16 @@
         <p class="sf-meta">11 dropped by rule · 10 held by the daily cap · config <code>ADF1FE82</code> — unchanged that day</p>
         <p class="sf-lim">The digest hands us counts, not the discarded items — so this shows how many and why, not which.</p>
       </div>
+
+    <div class="sf-panel eco">
+      <div class="sd-head"><h5>📦 NPM ECOSYSTEM</h5><span class="sd-sub">measured today from public APIs, not quoted</span></div>
+      <div class="eco-chart"><span class="eco-b" style="height:6px" title="2026-02: 250"></span><span class="eco-b" style="height:7px" title="2026-03: 605"></span><span class="eco-b" style="height:6px" title="2026-04: 278"></span><span class="eco-b" style="height:9px" title="2026-05: 842"></span><span class="eco-b" style="height:8px" title="2026-06: 731"></span><span class="eco-b" style="height:46px" title="2026-07: 4084"></span><span class="eco-b eco-part" style="height:15px" title="2026-08: 1307"></span></div>
+      <div class="eco-labs"><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span></div>
+      <p class="eco-l"><b>4,084</b> malware advisories in 2026-07 · median of other months <b>731</b></p>
+      <p class="eco-l"><b>8,097</b> of <b>8,097</b> rated <code>critical</code>. <b>0</b> of them carry a CVSS vector.</p>
+      <p class="eco-l">Dependency-tree amplification, window 2026-07 (frozen): median <b>1.5×</b>, <b>13%</b> of packages above 30×. Highest: <code>seroval</code> — 2 direct dependents, 1,859 projects in total (<b>930×</b>).</p>
+      <p class="sf-lim">One data source for dependencies, one frozen window, no cross-check. And advisories capture a fraction of malicious packages — this is the advisory denominator, not the malware denominator.</p>
+    </div>
 
 
     <div class="sg-wrap">

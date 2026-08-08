@@ -21,6 +21,15 @@
      mu podstrčili vlastní formulaci jako by byla zdroj. */
   .sg-en { font-size:.62em; letter-spacing:.08em; padding:1px 4px; border:1px solid var(--border);
            border-radius:3px; color:var(--text-muted); vertical-align:middle; margin-left:6px; }
+  /* 📦 D144 ekosystémový pruh — sloupce nesou baseline, ne jen dnešek */
+  .eco { margin-top:14px; }
+  .eco-chart { display:flex; align-items:flex-end; gap:5px; height:50px; margin:12px 0 3px; }
+  .eco-b { flex:1; background:linear-gradient(180deg,var(--red,#c33),#7a1f1f); border-radius:2px 2px 0 0; }
+  .eco-part { opacity:.42; }
+  .eco-labs { display:flex; gap:5px; font-size:.62rem; color:var(--text-muted); margin-bottom:10px; }
+  .eco-labs span { flex:1; text-align:center; }
+  .eco-l { font-size:.84rem; line-height:1.55; margin:0 0 6px; }
+  .eco-l code { font-size:.92em; }
   .sg-src-warn { border-left:2px solid var(--red, #c33); padding-left:10px; }
   /* 🇨🇿 Sedí v panelu trychtýře pod řádkem o mezích digestu — obojí říká
      čtenáři totéž: co přesně dostáváš a co ne. Oddělená linkou, ne odsazením,
@@ -229,6 +238,16 @@
         <p class="sf-lim">Digest nám předává počty, ne zahozené položky — ukazujeme tedy kolik a proč, ne co.</p>
       <p class="sg-src-note">Český text je <b>shrnutí</b>. Zdrojem je článek, na který položka odkazuje — většinou anglicky. Položka označená <span class="sg-en">EN</span> neprošla kontrolou věrnosti překladu a necháváme ji v originále.</p>
       </div>
+
+    <div class="sf-panel eco">
+      <div class="sd-head"><h5>📦 NPM EKOSYSTÉM</h5><span class="sd-sub">měřeno dnes z veřejných API, ne převzato</span></div>
+      <div class="eco-chart"><span class="eco-b" style="height:6px" title="2026-02: 250"></span><span class="eco-b" style="height:7px" title="2026-03: 605"></span><span class="eco-b" style="height:6px" title="2026-04: 278"></span><span class="eco-b" style="height:9px" title="2026-05: 842"></span><span class="eco-b" style="height:8px" title="2026-06: 731"></span><span class="eco-b" style="height:46px" title="2026-07: 4084"></span><span class="eco-b eco-part" style="height:15px" title="2026-08: 1307"></span></div>
+      <div class="eco-labs"><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span></div>
+      <p class="eco-l"><b>4 084</b> malware advisories v 2026-07 · medián ostatních měsíců <b>731</b></p>
+      <p class="eco-l"><b>8 097</b> z <b>8 097</b> má severity <code>critical</code>. <b>0</b> z nich nese CVSS vektor.</p>
+      <p class="eco-l">Zesílení stromem závislostí, okno 2026-07 (frozen): medián <b>1,5×</b>, <b>13 %</b> balíčků nad 30×. Nejvyšší: <code>seroval</code> — 2 přímí závislí, 1 859 projektů celkem (<b>930×</b>).</p>
+      <p class="sf-lim">Jeden zdroj dat pro závislosti, jedno zmrazené okno, bez křížového ověření. A advisories zachycují jen zlomek škodlivých balíčků — tohle je jmenovatel advisories, ne malwaru.</p>
+    </div>
 
 
     <div class="sg-wrap">
