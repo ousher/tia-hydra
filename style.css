@@ -802,3 +802,26 @@ body { counter-reset: sec; }
 .hero-term { z-index: 2; }
 .hero .container { z-index: 3; }
 @media (max-width: 720px) { .hero-graph { opacity: .28; } }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   D147 — LARGE SCREENS
+   Zjisteno merenim: v celem stylopisu byl JEDINY min-width dotaz.
+   Vsechno ostatni jen zuzuje, takze nad 920px se uz nikdy nic nestalo —
+   na 27" i na ultrawide se stranka kreslila stejne siroka jako na
+   notebooku a delka rostla do nekonecna.
+   🔴 VYHRADNE min-width + append na konec. Pod 1400px se NIC nemeni.
+   Prozove bloky maji vlastni max-width v ch, takze sirsi kontejner
+   neprodlouzi radek — roztahne se mrizky, ne veta.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (min-width: 1400px) {
+  .container { max-width: 1180px; }
+  section    { padding: 64px 0; }
+}
+@media (min-width: 1800px) {
+  .container { max-width: 1420px; }
+  section    { padding: 56px 0; }
+}
+@media (min-width: 2400px) {
+  .container { max-width: 1640px; }
+}
