@@ -164,6 +164,42 @@
   .sf-lim { margin:0; font-size:.74rem; color:var(--text-muted); opacity:.85; font-style:italic; }
   @media (max-width:560px) { .sf-rail s { display:none; }
                              .sf-step b { font-size:1.1rem; } }
+
+  /* 📅 D147 tydenni rubrika — nese OBLOUK, ne polozku. Zamerne bez cisel:
+     zadny styl pro skore, protoze zadne skore na strance neni. */
+  .wk { border-top:1px solid var(--line,#2a2a2a); }
+  .wk-h { font-size:clamp(1.25rem,2.4vw,1.7rem); margin:6px 0 10px; letter-spacing:-.01em; }
+  .wk-lead { max-width:70ch; }
+  .wk-sub { font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.14em;
+            text-transform:uppercase; color:var(--text-muted); margin:26px 0 11px; }
+  .wk-arc { list-style:none; padding:0; margin:0; border-left:1px solid var(--line,#2a2a2a); }
+  .wk-arc li { position:relative; display:flex; gap:14px; padding:9px 0 9px 18px; }
+  .wk-arc li::before { content:''; position:absolute; left:-4px; top:16px; width:7px; height:7px;
+                       border-radius:50%; background:var(--surface,#1a1a1a);
+                       border:1px solid var(--text-muted,#777); }
+  .wk-arc li:last-child::before { background:var(--ember,#c33); border-color:var(--ember,#c33); }
+  .wk-d { flex:0 0 62px; font-family:'JetBrains Mono',monospace; font-size:.7rem;
+          color:var(--text-muted); padding-top:2px; }
+  .wk-t { flex:1; font-size:.9rem; line-height:1.62; color:var(--text-dim); max-width:64ch; }
+  .wk-arc li:last-child .wk-t { color:var(--text,#eee); }
+  .wk-turn { margin-top:8px; }
+  .wk-turn p { max-width:70ch; font-size:.95rem; line-height:1.68; }
+  .wk-stat { display:flex; gap:20px; align-items:flex-start; margin:30px 0 4px;
+             padding:18px 20px; background:var(--surface,#151515);
+             border-left:2px solid var(--ember,#c33); border-radius:0 4px 4px 0; }
+  .wk-n { font-family:'JetBrains Mono',monospace; font-size:clamp(1.7rem,4vw,2.5rem);
+          line-height:1; color:var(--ember,#c33); flex:0 0 auto; }
+  .wk-sl { font-size:.85rem; line-height:1.55; }
+  .wk-sl span { display:block; margin-top:8px; font-size:.76rem; color:var(--text-muted);
+                line-height:1.6; max-width:62ch; }
+  .wk-lim p { max-width:70ch; font-size:.78rem; line-height:1.65; color:var(--text-muted); }
+  .wk-cta { margin-top:22px; font-family:'JetBrains Mono',monospace; font-size:.66rem;
+            letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+  @media (max-width:620px){
+    .wk-arc li { flex-direction:column; gap:3px; }
+    .wk-d { flex:none; }
+    .wk-stat { flex-direction:column; gap:10px; }
+  }
 </style>
 </head>
 <body>
