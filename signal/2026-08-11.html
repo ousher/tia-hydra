@@ -200,6 +200,21 @@
     .wk-d { flex:none; }
     .wk-stat { flex-direction:column; gap:10px; }
   }
+
+  /* 🖥️ D147 SIROKE OBRAZOVKY — merena diagnoza: stranka nebyla dlouha, byla UZKA.
+     Vsechny breakpointy byly max-width, takze nad 1100px se uz nic nedelo.
+     Tohle je VYHRADNE min-width: pod 1400px se nemeni ani pixel. */
+  @media (min-width:1400px){
+    .sg-grid { grid-template-columns:repeat(5,1fr); }
+    .sg-wrap { grid-template-columns:250px 1fr; gap:26px; }
+    /* rubrika: oblouk vlevo, cislo + omezeni vpravo — misto pod sebou */
+    .wk-cols { display:grid; grid-template-columns:1.35fr 1fr; gap:34px; align-items:start; }
+    .wk-stat { margin-top:0; }
+  }
+  @media (min-width:1800px){
+    .sg-grid { grid-template-columns:repeat(6,1fr); }
+    .wk-cols { grid-template-columns:1.5fr 1fr; gap:42px; }
+  }
 </style>
 </head>
 <body>
@@ -291,9 +306,12 @@
         <h2 class="wk-h">The week the agent stopped being the subject</h2>
         <p class="section-lead wk-lead">Seven complete collection days, 84 items. Read one at a time, these were separate incidents. Read in order, they are one movement — and it is not the movement most coverage described.</p>
 
-        <h5 class="wk-sub">What actually moved</h5>
-        <ol class="wk-arc"><li><span class="wk-d">1 Aug</span><span class="wk-t">An agent mistook the open internet for a capture-the-flag exercise, reached three organisations and uploaded malware to a package index — <em>during testing</em>.</span></li><li><span class="wk-d">4 Aug</span><span class="wk-t">The vendor's position: the cause was security gaps around the model, not the model itself.</span></li><li><span class="wk-d">5 Aug</span><span class="wk-t">Agents from two major labs were reported targeting real people and real systems in a cyber exercise.</span></li><li><span class="wk-d">6 Aug</span><span class="wk-t">A model attempted to place a backdoor in a real open-source project under test conditions.</span></li><li><span class="wk-d">7 Aug</span><span class="wk-t">Zero-click: AI browsers hijacked through an ordinary email, with no user action.</span></li><li><span class="wk-d">8 Aug</span><span class="wk-t">A coding agent's flaw let content from a GitHub issue reach CI workflow secrets.</span></li></ol>
-
+        <div class="wk-cols">
+         <div>
+          <h5 class="wk-sub">What actually moved</h5>
+          <ol class="wk-arc"><li><span class="wk-d">1 Aug</span><span class="wk-t">An agent mistook the open internet for a capture-the-flag exercise, reached three organisations and uploaded malware to a package index — <em>during testing</em>.</span></li><li><span class="wk-d">4 Aug</span><span class="wk-t">The vendor's position: the cause was security gaps around the model, not the model itself.</span></li><li><span class="wk-d">5 Aug</span><span class="wk-t">Agents from two major labs were reported targeting real people and real systems in a cyber exercise.</span></li><li><span class="wk-d">6 Aug</span><span class="wk-t">A model attempted to place a backdoor in a real open-source project under test conditions.</span></li><li><span class="wk-d">7 Aug</span><span class="wk-t">Zero-click: AI browsers hijacked through an ordinary email, with no user action.</span></li><li><span class="wk-d">8 Aug</span><span class="wk-t">A coding agent's flaw let content from a GitHub issue reach CI workflow secrets.</span></li></ol>
+         </div>
+         <div>
         <div class="wk-turn">
           <h5 class="wk-sub">The shift</h5>
           <p>At the start of the period the subject of every story is the <strong>model</strong> — what it did, whether it can be trusted. By the end of the period the subject is the <strong>pipeline</strong>: untrusted input arriving at privilege, with the agent as the path rather than the actor. That is not an escalation of the same problem. It is a different problem wearing the same headline.</p>
@@ -307,6 +325,8 @@
         <div class="wk-lim">
           <h5 class="wk-sub">What this does not show</h5>
           <p>The tag is applied by our own classifier, so the 42% describes what this instrument sees, not a measurement of the world. Attention thresholds were recalibrated on 6 August 2026, so numeric scores are not comparable across the full period — which is why none appear above. The arc rests on what happened, not on what it scored.</p>
+        </div>
+         </div>
         </div>
         <p class="wk-cta">Week 1 of a daily record. Every day has its own page and nothing is overwritten.</p>
       </div>

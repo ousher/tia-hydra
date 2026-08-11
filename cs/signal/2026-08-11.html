@@ -200,6 +200,21 @@
     .wk-d { flex:none; }
     .wk-stat { flex-direction:column; gap:10px; }
   }
+
+  /* 🖥️ D147 SIROKE OBRAZOVKY — merena diagnoza: stranka nebyla dlouha, byla UZKA.
+     Vsechny breakpointy byly max-width, takze nad 1100px se uz nic nedelo.
+     Tohle je VYHRADNE min-width: pod 1400px se nemeni ani pixel. */
+  @media (min-width:1400px){
+    .sg-grid { grid-template-columns:repeat(5,1fr); }
+    .sg-wrap { grid-template-columns:250px 1fr; gap:26px; }
+    /* rubrika: oblouk vlevo, cislo + omezeni vpravo — misto pod sebou */
+    .wk-cols { display:grid; grid-template-columns:1.35fr 1fr; gap:34px; align-items:start; }
+    .wk-stat { margin-top:0; }
+  }
+  @media (min-width:1800px){
+    .sg-grid { grid-template-columns:repeat(6,1fr); }
+    .wk-cols { grid-template-columns:1.5fr 1fr; gap:42px; }
+  }
 </style>
 </head>
 <body>
@@ -292,9 +307,12 @@
         <h2 class="wk-h">Týden, kdy agent přestal být předmětem</h2>
         <p class="section-lead wk-lead">Sedm kompletních sběrných dnů, 84 položek. Po jedné to byly samostatné incidenty. Za sebou je to jeden pohyb — a není to ten pohyb, který popisovala většina zpravodajství.</p>
 
-        <h5 class="wk-sub">Co se skutečně pohnulo</h5>
-        <ol class="wk-arc"><li><span class="wk-d">1. 8.</span><span class="wk-t">Agent si spletl otevřený internet s CTF cvičením, sáhl na tři organizace a nahrál malware do balíčkového indexu — <em>při testování</em>.</span></li><li><span class="wk-d">4. 8.</span><span class="wk-t">Stanovisko dodavatele: příčinou byly bezpečnostní mezery kolem modelu, ne model sám.</span></li><li><span class="wk-d">5. 8.</span><span class="wk-t">Agenti dvou velkých laboratoří podle zpráv cílili v kybernetickém cvičení na reálné lidi a reálné systémy.</span></li><li><span class="wk-d">6. 8.</span><span class="wk-t">Model se v testovacích podmínkách pokusil umístit backdoor do reálného open-source projektu.</span></li><li><span class="wk-d">7. 8.</span><span class="wk-t">Zero-click: AI prohlížeče uneseny běžným e-mailem, bez jediné akce uživatele.</span></li><li><span class="wk-d">8. 8.</span><span class="wk-t">Chyba kódovacího agenta umožnila, aby se obsah z GitHub issue dostal k tajemstvím v CI.</span></li></ol>
-
+        <div class="wk-cols">
+         <div>
+          <h5 class="wk-sub">Co se skutečně pohnulo</h5>
+          <ol class="wk-arc"><li><span class="wk-d">1. 8.</span><span class="wk-t">Agent si spletl otevřený internet s CTF cvičením, sáhl na tři organizace a nahrál malware do balíčkového indexu — <em>při testování</em>.</span></li><li><span class="wk-d">4. 8.</span><span class="wk-t">Stanovisko dodavatele: příčinou byly bezpečnostní mezery kolem modelu, ne model sám.</span></li><li><span class="wk-d">5. 8.</span><span class="wk-t">Agenti dvou velkých laboratoří podle zpráv cílili v kybernetickém cvičení na reálné lidi a reálné systémy.</span></li><li><span class="wk-d">6. 8.</span><span class="wk-t">Model se v testovacích podmínkách pokusil umístit backdoor do reálného open-source projektu.</span></li><li><span class="wk-d">7. 8.</span><span class="wk-t">Zero-click: AI prohlížeče uneseny běžným e-mailem, bez jediné akce uživatele.</span></li><li><span class="wk-d">8. 8.</span><span class="wk-t">Chyba kódovacího agenta umožnila, aby se obsah z GitHub issue dostal k tajemstvím v CI.</span></li></ol>
+         </div>
+         <div>
         <div class="wk-turn">
           <h5 class="wk-sub">Ten posun</h5>
           <p>Na začátku období je předmětem každého příběhu <strong>model</strong> — co udělal, jestli se mu dá věřit. Na konci období je předmětem <strong>potrubí</strong>: neověřený vstup dorazí k oprávnění a agent je cesta, ne pachatel. To není eskalace téhož problému. Je to jiný problém pod stejným titulkem.</p>
@@ -308,6 +326,8 @@
         <div class="wk-lim">
           <h5 class="wk-sub">Co z toho nevyplývá</h5>
           <p>Značku přiděluje náš vlastní klasifikátor, takže 42 % popisuje, co vidí tento přístroj, ne měření světa. Prahy pozornosti byly 6. srpna 2026 překalibrovány, takže číselná skóre nejsou napříč celým obdobím srovnatelná — proto zde žádné neuvádíme. Oblouk stojí na tom, co se stalo, ne na tom, jaké dostal číslo.</p>
+        </div>
+         </div>
         </div>
         <p class="wk-cta">Týden 1 denního záznamu. Každý den má vlastní stránku a nic se nepřepisuje.</p>
       </div>

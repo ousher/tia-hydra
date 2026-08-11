@@ -200,6 +200,21 @@
     .wk-d { flex:none; }
     .wk-stat { flex-direction:column; gap:10px; }
   }
+
+  /* 🖥️ D147 SIROKE OBRAZOVKY — merena diagnoza: stranka nebyla dlouha, byla UZKA.
+     Vsechny breakpointy byly max-width, takze nad 1100px se uz nic nedelo.
+     Tohle je VYHRADNE min-width: pod 1400px se nemeni ani pixel. */
+  @media (min-width:1400px){
+    .sg-grid { grid-template-columns:repeat(5,1fr); }
+    .sg-wrap { grid-template-columns:250px 1fr; gap:26px; }
+    /* rubrika: oblouk vlevo, cislo + omezeni vpravo — misto pod sebou */
+    .wk-cols { display:grid; grid-template-columns:1.35fr 1fr; gap:34px; align-items:start; }
+    .wk-stat { margin-top:0; }
+  }
+  @media (min-width:1800px){
+    .sg-grid { grid-template-columns:repeat(6,1fr); }
+    .wk-cols { grid-template-columns:1.5fr 1fr; gap:42px; }
+  }
 </style>
 </head>
 <body>
