@@ -291,13 +291,13 @@
       </div>
 
     <div class="sf-panel eco">
-      <div class="sd-head"><h5>📦 NPM EKOSYSTÉM</h5><span class="sd-sub">měřeno 2026-08-10 z veřejných API, ne převzato</span></div>
-      <div class="eco-chart"><span class="eco-b" style="height:6px" title="2026-02: 250"></span><span class="eco-b" style="height:7px" title="2026-03: 605"></span><span class="eco-b" style="height:6px" title="2026-04: 278"></span><span class="eco-b" style="height:9px" title="2026-05: 842"></span><span class="eco-b" style="height:8px" title="2026-06: 731"></span><span class="eco-b" style="height:46px" title="2026-07: 4084"></span><span class="eco-b eco-part" style="height:15px" title="2026-08: 1307"></span></div>
+      <div class="sd-head"><h5>📦 NPM EKOSYSTÉM</h5><span class="sd-sub">měřeno 2026-08-12 z veřejných API, ne převzato</span></div>
+      <div class="eco-chart"><span class="eco-b" style="height:6px" title="2026-02: 250"></span><span class="eco-b" style="height:7px" title="2026-03: 605"></span><span class="eco-b" style="height:6px" title="2026-04: 278"></span><span class="eco-b" style="height:9px" title="2026-05: 842"></span><span class="eco-b" style="height:8px" title="2026-06: 731"></span><span class="eco-b" style="height:46px" title="2026-07: 4084"></span><span class="eco-b eco-part" style="height:16px" title="2026-08: 1399"></span></div>
       <div class="eco-labs"><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span></div>
       <p class="eco-l">V červenci přibylo <b>4 084</b> hlášení o škodlivých balíčcích v npm. V ostatních měsících jich bývá kolem <b>731</b> — červenec je výkyv, ne trend.</p>
-      <p class="eco-l">Všech <b>8 097</b> hlášení za posledních sedm měsíců má <b>nejvyšší závažnost</b>. Ani jedno nemá spočítané CVSS skóre — u škodlivého balíčku není co skórovat, není to díra v kódu, je to záměr. <b>Kdo je řadí podle závažnosti, dostane 8 097 remíz.</b></p>
-      <p class="eco-l">A balíček může ležet hlouběji, než vypadá. Na <code>seroval</code> závisí přímo <b>2</b> projekty — přes strom závislostí je jich ale <b>1 859</b>. Většina balíčků takhle nenarůstá (medián 1,5×), ale <b>13 %</b> z nich se dosah znásobí třicetkrát a víc.</p>
-      <p class="sf-lim">Závislosti: měření <code>deps.dev v3alpha dependentCount</code>, JEDEN dodavatel, bez křížového ověření, okno 2026-07. A advisories zachycují jen zlomek škodlivých balíčků — tohle je jmenovatel advisories, ne malwaru.</p>
+      <p class="eco-l">Všech <b>8 189</b> hlášení za posledních sedm měsíců má <b>nejvyšší závažnost</b>. Ani jedno nemá spočítané CVSS skóre — u škodlivého balíčku není co skórovat, není to díra v kódu, je to záměr. <b>Kdo je řadí podle závažnosti, dostane 8 189 remíz.</b></p>
+      <p class="eco-l">Dosah se ale rozdává extrémně nerovně. Z <b>354</b> dohledaných balíčků nemá <b>67 %</b> ani jednoho závislého — jejich dosah je nula. U zbytku se násobí mediánově <b>1,95×</b>, a u <b>7 %</b> z nich třicetkrát a víc. Nejvyšší změřený případ: na <code>engine.io</code> závisí přímo <b>118</b>, přes strom závislostí <b>15 865</b>. <b>Průměrná závažnost tuhle nerovnost nevidí vůbec.</b></p>
+      <p class="sf-lim">Závislosti: měření <code>deps.dev v3alpha dependentCount</code>, JEDEN dodavatel, bez křížového ověření, okno 2026-07. Verze balíčku se vybírá pravidlem zmrazeným PŘED měřením a SLEPÝM vůči naměřené hodnotě — dřívější metoda brala maximum ze šesti verzí, tedy vybírala podle toho, co měla změřit, a nadhodnocovala ocas dvojnásobně. Zesílení není definované u balíčků bez závislých; ty jsou vedené zvlášť jako nulový dosah, ne jako chybějící údaj. A advisories zachycují jen zlomek škodlivých balíčků — tohle je jmenovatel advisories, ne malwaru.</p>
     </div>
 
 
