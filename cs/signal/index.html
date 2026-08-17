@@ -71,7 +71,18 @@
   .sg-v { flex:0 0 14px; text-align:right; color:var(--text-muted); }
   .sg-note { font-size:.68rem; line-height:1.5; color:var(--text-muted); margin-top:13px; }
 
-  .sg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  /* 🔴 D153. Bylo repeat(4,1fr) a mrizka PRETEKALA misto zalomeni: posledni
+     karta koncila na x~3200 pri okne 1400. Pricina nebyl pocet sloupcu, ale
+     ze `1fr` znamena `minmax(auto,1fr)` — spodni mez `auto` nedovoli stopu
+     zmensit pod min-content jejiho obsahu, takze jeden dlouhy nezlomitelny
+     retezec (odkaz, nazev bez mezer) rozfoukne sloupec a s nim celou radu.
+     `minmax(0,1fr)` tu spodni mez sundava; `min-width:0` dela totez uvnitr
+     karty. Trojice je Architektovo zadani (D153) — ctyri byly na dlouhe
+     nadpisy uzke. */
+  .sg-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+  .sg-grid > * { min-width:0; }
+  @media (max-width:1080px) { .sg-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:680px)  { .sg-grid { grid-template-columns:minmax(0,1fr); } }
   .sg-card { position:relative; display:block; text-decoration:none; color:inherit;
              background:var(--surface); border:1px solid var(--border); border-radius:7px;
              padding:11px 12px 11px 16px; transition:border-color .15s, transform .15s; }
@@ -132,10 +143,9 @@
   .sg-idx .c { font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--text-muted);
                margin-top:5px; }
 
-  @media (max-width:1100px) { .sg-grid { grid-template-columns:repeat(3,1fr); } }
   @media (max-width:860px)  { .sg-wrap { grid-template-columns:1fr; }
-                              .sg-grid { grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:560px)  { .sg-grid { grid-template-columns:1fr; }
+                              }
+  @media (max-width:560px)  {
                               .sg-cad { display:none; } }
 
   /* 🧬 D143 — trychtýř. Ta čísla jsou tvrzení, ne ozdoba, takže dostanou váhu
@@ -205,14 +215,17 @@
      Vsechny breakpointy byly max-width, takze nad 1100px se uz nic nedelo.
      Tohle je VYHRADNE min-width: pod 1400px se nemeni ani pixel. */
   @media (min-width:1400px){
-    .sg-grid { grid-template-columns:repeat(5,1fr); }
+    /* 🔴 D153: TADY STALO repeat(5,1fr) a nad 1800px repeat(6,1fr) — D147 fix
+       na "stranka je uzka". Architekt to ruci: pri peti a sesti sloupcich jsou
+       karty tak uzke, ze se dlouhe nadpisy lamou po dvou slovech a rada
+       vypada rozhozene. Trojka je strop. Sirsi obrazovku uz nevyplnujeme
+       vic sloupci, ale sirsi kartou — cist se ma nadpis, ne mrizka. */
     .sg-wrap { grid-template-columns:250px 1fr; gap:26px; }
     /* rubrika: oblouk vlevo, cislo + omezeni vpravo — misto pod sebou */
     .wk-cols { display:grid; grid-template-columns:1.35fr 1fr; gap:34px; align-items:start; }
     .wk-stat { margin-top:0; }
   }
   @media (min-width:1800px){
-    .sg-grid { grid-template-columns:repeat(6,1fr); }
     .wk-cols { grid-template-columns:1.5fr 1fr; gap:42px; }
   }
 </style>
