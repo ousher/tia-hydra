@@ -1,24 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  D155 · 2026-08-19 — přepsáno.
+  Předchozí verze stála na 31. 5. a chyběly v ní ČTYŘI živé, indexovatelné
+  stránky: /custodians/, /resources.html, /sample-report.html a
+  /threat-brief-the-gentlemen.html. Vydat stránku a nepřihlásit ji je totéž
+  jako ji nevydat — jen to vypadá hotově.
+  lastmod = skutečné datum posledního commitu daného souboru, ne odhad.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
   <url>
     <loc>https://hydra.tia-framework.com/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://hydra.tia-framework.com/"/>
     <xhtml:link rel="alternate" hreflang="cs" href="https://hydra.tia-framework.com/cs/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hydra.tia-framework.com/"/>
-    <lastmod>2026-05-31</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
   <url>
     <loc>https://hydra.tia-framework.com/cs/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://hydra.tia-framework.com/"/>
     <xhtml:link rel="alternate" hreflang="cs" href="https://hydra.tia-framework.com/cs/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hydra.tia-framework.com/"/>
-    <lastmod>2026-05-31</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url><loc>https://hydra.tia-framework.com/signal.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://hydra.tia-framework.com/cs/signal.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+
+  <!-- DVEŘE 4 · CUSTODIANS — jazyk se přepíná dotazem, ne cestou -->
+  <url>
+    <loc>https://hydra.tia-framework.com/custodians/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hydra.tia-framework.com/custodians/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://hydra.tia-framework.com/custodians/?lang=cs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hydra.tia-framework.com/custodians/"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://hydra.tia-framework.com/resources.html</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://hydra.tia-framework.com/sample-report.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://hydra.tia-framework.com/threat-brief-the-gentlemen.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://hydra.tia-framework.com/signal.html</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://hydra.tia-framework.com/cs/signal.html</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
 </urlset>
