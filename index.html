@@ -244,25 +244,27 @@ init();})();
         <div class="tier-price-eur">/ €700 · excl. VAT</div>
         <div class="tier-eta">⏱ 2–3 business days</div>
         <ul class="tier-bullets">
-          <li>Public infrastructure map (domains, subdomains, technologies) &mdash; read from certificate-transparency logs, public exposure registries (Shodan / Censys class) and breach corpora</li>
+          <li>Public infrastructure map (domains, subdomains, hosting) &mdash; read from certificate-transparency logs and public DNS</li>
+          <li>Mail-spoofing posture &mdash; SPF, DKIM, DMARC, MX, and whether the contact addresses you publish can receive at all</li>
+          <li>Subdomain-takeover candidates &mdash; names of yours still pointing at targets that no longer exist</li>
           <li>CVE matching against the technology profile</li>
-          <li>Credential-leak check</li>
-          <li>Risk score 0–10 with rationale &mdash; and what the sources could not see</li>
+          <li>Risk score 0–10 shown <em>with its arithmetic</em> &mdash; every point traced to a named finding</li>
           <li>Action checklist — top 5 findings</li>
           <li>PDF report (8–12 pages, CZ/EN)</li>
+          <li><strong>A named list of what the sources could not see.</strong> We hold no breach database and no Shodan / Censys subscription. Rather than imply coverage we do not have, the report names the gap &mdash; and for credential leaks points you to the free route that gives you more than we could: HIBP Domain Search, on your own domain, in your own account.</li>
         </ul>
       </div>
 
       <div class="tier">
         <div class="tier-mark">TIER 2</div>
         <div class="tier-name">Threat Assessment</div>
-        <div class="tier-tag">Sector threat landscape + dark web</div>
+        <div class="tier-tag">Sector threat landscape + extortion-site exposure</div>
         <div class="tier-price">from CZK 28,000</div>
         <div class="tier-price-eur">/ €1,100 · excl. VAT</div>
         <div class="tier-eta">⏱ 5–7 business days</div>
         <ul class="tier-bullets">
           <li>Everything in Tier 1</li>
-          <li>Dark web monitoring — mentions &amp; leaked credentials</li>
+          <li>Extortion-site and paste check — your name, domains and people against publicly readable ransomware leak sites and paste dumps. No paid breach feed; the report names which sources answered and which did not.</li>
           <li>Sector-specific threat landscape (active ransomware groups)</li>
           <li>NIS2 / DORA exposure indicators &mdash; <span class="mono">INDICATIVE</span>; a gap analysis needs access we deliberately do not have</li>
           <li>Leadership exposure check</li>

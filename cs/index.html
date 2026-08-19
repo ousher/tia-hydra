@@ -249,25 +249,27 @@ init();})();
         <div class="tier-price-eur">/ 700 EUR · bez DPH</div>
         <div class="tier-eta">⏱ 2–3 pracovní dny</div>
         <ul class="tier-bullets">
-          <li>Mapa veřejné infrastruktury (domény, subdomény, technologie) &mdash; čtená z certificate-transparency logů, veřejných registrů expozice (třída Shodan / Censys) a korpusů úniků</li>
+          <li>Mapa veřejné infrastruktury (domény, subdomény, hosting) &mdash; čtená z certificate-transparency logů a veřejného DNS</li>
+          <li>Odolnost proti podvržení pošty &mdash; SPF, DKIM, DMARC, MX, a jestli adresy, které zveřejňujete, vůbec umí přijmout zprávu</li>
+          <li>Kandidáti na převzetí subdomény &mdash; vaše jména, která pořád míří na cíle, co už neexistují</li>
           <li>CVE matchování podle technologického profilu</li>
-          <li>Kontrola úniků přihlašovacích údajů</li>
-          <li>Risk score 0–10 s odůvodněním &mdash; a co ty zdroje vidět nemohly</li>
+          <li>Risk score 0–10 <em>i s aritmetikou</em> &mdash; každý bod dohledatelný ke jmenovanému nálezu</li>
           <li>Akční checklist TOP 5 nálezů</li>
           <li>PDF report (8–12 stran, CZ/EN)</li>
+          <li><strong>Jmenovaný seznam toho, co zdroje vidět nemohly.</strong> Nemáme databázi úniků ani předplatné Shodan / Censys. Místo abychom naznačovali pokrytí, které nemáme, zpráva tu mezeru pojmenuje &mdash; a u úniků přihlašovacích údajů vás pošle na cestu zdarma, která vám dá víc než my: HIBP Domain Search, na vaší doméně, ve vašem účtu.</li>
         </ul>
       </div>
 
       <div class="tier">
         <div class="tier-mark">TIER 2</div>
         <div class="tier-name">Analýza hrozeb</div>
-        <div class="tier-tag">Sektorová mapa hrozeb + dark web</div>
+        <div class="tier-tag">Sektorová mapa hrozeb + expozice na leak webech</div>
         <div class="tier-price">od 28 000 Kč</div>
         <div class="tier-price-eur">/ 1 100 EUR · bez DPH</div>
         <div class="tier-eta">⏱ 5–7 pracovních dní</div>
         <ul class="tier-bullets">
           <li>Vše z Tier 1</li>
-          <li>Dark web monitoring — zmínky a leaked credentials</li>
+          <li>Kontrola vyděračských a paste stránek — vaše jméno, domény a lidé proti veřejně čitelným leak webům ransomwarových skupin a paste dumpům. Žádný placený leak feed; zpráva pojmenuje, které zdroje odpověděly a které ne.</li>
           <li>Sektorová mapa hrozeb (aktivní ransomware skupiny)</li>
           <li>Indicie expozice vůči NIS2 / DORA — <span class="mono">INDICATIVE</span>; gap analýza potřebuje přístup dovnitř, který záměrně nemáme</li>
           <li>Kontrola expozice vedení</li>
