@@ -72,7 +72,14 @@
   .card { display:flex; flex-direction:column; background:linear-gradient(160deg,#0e0b12,#0b0910); border:1px solid #1a1420; border-radius:10px; padding:26px; transition:border-color .15s, transform .15s; }
   .card:hover { border-color:#ff5a4d55; transform:translateY(-2px); }
   .card .ct-type { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#ff5a4d; margin-bottom:12px; }
-  .card .ct-icon { font-size:30px; margin-bottom:12px; }
+  .card .ct-icon { font-size:30px; margin-bottom:12px; line-height:0; }
+  /* D155: emoji vyměněny za obrázky. Soubory jsou 192px (4x) a váží
+     kolem 7 kB — originály měly 1024px a 670 kB dohromady, tedy 400x
+     víc pixelů, než se kdy zobrazí. Ořez je podle TĚŽIŠTĚ JASU, ne
+     podle středu: satelit sedí v horní části snímku a středový
+     čtverec mu uřízl subjekt. */
+  .card .ct-icon img { width:48px; height:48px; object-fit:cover;
+                       border-radius:6px; display:block; }
   .card h2 { font-size:19px; color:#fff; font-weight:800; margin-bottom:8px; line-height:1.25; }
   .card p { font-size:12.5px; color:#a7adb5; line-height:1.65; margin-bottom:16px; flex:1; }
   .card .tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; }
@@ -112,7 +119,7 @@
 
     <a class="card" href="/sample-report.html">
       <div class="ct-type">Sample Report</div>
-      <div class="ct-icon">📄</div>
+      <div class="ct-icon"><img src="media/icon-report.jpg" width="48" height="48" alt="" loading="lazy"></div>
       <h2>Sample Engagement Report</h2>
       <p>A real, authorized HYDRA engagement — fully anonymized. 5-lane passive OSINT, 12 findings by severity, honest
         negatives, remediation roadmap. Exactly what lands in your inbox.</p>
@@ -122,7 +129,7 @@
 
     <a class="card" href="/threat-brief-the-gentlemen.html">
       <div class="ct-type">Threat Brief</div>
-      <div class="ct-icon">🐉</div>
+      <div class="ct-icon"><img src="media/icon-serpent.jpg" width="48" height="48" alt="" loading="lazy"></div>
       <h2>"The Gentlemen" Ransomware (RaaS)</h2>
       <p>The RaaS that scaled to second-most-prolific on record — then got breached, exposing ~78% of victims paid.
         Attribution, TTPs, Go-encryptor internals, IOCs, MITRE ATT&amp;CK and a defender playbook. Open-source, sourced.</p>
@@ -132,7 +139,7 @@
 
     <div class="card soon">
       <div class="ct-type">Coming next</div>
-      <div class="ct-icon">🛰️</div>
+      <div class="ct-icon"><img src="media/icon-satellite.jpg" width="48" height="48" alt="" loading="lazy"></div>
       <h2>More briefs &amp; samples</h2>
       <p>Additional threat actor profiles and tier-specific sample reports are in the pipeline. Want a brief on a specific
         actor or sector? Tell us.</p>
