@@ -95,6 +95,7 @@
     <a href="/" class="nav-logo"><svg class="nav-logo-svg" viewBox="0 0 64 64" role="img" aria-label="HYDRA logo"><defs><linearGradient id="hbar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c41e1e"/><stop offset="1" stop-color="#ff6b35"/></linearGradient><linearGradient id="hdg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e22a2a"/><stop offset="1" stop-color="#a81818"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="14" fill="#0c0c0e" stroke="rgba(255,255,255,.06)"/><rect x="10" y="7" width="44" height="5" rx="2.5" fill="url(#hbar)"/><g class="dia"><polygon points="32,20 47,39 32,58 17,39" fill="url(#hdg)"/><polygon points="32,29 40,39 32,49 24,39" fill="#6e0f0f"/></g></svg>HYDRA</a>
     <div class="nav-links">
       <a href="#tiers">TIERS</a>
+      <a href="#spoofcheck">SPOOF CHECK</a>
       <a href="#shield">SHIELD</a>
       <a href="#codesec">TALOS</a>
       <a href="/custodians/">CUSTODIANS</a>
@@ -295,6 +296,70 @@ init();})();
   </div>
 </section>
 
+<!-- SPOOF CHECK · free, one axis -->
+<section id="spoofcheck">
+  <div class="container">
+    <div class="section-mark glr" style="animation-delay:-2.6s">SPOOF CHECK · FREE · ONE AXIS</div>
+    <h2>Free, we look at exactly one thing.</h2>
+    <p class="section-lead">
+      Whether someone can send mail <strong>as you</strong>. That is the whole free check.
+      The rest of your estate &mdash; subdomains, takeover candidates, technology, CVE
+      matching &mdash; is Tier&nbsp;1, and this does not look at any of it.
+    </p>
+
+    <div class="doctrine-grid">
+      <div class="doctrine-col valid">
+        <h3>WHAT WE READ</h3>
+        <ul>
+          <li><strong>SPF · DKIM · DMARC · MX</strong> &mdash; four public DNS records</li>
+          <li>Read through a public resolver. <strong>Zero packets to your systems</strong>,
+              the same promise as Tiers&nbsp;1&ndash;3. No exception, no asterisk.</li>
+          <li>You get a one-page finding on the evidence chain HYDRA uses everywhere:
+              URL, timestamp, source, and every item marked
+              <span class="mono hot">CONFIRMED</span> /
+              <span class="mono dim">UNCONFIRMED</span> /
+              <span class="mono">INDICATIVE</span>.</li>
+        </ul>
+      </div>
+      <div class="doctrine-col valid">
+        <h3>BEFORE WE READ ANYTHING</h3>
+        <ul>
+          <li>You pick a random string and put it in DNS as a TXT record on
+              <span class="mono">_tia-verify.&lt;your-domain&gt;</span></li>
+          <li>Send us the domain and that string</li>
+          <li><strong>We hold no secret.</strong> The only proof of ownership is that you
+              can create that record &mdash; and we read nothing until it is there.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="section-lead" style="margin-top:34px">
+      <strong>If it comes back spoofable, two doors follow &mdash; and they are different questions.</strong>
+    </p>
+    <div class="doctrine-grid">
+      <div class="doctrine-col valid">
+        <h3>&#9654; CLOSE THE MAIL</h3>
+        <ul>
+          <li><strong>E-mail Shield &mdash; Fix, from CZK 39,000.</strong> The direct answer
+              to this finding: we change your DNS, phased, with zero mail downtime.</li>
+        </ul>
+      </div>
+      <div class="doctrine-col valid">
+        <h3>&#9654; THE REST OF THE ESTATE</h3>
+        <ul>
+          <li><strong>Tier 1 &mdash; Exposure Scan, from CZK 18,000.</strong> A different
+              question entirely. Its entry point is the sample report, not this check.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="margin-top:26px">
+      <a href="mailto:hydra@tia-framework.com?subject=Spoof%20check%20%E2%80%94%20domain%20and%20TXT%20string"
+         class="nav-cta" style="display:inline-block;padding:14px 22px">REQUEST THE FREE CHECK &rarr;</a>
+    </p>
+  </div>
+</section>
+
 <!-- E-MAIL SHIELD -->
 <section id="shield">
   <div class="container">
@@ -320,6 +385,7 @@ init();})();
           <li>SPF hardening (-all) + DKIM 2048-bit</li>
           <li>DMARC phased: none → quarantine → reject</li>
           <li>Before/after proof (external re-scan)</li>
+          <li>Delivery test &mdash; we send one message to the address you publish and confirm it arrives. DNS says where mail is <em>pointed</em>; only a sent message shows it is <em>received</em>. Authorised work, so this is not an exception here &mdash; it is the job.</li>
           <li>Executive summary (CZ/EN)</li>
         </ul>
       </div>
