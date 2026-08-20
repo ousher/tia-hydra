@@ -271,6 +271,19 @@ h1 .accent {
   max-width: 660px;
 }
 
+/* Věta pod hero: co ten doklad DĚLÁ. Tišší než hero-sub, ale ne šeptem —
+   je to jediné tvrzení na stránce, které si čtenář může sám přepočítat.
+   🔴 D156: dřív to byl NESTYLOVANÝ <p class="slogan-cz">, takže EN a CS
+   vypadaly jinak. Nestylovaný prvek je náhoda, ne rozhodnutí. */
+.slogan-lead {
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: .01em;
+  margin: 0 0 10px;
+  font-weight: 400;
+  max-width: 660px;
+}
+
 .hero-sub {
   font-size: 20px;
   color: var(--text-dim);
