@@ -79,6 +79,19 @@
   }
   .err-msg .cz { display: block; font-size: 14px; color: var(--text-muted); margin-top: 6px; }
   .err-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 32px; }
+  /* Značkový pruh. Slepá ulička je pořád náš dům — ať to i tak vypadá.
+     Poměr 4:1, takže na úzkém displeji se jen zmenší, nikdy neroztáhne. */
+  .err-banner {
+    margin-top: 34px;
+    width: min(600px, 100%);
+    /* 🔴 height:auto je POVINNÉ. Atributy width/height na <img> tu jsou kvůli
+       rezervaci místa (proti poskakování layoutu), ale jakmile CSS přepíše
+       šířku, výška se drží atributu a obrázek se svisle roztáhne. Změřeno:
+       600×396 místo 600×150. Na snímku to vypadalo skoro dobře. */
+    height: auto;
+    border: 1px solid var(--border);
+    display: block;
+  }
 </style>
 </head>
 <body>
@@ -93,6 +106,12 @@
       <a href="/" class="btn-primary">Back to HYDRA</a>
       <a href="/cs/" class="btn-secondary">Česká verze</a>
     </div>
+    <img class="err-banner"
+         src="/hydra-banner.png"
+         srcset="/hydra-banner.png 1584w, /hydra-banner@2x.png 3168w"
+         sizes="min(600px, 100vw)"
+         width="1584" height="396" loading="lazy"
+         alt="HYDRA — You don't get a dashboard. You get evidence.">
   </div>
 <script src="/consent.js" defer></script>
 </body>
