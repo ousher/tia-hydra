@@ -1,0 +1,1 @@
+import{f as e,t}from"./digests-B8J7Rd1V.js";import{t as n}from"./cut-view-BkS0pbpR.js";var r=e();function i(){return(0,r.jsx)(n,{date:t})}export{i as component};
