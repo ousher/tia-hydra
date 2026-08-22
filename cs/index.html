@@ -250,10 +250,13 @@ init();})();
           <li>Mapa veřejné infrastruktury (domény, subdomény, hosting) &mdash; čtená z certificate-transparency logů a veřejného DNS</li>
           <li>Odolnost proti podvržení pošty &mdash; SPF, DKIM, DMARC, MX. Jen veřejné DNS. Doručení na zveřejněnou adresu je Shield, ne T1.</li>
           <li>Kandidáti na převzetí subdomény &mdash; vaše jména, která pořád míří na cíle, co už neexistují</li>
-          <li>CVE matchování podle technologického profilu</li>
+          <li><strong>Jmenované třetí strany, které smí jednat vaším jménem nebo vidí vaše návštěvníky</strong> &mdash; dodavatelé čtení z vašich SPF include, z ověřovacích TXT záznamů a z archivní kopie vaší vlastní úvodní stránky. Pojmenujeme je. <em>Neděláme</em> CVE matchování proti verzím software: to by vyžadovalo dotaz na vaše servery, a my žádný neposíláme.</li>
+          <li><strong>Fakta z rejstříku, která mají datum</strong> &mdash; kdy končí platnost které registrace a jestli rejstřík zveřejňuje zámek proti přenosu.</li>
+          <li><strong>Podobné domény</strong> &mdash; tvary vyrobené podle toho, jak se domény doopravdy napodobují, ověřené proti rejstříku: kdo je drží a jestli umí přijímat poštu.</li>
+          <li><strong>Celé portfolio na jedné stránce, ne jedna doména</strong> &mdash; kolik vašich domén je padělatelných a na kolik samostatných ostrovů se to portfolio ve skutečnosti rozpadá.</li>
           <li>Risk score 0–10 <em>i s aritmetikou</em> &mdash; každý bod dohledatelný ke jmenovanému nálezu</li>
           <li>Akční checklist TOP 5 nálezů</li>
-          <li>PDF report (8–12 stran, CZ/EN)</li>
+          <li>PDF report (česky; anglicky na vyžádání)</li>
           <li><strong>Jmenovaný seznam toho, co zdroje vidět nemohly.</strong> Nemáme databázi úniků ani předplatné Shodan / Censys. Místo abychom naznačovali pokrytí, které nemáme, zpráva tu mezeru pojmenuje &mdash; a u úniků přihlašovacích údajů vás pošle na cestu zdarma, která vám dá víc než my: HIBP Domain Search, na vaší doméně, ve vašem účtu.</li>
         </ul>
       </div>
@@ -304,8 +307,8 @@ init();})();
     <h2>Zdarma se díváme na jedinou věc.</h2>
     <p class="section-lead">
       Jestli se za vás dá <strong>posílat pošta</strong>. To je celá bezplatná kontrola.
-      Zbytek vaší domény &mdash; subdomény, kandidáti na převzetí, technologie, CVE
-      matchování &mdash; je Tier&nbsp;1, a tahle kontrola se na to nedívá vůbec.
+      Zbytek vaší domény &mdash; subdomény, kandidáti na převzetí, vaši dodavatelé, podobné
+      domény &mdash; je Tier&nbsp;1, a tahle kontrola se na to nedívá vůbec.
     </p>
 
     <div class="doctrine-grid">

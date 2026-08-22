@@ -250,10 +250,13 @@ init();})();
           <li>Public infrastructure map (domains, subdomains, hosting) &mdash; read from certificate-transparency logs and public DNS</li>
           <li>Mail-spoofing posture &mdash; SPF, DKIM, DMARC, MX. Public DNS only. Delivery of a published address is Shield, not T1.</li>
           <li>Subdomain-takeover candidates &mdash; names of yours still pointing at targets that no longer exist</li>
-          <li>CVE matching against the technology profile</li>
+          <li><strong>Named third parties who can act in your name or see your visitors</strong> &mdash; suppliers read from your SPF includes, your TXT verification records and an archived copy of your own homepage. We name them. We do <em>not</em> match CVEs against software versions: that would need a request to your servers, and we send none.</li>
+          <li><strong>Registry facts that carry a date</strong> &mdash; when each registration expires, and whether the registry publishes a transfer lock.</li>
+          <li><strong>Look-alike domains</strong> &mdash; names built from how domains actually get impersonated, then checked against the registry: who holds them, and whether they can receive mail.</li>
+          <li><strong>The whole estate on one page, not one domain</strong> &mdash; how many of your domains can be spoofed, and how many separate islands your portfolio really is.</li>
           <li>Risk score 0–10 shown <em>with its arithmetic</em> &mdash; every point traced to a named finding</li>
           <li>Action checklist — top 5 findings</li>
-          <li>PDF report (8–12 pages, CZ/EN)</li>
+          <li>PDF report (Czech; English on request)</li>
           <li><strong>A named list of what the sources could not see.</strong> We hold no breach database and no Shodan / Censys subscription. Rather than imply coverage we do not have, the report names the gap &mdash; and for credential leaks points you to the free route that gives you more than we could: HIBP Domain Search, on your own domain, in your own account.</li>
         </ul>
       </div>
@@ -304,8 +307,8 @@ init();})();
     <h2>Free, we look at exactly one thing.</h2>
     <p class="section-lead">
       Whether someone can send mail <strong>as you</strong>. That is the whole free check.
-      The rest of your estate &mdash; subdomains, takeover candidates, technology, CVE
-      matching &mdash; is Tier&nbsp;1, and this does not look at any of it.
+      The rest of your estate &mdash; subdomains, takeover candidates, your suppliers, look-alike
+      domains &mdash; is Tier&nbsp;1, and this does not look at any of it.
     </p>
 
     <div class="doctrine-grid">
