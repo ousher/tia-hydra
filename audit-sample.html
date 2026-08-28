@@ -799,10 +799,33 @@ purpose, because <em>what a scanner discards</em> is as diagnostic as what it ke
 routine hardening gaps — <strong>1 Medium, 7 Low, zero inflation, two false positives caught
 before they reached the report.</strong> That is what a verified deliverable looks like.</p>
 <p><em>Redacted sample · attack-first review · read-only mode · maker ≠ grader.</em></p>
+<hr>
+<h2>Remediation — what happened after this report</h2>
+<p>The report above is a snapshot of the run on 2026-07-19 and is not rewritten. This is the
+addendum: what was changed, when, and how the change was checked. Verification was done by a
+pass written <i>against</i> each fix — <b>maker &ne; grader</b> applies to the repair too.</p>
+<table>
+<thead><tr><th>ID</th><th>Closed</th><th>What changed</th><th>How it was re-tested</th></tr></thead>
+<tbody>
+<tr><td><b>F-001</b></td><td>2026-07-19</td><td>Bound the reply key to an existing, still-open request before appending; double-answers refused.</td><td>Re-tested the same day: the spoof path returns 404 and appends nothing; a pending request survives the cleanup sweep.</td></tr>
+<tr><td><b>F-002</b></td><td>2026-08-28</td><td>Id allocation serialised under a lock with an in-process high-water mark.</td><td>40 concurrent allocations produced 40 distinct ids.</td></tr>
+<tr><td><b>F-003</b></td><td>2026-08-28</td><td>One shared capped body reader for every POST route — absent, negative and oversize Content-Length all refused before allocation.</td><td>99 MB declared → 413; negative → 400; header absent → 400.</td></tr>
+<tr><td><b>F-004</b></td><td>2026-08-28</td><td>Cap enforced on the DECODED attachment length, before the disk write.</td><td>Oversize image → 413 with zero files written to the store.</td></tr>
+<tr><td><b>F-005</b></td><td>2026-08-28</td><td>Same shared reader — the fix went in at the root, not three times at three handlers.</td><td>99 MB declared on the third route → 413.</td></tr>
+<tr><td><b>F-006</b></td><td>2026-08-28</td><td>Rate limit keyed per caller class instead of one process-global list.</td><td>An unauthenticated flood no longer starves the authenticated caller (200); restoring the single global bucket reproduces the 429.</td></tr>
+<tr><td><b>F-007</b></td><td>2026-08-28</td><td>The liveness route is a pure read; the sweep runs at startup and on the authenticated route only.</td><td>A scrub-eligible transient survives an unauthenticated liveness call, and is still removed by an explicit sweep.</td></tr>
+<tr><td><b>F-008</b></td><td>2026-08-28</td><td>Credential masked in console output (printing it is now opt-in); a real Windows ACL is set instead of a POSIX permission call that does nothing there.</td><td>Source check plus the ACL call on the token file.</td></tr>
+</tbody>
+</table>
+<div class="provenance"><div class="lbl">The part most reports leave out</div>
+<div><b>Read the dates before you read the fixes.</b> The single Medium closed the same day. The seven Lows sat for <b>40 days</b> and were then closed in one batch. On a loopback-only service with a single principal that is a defensible triage order — but it is a real delay, and this is the document that records it rather than the place it gets lost. <b>Reported is not remediated.</b> A proof-of-fix ledger is only worth something if it also carries the wait. Every fix above was re-tested by a pass written against it, not by the pass that wrote it.</div></div>
 <div class="seal" id="seal">
-  <div class="sealk">HYDRA · seal over the finding set · 8 findings · run 2026-07-19</div>
-  <div class="sealh">414329d8ff0b6e68a173a6d4d1383fba9b8af318b11a86200e1e7cb272ecf83c</div>
-  <p class="sealr">One line per finding from the <i>Summary</i> table above — <b>ID|CWE|Severity|Status</b>, exactly as printed — plus one line <b>run|2026-07-19</b>. All lines sorted alphabetically, joined with a newline (no trailing newline), SHA-256. <b>Every input is printed on this page.</b></p>
+  <div class="sealk">HYDRA · seal over findings + remediation · 8 findings · run 2026-07-19</div>
+  <div class="sealh">b2d5597ac24a8d2050506c2904c692c9b48c61132d88d7e09aa02bac22925a61</div>
+  <p class="sealr">One line per finding from the <i>Summary</i> table — <b>ID|CWE|Severity|Status</b>, exactly as printed. One line per row of <i>Remediation</i> — <b>ID|fixed|date</b>. One line <b>run|2026-07-19</b>. All lines sorted alphabetically together, joined with a newline (no trailing newline), SHA-256. <b>Every input is printed on this page.</b></p>
+  <p class="sealr"><b>Supersedes</b> <code>414329d8ff0b6e68a173a6d4d1383fba…</code> — the earlier seal
+  over the finding set alone, before the remediation addendum existed. A document that changes
+  should say so with a chain, not quietly.</p>
   <p class="sealr"><b>What this seal does not do.</b> It does not attest the prose, the fixes, or when this page was published, and it is not a timestamp authority. It fixes the <b>finding set</b> — identifiers, CWEs, severities and dispositions — so a later version of this page cannot quietly gain a finding, lose one, or downgrade a severity without the digest changing. That is the whole claim.</p>
 </div>
 <footer>
