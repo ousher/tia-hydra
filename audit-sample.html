@@ -11,6 +11,7 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="HYDRA">
 <meta property="og:url" content="https://hydra.tia-framework.com/audit-sample.html">
+<link rel="alternate" hreflang="cs" href="https://hydra.tia-framework.com/cs/audit-sample.html">
 <title>TALOS — Code Security Audit · Redacted Sample</title>
 <style>
 
@@ -161,7 +162,8 @@
 </head>
 <body>
 <div class="backbar"><a href="/#codesec">&larr; BACK TO PRICING · HYDRA</a>
-&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/talos.html">HOW TALOS WORKS (CZ) &rarr;</a></div>
+&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/talos.html">HOW TALOS WORKS (CZ) &rarr;</a>
+&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/cs/audit-sample.html">ČESKÁ VERZE &rarr;</a></div>
 <div class="sheet">
 <header>
   <div class="eyebrow">TIA · TALOS · REDACTED SAMPLE</div>
@@ -801,9 +803,7 @@ before they reached the report.</strong> That is what a verified deliverable loo
 <p><em>Redacted sample · attack-first review · read-only mode · maker ≠ grader.</em></p>
 <hr>
 <h2>Remediation — what happened after this report</h2>
-<p>The report above is a snapshot of the run on 2026-07-19 and is not rewritten. This is the
-addendum: what was changed, when, and how the change was checked. Verification was done by a
-pass written <i>against</i> each fix — <b>maker &ne; grader</b> applies to the repair too.</p>
+<p>The report above is a snapshot of the run on 2026-07-19 and is not rewritten. This is the addendum: what was changed, when, and how the change was checked. Verification was done by a pass written <i>against</i> each fix — <b>maker &ne; grader</b> applies to the repair too.</p>
 <table>
 <thead><tr><th>ID</th><th>Closed</th><th>What changed</th><th>How it was re-tested</th></tr></thead>
 <tbody>
@@ -820,18 +820,14 @@ pass written <i>against</i> each fix — <b>maker &ne; grader</b> applies to the
 <div class="provenance"><div class="lbl">The part most reports leave out</div>
 <div><b>Read the dates before you read the fixes.</b> The single Medium closed the same day. The seven Lows sat for <b>40 days</b> and were then closed in one batch. On a loopback-only service with a single principal that is a defensible triage order — but it is a real delay, and this is the document that records it rather than the place it gets lost. <b>Reported is not remediated.</b> A proof-of-fix ledger is only worth something if it also carries the wait. Every fix above was re-tested by a pass written against it, not by the pass that wrote it.</div></div>
 <div class="seal" id="seal">
-  <div class="sealk">HYDRA · seal over findings + remediation · 8 findings · run 2026-07-19</div>
+  <div class="sealk">HYDRA · seal over findings + remediation · 8 × F · run 2026-07-19</div>
   <div class="sealh">b2d5597ac24a8d2050506c2904c692c9b48c61132d88d7e09aa02bac22925a61</div>
   <p class="sealr">One line per finding from the <i>Summary</i> table — <b>ID|CWE|Severity|Status</b>, exactly as printed. One line per row of <i>Remediation</i> — <b>ID|fixed|date</b>. One line <b>run|2026-07-19</b>. All lines sorted alphabetically together, joined with a newline (no trailing newline), SHA-256. <b>Every input is printed on this page.</b></p>
-  <p class="sealr"><b>Supersedes</b> <code>414329d8ff0b6e68a173a6d4d1383fba…</code> — the earlier seal
-  over the finding set alone, before the remediation addendum existed. A document that changes
-  should say so with a chain, not quietly.</p>
+  <p class="sealr"><b>Supersedes</b> <code>414329d8ff0b6e68a173a6d4d1383fba…</code> — the earlier seal over the finding set alone, before the remediation addendum existed. A document that changes should say so with a chain, not quietly.</p>
   <p class="sealr"><b>What this seal does not do.</b> It does not attest the prose, the fixes, or when this page was published, and it is not a timestamp authority. It fixes the <b>finding set</b> — identifiers, CWEs, severities and dispositions — so a later version of this page cannot quietly gain a finding, lose one, or downgrade a severity without the digest changing. That is the whole claim.</p>
 </div>
 <footer>
-  <div class="note"><b>Redacted sample · attack-first review · read-only mode · maker &ne; grader.</b><br>
-  Target identifiers are removed; methodology, findings, severities and data-flow traces are verbatim.
-  Run date 2026-07-19.</div>
+  <div class="note"><b>Redacted sample · attack-first review · read-only mode · maker &ne; grader.</b><br>Target identifiers are removed; methodology, findings, severities and data-flow traces are verbatim. Run date 2026-07-19.</div>
   <div class="mark">TIA · HYDRA<br>hydra.tia-framework.com</div>
 </footer>
 </div>

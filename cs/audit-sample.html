@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Skutečná zpráva z útočně vedeného auditu kódu, redigovaná a zveřejněná celá: nálezy, zabití kandidáti, inventura vstupů i třídy, které jsme vyloučili.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hydra.tia-framework.com/cs/audit-sample.html">
+<meta property="og:title" content="TALOS — bezpečnostní audit kódu, redigovaná ukázková zpráva">
+<meta property="og:description" content="Skutečná zpráva z útočně vedeného auditu kódu, redigovaná a zveřejněná celá: nálezy, zabití kandidáti, inventura vstupů i třídy, které jsme vyloučili.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HYDRA">
+<meta property="og:url" content="https://hydra.tia-framework.com/cs/audit-sample.html">
+<link rel="alternate" hreflang="en" href="https://hydra.tia-framework.com/audit-sample.html">
+<title>TALOS — bezpečnostní audit kódu · redigovaná ukázka</title>
+<style>
+
+  /* TALOS design language: cream + red. Never cyan. (D127, locked) */
+  :root{
+    --cream:#f6f1e7; --ink:#1c1a17; --red:#b3221f; --grey:#6f685e;
+    --rule:#ddd3c2; --ghost:#eae2d3; --deep:#7a1512;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);
+       font:16px/1.5 "Iowan Old Style","Palatino Linotype",Georgia,serif;
+       -webkit-font-smoothing:antialiased}
+  .sheet{width:100%;max-width:1500px;margin:0 auto;padding:48px 66px 40px}
+
+  header{border-bottom:3px solid var(--ink);padding-bottom:15px;margin-bottom:7px}
+  .eyebrow{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;
+           color:var(--red);font-weight:700}
+  h1{font-size:46px;line-height:1;letter-spacing:-.02em;margin:7px 0 9px}
+  h1 small{font-size:18px;color:var(--grey);letter-spacing:0;font-weight:400}
+  .crit{font-size:14.5px;color:var(--grey);max-width:100ch}
+  .crit b{color:var(--ink)}
+  .crit i{font-style:italic;color:var(--deep)}
+
+  h2{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);
+     font-weight:700;margin:20px 0 9px;padding-bottom:5px;border-bottom:1px solid var(--rule)}
+
+  .pass{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:baseline;
+        padding:9px 0;border-bottom:1px solid var(--rule)}
+  .pass:last-of-type{border-bottom:0}
+  .pn{font-size:30px;line-height:1;font-weight:700;color:var(--red);
+      text-align:right;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+  .pt{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px}
+  .pt em{font-style:normal;color:var(--grey);font-weight:400;font-size:14px}
+  .pd{font-size:14px;color:#453f38;line-height:1.42}
+  .pd b{color:var(--ink)}
+
+  .funnel{background:var(--ghost);border-left:3px solid var(--red);padding:11px 16px;
+          margin:11px 0 0;font-size:13.5px;color:#453f38}
+  .funnel b{color:var(--ink)}
+  .funnel code{font:13px/1 ui-monospace,"SF Mono",Menlo,monospace;color:var(--deep)}
+
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  .r{padding:8px 0;border-bottom:1px solid var(--rule)}
+  .r b{font-size:14px;display:block;margin-bottom:1px}
+  .r span{font-size:13.2px;color:#453f38;line-height:1.4}
+  .r.hot b{color:var(--red)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.3px;margin-top:4px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--grey);font-weight:700;padding:0 12px 6px 0;border-bottom:1px solid var(--ink)}
+  td{padding:7px 12px 7px 0;border-bottom:1px solid var(--rule);color:#453f38;
+     vertical-align:top}
+  td b{color:var(--ink)}
+  td.us{color:var(--deep)}
+  tr:last-child td{border-bottom:0}
+
+  .honest{border:1px solid var(--rule);border-left:3px solid var(--ink);
+          padding:13px 17px;margin-top:14px;background:#f1ebdf}
+  .honest h3{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+             color:var(--ink);margin-bottom:6px}
+  .honest p{font-size:13.3px;color:#453f38;line-height:1.45}
+  .honest p b{color:var(--ink)}
+
+  footer{margin-top:16px;padding-top:11px;border-top:1px solid var(--rule);
+         display:flex;justify-content:space-between;align-items:flex-end;gap:26px}
+  .note{font-size:12.5px;color:var(--grey);max-width:82ch}
+  .note b{color:var(--ink)}
+  .mark{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);
+        font-weight:700;white-space:nowrap;text-align:right;line-height:1.7}
+
+  @media print{
+    @page{size:A4;margin:10mm}
+    .sheet{padding:0;max-width:none}
+    body{font-size:12px}
+    h1{font-size:31px;margin:5px 0 7px} h1 small{font-size:14px}
+    .crit{font-size:11.5px}
+    header{padding-bottom:10px;margin-bottom:3px}
+    h2{margin:12px 0 6px;font-size:9.5px;padding-bottom:4px}
+    .pass{padding:6px 0;grid-template-columns:30px 1fr;gap:11px}
+    .pn{font-size:22px} .pt{font-size:13.5px} .pt em{font-size:11.5px}
+    .pd{font-size:11.3px;line-height:1.34}
+    .funnel{padding:8px 12px;font-size:11.2px;margin-top:8px}
+    .funnel code{font-size:10.8px}
+    .r{padding:5px 0} .r b{font-size:11.6px} .r span{font-size:10.9px;line-height:1.32}
+    table{font-size:10.9px} th{font-size:9px;padding-bottom:4px} td{padding:5px 10px 5px 0}
+    .honest{padding:9px 12px;margin-top:9px}
+    .honest h3{font-size:9px;margin-bottom:4px} .honest p{font-size:11px;line-height:1.36}
+    footer{margin-top:10px;padding-top:8px}
+    .note{font-size:10.2px} .mark{font-size:8.5px}
+  }
+
+
+  .backbar{max-width:1500px;margin:0 auto;padding:14px 66px 0;
+           font:13px/1 ui-monospace,"SF Mono",Menlo,monospace}
+  .backbar a{color:var(--red);text-decoration:none;letter-spacing:.06em}
+  .backbar a:hover{text-decoration:underline}
+  @media print{.backbar{display:none}}
+
+
+  /* Dlouhý dokument, ne A4 list: JEDNA míra sloupce pro text i tabulky.
+     Před opravou se odstavce lámaly na ~730 px, ale tabulky a rámečky jely
+     přes 1230 — tři různé míry v jednom dokumentu, oko to čte jako nepořádek. */
+  .sheet{max-width:1040px;padding:34px 48px 40px}
+  .backbar{max-width:1040px;padding:14px 48px 0}
+  .sheet h1{font-size:40px;margin:10px 0 14px}
+  .sheet h2{font-size:11px}
+  .sheet h3{font-size:16.5px;margin:20px 0 7px;letter-spacing:-.01em}
+  .sheet p{font-size:14.2px;color:#453f38;margin:9px 0;max-width:none}
+  .crit{max-width:none}
+  .sheet p b,.sheet li b,.sheet td b{color:var(--ink)}
+  .sheet ul{margin:9px 0 9px 22px;font-size:14px;color:#453f38}
+  .sheet li{margin:4px 0}
+  .sheet blockquote{background:var(--ghost);border-left:3px solid var(--red);
+      padding:13px 18px;margin:14px 0;font-size:13.8px;color:#453f38}
+  .sheet blockquote p{margin:5px 0;font-size:13.8px}
+  .sheet table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 16px}
+  .sheet th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--grey);font-weight:700;padding:0 12px 6px 0;border-bottom:1px solid var(--ink)}
+  .sheet td{padding:7px 12px 7px 0;border-bottom:1px solid var(--rule);
+      color:#453f38;vertical-align:top;line-height:1.42}
+  .sheet code{font:12.6px/1.45 ui-monospace,"SF Mono",Menlo,monospace;color:var(--deep);
+      background:var(--ghost);padding:1px 4px}
+  .sheet pre{background:var(--ghost);border-left:3px solid var(--rule);
+      padding:12px 16px;margin:11px 0;overflow-x:auto}
+  .sheet pre code{background:none;padding:0;font-size:12.3px;line-height:1.5;color:#3b352e}
+  .sheet hr{border:0;border-top:1px solid var(--rule);margin:26px 0}
+  .provenance{border:1px solid var(--rule);border-left:3px solid var(--red);
+      background:#f1ebdf;padding:14px 18px;margin:16px 0 4px}
+  .provenance b{color:var(--ink)}
+  .provenance div{font-size:13.4px;color:#453f38;line-height:1.5}
+  .provenance .lbl{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--red);font-weight:700;margin-bottom:6px;font-family:ui-monospace,Menlo,monospace}
+
+
+  .seal{margin-top:34px;border:1px solid var(--rule);border-left:4px solid var(--red);
+        padding:16px 20px;background:#fbf8f1}
+  .sealk{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.16em;
+         text-transform:uppercase;color:var(--red);font-weight:700}
+  .sealh{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;
+         word-break:break-all;margin:6px 0 10px;color:var(--red)}
+  /* .sheet p je specifičtější než .sealr — recept by jel na 14,2 px a nečetl by
+     se jako drobné písmo. Chyceno spočítaným stylem, ne okem. */
+  .seal .sealr{font-size:12.8px;color:var(--grey);margin:6px 0 0;line-height:1.55}
+  .seal .sealr b{color:var(--ink)} .seal .sealr i{color:var(--deep)}
+  @media print{.seal{background:#fff!important} table,tr{break-inside:avoid}}
+
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/#codesec">&larr; ZPĚT NA CENÍK · HYDRA</a>
+&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/talos.html">JAK TALOS FUNGUJE &rarr;</a>
+&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/audit-sample.html">ENGLISH VERSION &rarr;</a></div>
+<div class="sheet">
+<header>
+  <div class="eyebrow">TIA · TALOS · REDIGOVANÁ UKÁZKA</div>
+</header>
+<h1>Bezpečnostní audit kódu — redigovaná ukázka</h1>
+<blockquote>
+<p><strong>Co to je.</strong> Očištěný výřez z <em>interního auditu vlastního kódu</em> — vlastní kód jsme
+prohnali svojí útočně vedenou metodou („dogfooding"). Identifikátory cíle jsou
+redigované; <strong>metoda, nálezy, závažnosti a trasy dat jsou doslovné.</strong>
+Je to reprezentativní ukázka klientské dodávky, ne marketingová maketa.</p>
+</blockquote>
+<div class="provenance">
+  <div class="lbl">Původ — čtěte nejdřív tohle</div>
+  <div><b>Tohle je snímek jednoho běhu ze dne 2026-07-19.</b> Zveřejňujeme ho jako ukázku
+  dodávky — jak vypadá zpráva z TALOSu, celá, včetně částí, které většina dodavatelů
+  vynechá. <b>Není</b> to tvrzení o současném stavu jakéhokoli systému, našeho ani cizího.
+  Cílem byl náš vlastní kód: metodu jsme pustili na sebe dřív, než jsme ji komukoli prodali.
+  <br><br>
+  Počty se dají zkontrolovat proti tabulkám níže: <b>13 sledovaných zvenku řízených vstupů
+  → 10 kandidátů → falsifikace zabila 2 → 8 potvrzených</b> (1 Medium, 7 Low). Když se
+  některé číslo neshoduje s tabulkou, platí tabulka — napište nám a opravíme to.</div>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cíl</strong></td>
+<td>interní API služba na loopbacku (název redigován) — lokální asynchronní brána na úkoly</td>
+</tr>
+<tr>
+<td><strong>Režim</strong></td>
+<td><strong>JEN PRO ČTENÍ</strong> — testy zneužití byly <em>napsané, ale nespuštěné</em>; každý nález nese statickou trasu vstup→místo užití s konkrétními payloady. Žádný zdrojový soubor nebyl změněn.</td>
+</tr>
+<tr>
+<td><strong>Metoda</strong></td>
+<td>Recon → Paralelní lov → <strong>Adverzní falsifikace</strong> → Filtr proveditelnosti → nezávislé ověření jen pro čtení (kdo hodnotí ≠ kdo našel)</td>
+</tr>
+<tr>
+<td><strong>Nálezy</strong></td>
+<td>0 Critical, 0 High, <strong>1 Medium, 7 Low</strong> — všechny <em>Confirmed</em> (další 2 kandidáti <em>zabiti</em> při falsifikaci)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Proč „útok napřed + falsifikace" (metoda)</h2>
+<p>Většina skenerů optimalizuje na <strong>úplnost</strong> — vynesou všechno, co se shoduje se vzorem
+slabiny, a třídění nechají na vás. My optimalizujeme na <strong>přesnost pod protivníkem</strong>:
+každý kandidát musí přežít krok, jehož jediným úkolem je <strong>vyvrátit ho</strong>.</p>
+<pre><code>Recon ─▶ Paralelní lov ─▶ Adverzní falsifikace ─▶ Filtr proveditelnosti ─▶ Nezávislé ověření
+ mapuj    mnoho hypotéz     „dokaž, že to NENÍ      „dosáhne na to           jen pro čtení,
+ vstupy   současně           skutečné&quot; (výchozí      skutečný aktér?&quot;        jiný kontext
+ a místa                     stav: vyvráceno)                                (hodnotí ≠ našel)
+ užití
+</code></pre>
+<p>Při tomhle běhu falsifikační krok <strong>zabil 2 z 10 kandidátů</strong> jako plané poplachy
+(viz <em>Zabití kandidáti</em> níže). Zpráva, ve které je jen ověřené, má větší cenu než zpráva
+dlouhá: rozpočet na opravy padne na skutečné vady, ne na jejich třídění.</p>
+<hr />
+<h2>Model důvěry (tohle je to, co stropuje závažnost)</h2>
+<p>Služba naslouchá <strong>jen na <code>127.0.0.1</code></strong> (<code>gateway.py:475</code>) a každou cestu kromě <code>/health</code>
+ověřuje <strong>jedním sdíleným instalačním tokenem</strong> <code>X-Api-Token</code>
+(<code>secrets.token_urlsafe(24)</code>, porovnání v konstantním čase <code>:273</code>). Existuje přesně
+<strong>jeden principál</strong> — kterýkoli lokální proces, který ten token drží — takže <strong>žádná
+hranice mezi nájemníky neexistuje</strong>. To stropuje každý nález: „číst/zapsat libovolný
+úkol" je <em>ověřený základní stav</em> a dosah je jeden loopbackový počítač. Nejcennější nález
+(F-001) je <strong>nezávislý na principálovi</strong> (podvržení autorství + destrukce), proto
+<strong>Medium</strong>; všechno ostatní je <strong>Low</strong>. Poctivé vymezení poráží nafukování závažnosti.</p>
+<hr />
+<h2>Souhrn</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Nález</th>
+<th>CWE</th>
+<th>Severity</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-001</td>
+<td>Podvržení odpovědi + vynucené smazání libovolného čekajícího úkolu</td>
+<td>CWE-290 / CWE-639</td>
+<td><strong>Medium</strong></td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-002</td>
+<td><code>next_id()</code> souběh TOCTOU → duplicitní id / přepis kontextu</td>
+<td>CWE-367 / CWE-362</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-003</td>
+<td>Neomezené čtení těla požadavku (<code>/submit</code>, <code>/upload</code>)</td>
+<td>CWE-400</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-004</td>
+<td>Neomezené dekódování base64 přílohy + zápis na disk (<code>/upload</code>)</td>
+<td>CWE-400</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-005</td>
+<td>Neomezené čtení těla požadavku (<code>/answer</code>)</td>
+<td>CWE-400</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-006</td>
+<td>Sdílený rozpočet globálního omezovače → odepření služby</td>
+<td>CWE-770 / CWE-307</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-007</td>
+<td>Neověřený <code>/health</code> spouští úklid souborů</td>
+<td>CWE-306</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-008</td>
+<td>Ověřovací token v čitelném souboru a na výstupu; <code>chmod</code> je na Windows bez účinku</td>
+<td>CWE-312</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+</tbody>
+</table>
+<p>Ke každému nálezu byl dodán statický důkaz <strong>a</strong> test zneužití (napsaný, nespuštěný).</p>
+<p><em>Sloupce </em><em>Severity</em><em> a </em><em>Status</em><em> zůstávají v angličtině schválně — jsou to kanonické
+tokeny, ze kterých se počítá pečeť na konci dokumentu. Kdyby se přeložily, česká
+a anglická verze by daly jiný otisk a recept by nešel splnit.</em></p>
+<hr />
+<h2>Nálezy</h2>
+<h3>F-001 — Podvržení odpovědi + vynucené smazání libovolného čekajícího úkolu</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-290 (obejití ověření podvržením) / CWE-639 (obejití autorizace přes klíč řízený uživatelem)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Vstupní bod</strong></td>
+<td><code>POST /answer</code></td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:448-451</code> (zápis); čtení při dotazování <code>:302-308</code>; smazání při úklidu <code>:186-191</code></td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td>útočník nastaví <code>reply_to</code> na libovolné id úkolu → obsluha připojí <code>{author:"worker", …}</code> <strong>bez kontroly, že úkol existuje a je otevřený</strong> (<code>:448-451</code>) → (a) dotazující se rozhraní dostane podvrženou odpověď jako <strong>skutečný výstup pracovníka</strong> (<code>:304-307</code>); (b) úklid po „zodpovězení" smaže <strong>přechodný soubor s plným kontextem cílového úkolu dřív, než ho skutečný pracovník přečte</strong> (<code>:186-191</code>).</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>V obsluze odpovědi ověřit, že cílový úkol <strong>existuje a je otevřený</strong>, teprve pak připojovat; smazání po zodpovězení navázat na <em>ověřenou</em> odpověď; při čtení vynucovat původ odpovědi.</td>
+</tr>
+<tr>
+<td><strong>Kořenová příčina</strong></td>
+<td>Klíč <code>reply_to</code> řízený uživatelem není navázaný na existenci a otevřený stav; pole autora je napevno.</td>
+</tr>
+<tr>
+<td><strong>Proč Medium (a ne Low)</strong></td>
+<td>Nezávislé na principálovi: podvrhnout a zničit rozpracované úkoly je <strong>nad rámec</strong> ověřeného základního stavu „posílat odpovědi".</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Oprava — nasazena a přeměřena týž den</strong> (identifikátory redigované, logika doslovná):</p>
+<pre><code class="language-diff">  # obsluha POST /answer
+- # kdokoli mohl odpovědět na JAKÉKOLI id — existence nekontrolovaná, autor napevno
+- append_reply(author=&quot;worker&quot;, reply_to=req[&quot;reply_to&quot;], text=req[&quot;text&quot;])
++ # odpověď musí odpovídat skutečnému, stále OTEVŘENÉMU požadavku — vše ostatní se odmítá
++ if read_request(reply_to) is None:      # takový otevřený požadavek není -&gt; 404
++     return 404
++ if already_answered(reply_to):          # dvakrát odpovědět nelze     -&gt; 409
++     return 409
++ append_reply(author=&quot;worker&quot;, reply_to=reply_to, text=text)
+</code></pre>
+<p>Přeměření po opravě: cesta podvržení teď vrací <strong>404 a nepřipojí nic</strong>; čekající požadavek
+<strong>přežije</strong> úklidový průchod (útočník ho už nemůže vynuceně převést do množiny
+„zodpovězených"). Obě větve — podvržení autorství <em>i</em> vynucené smazání — se zavírají
+u téže pojistky. Doba od potvrzení k ověřené opravě: <strong>týž den.</strong></p>
+<h3>F-002 — <code>next_id()</code> souběh TOCTOU</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-367 (TOCTOU) / CWE-362 (souběh)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Vstupní bod</strong></td>
+<td><code>POST /submit</code>, <code>POST /upload</code> (souběžnost)</td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:136-138</code> (<code>next_id</code>), volající <code>:336</code>, <code>:390</code></td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td><code>next_id()</code> odvozuje id z <code>len(read_events())</code> (<code>:137</code>) → pod vláknovým HTTP serverem (<code>:475</code>) přečtou dva souběžné požadavky stejný počet dřív, než kterýkoli z nich připojí → <strong>oba přidělí totéž id</strong> → duplicitní záznam a přepsaný přechodný kontext jednoho z úkolů. Zámek omezovače hlídá jen počitadlo, ne přidělování id.</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>Serializovat <code>next_id()</code>→připojení→zápis pod jedním vyhrazeným zámkem, nebo odvozovat id z monotónního počitadla či UUID místo z délky záznamu.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-003 — Neomezené čtení těla požadavku (<code>/submit</code>, <code>/upload</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-400 (neřízená spotřeba zdrojů)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Vstupní bod</strong></td>
+<td><code>POST /submit</code>, <code>POST /upload</code></td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:323</code>, <code>:376</code></td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td>útočník nastaví velké <code>Content-Length</code> → <code>rfile.read(n)</code> <strong>bez stropu <code>MAX_BODY</code></strong> → jediná neomezená alokace. Omezovač stropuje <em>počet</em> požadavků, ne jejich velikost.</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>Zavést <code>MAX_BODY</code> na úrovni modulu; požadavky nad limit, bez hlavičky nebo se zápornou hodnotou odmítat kódem 413/400 v jedné sdílené pomocné funkci <code>_read_json_body()</code>, kterou použije každá POST cesta.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-004 — Neomezené dekódování base64 přílohy + zápis na disk (<code>/upload</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-400</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Vstupní bod</strong></td>
+<td><code>POST /upload</code></td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:392-403</code></td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td>útočník pošle velkou base64 přílohu → <code>b64decode</code> (<code>:394</code>) → <code>open(path,"wb").write(raw)</code> (<code>:402-403</code>) <strong>bez kontroly délky</strong> → na disk se zapíšou bajty řízené útočníkem; úklid podle TTL je pomalejší než rychlost zápisu.</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>Vynutit <code>MAX_ATTACHMENT_BYTES</code> na <em>dekódované</em> délce ještě před zápisem na disk; nadměrné odmítnout.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-005 — Neomezené čtení těla požadavku (<code>/answer</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-400</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Vstupní bod</strong></td>
+<td><code>POST /answer</code></td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:445</code></td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td>tentýž vzorec jako F-003 u třetí obsluhy: <code>int(Content-Length)</code> → <code>rfile.read(n)</code> bez stropu.</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>Tentýž sdílený strop <code>_read_json_body()</code> jako u F-003 — opraví všechny tři cesty u kořene.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-006 — Sdílený rozpočet globálního omezovače → odepření služby</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-770 (alokace bez limitu) / CWE-307 (nedostatečné omezení opakovaných pokusů)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Vstupní bod</strong></td>
+<td>všechny cesty (brána běží před ověřením)</td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:261-269</code>, kontrola <code>:289</code>, <code>:312</code></td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td>omezovač drží <strong>jeden globální seznam zásahů bez klíče na volajícího</strong> a kontroluje se <em>před</em> ověřením → neověřený lokální volající, který vyčerpá okno, vynutí <code>429</code> pro oprávněného operátora (sdílený rozpočet).</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>Klíčovat omezovač podle volajícího (adresa klienta a/nebo token) s odděleným oknem pro každý klíč.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-007 — Neověřený <code>/health</code> spouští úklid souborů</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-306 (chybějící ověření u kritické funkce)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Vstupní bod</strong></td>
+<td><code>GET /health</code></td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:290-292</code> → úklid <code>:161-192</code></td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td>větev <code>/health</code> spouští úklid souborů <strong>před</strong> kontrolou ověření (<code>:293</code>) → kterýkoli lokální neověřený volající vyvolá smazání přechodných souborů, které už jsou k úklidu způsobilé (zodpovězené / prošlé TTL). Jen příležitostné, ale skutečné — a <strong>řetězí se s F-001</strong> (neověřené smazání úkolů označených útočníkem).</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>Udělat z <code>/health</code> čisté čtení — vypustit volání úklidu; spolehnout se na ověřený průchod a na úklid při startu.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-008 — Ověřovací token v čitelném souboru a na výstupu</h3>
+<table>
+<thead>
+<tr>
+<th>Pole</th>
+<th>Hodnota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-312 (ukládání citlivé informace v čitelné podobě)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Místo</strong></td>
+<td><code>gateway.py:66-70</code> (soubor), <code>:468</code> (výstup)</td>
+</tr>
+<tr>
+<td><strong>Trasa dat</strong></td>
+<td><code>token_urlsafe(24)</code> se zapisuje v čitelné podobě do <code>.api-token</code>; <code>os.chmod(...,0o600)</code> je na Windows <strong>bez účinku</strong> (<code>:70</code>) → soubor může zůstat čitelný pro všechny; celý token se navíc vypisuje na standardní výstup (<code>:468</code>) → lokální uživatel, který není operátor, si přečte soubor nebo konzoli a získá celý token (a ten odemyká F-001/006/007).</td>
+</tr>
+<tr>
+<td><strong>Oprava</strong></td>
+<td>Šifrovat v klidu (klíčenka OS / DPAPI); nastavit skutečné ACL pro Windows místo spoléhání na POSIXový <code>chmod</code>; výpis na konzoli maskovat (otisk / poslední čtyři znaky).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Vyřešená inventura vstupů (doklad o úplnosti)</h2>
+<p>Seznam nálezů je důvěryhodný jen tehdy, když doloží i to, co bylo <strong>prověřeno a čisté</strong>.
+Každý zvenku řízený vstup má přiřazenou dispozici (názvy polí redigované):</p>
+<table>
+<thead>
+<tr>
+<th>Vstup</th>
+<th>Dispozice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hlavička <code>Origin</code></td>
+<td><strong>BEZPEČNÉ</strong> — řídí jen odraz CORS, ne přístup; zvláštnost s prefixem nejde využít (token je pořád vyžadován).</td>
+</tr>
+<tr>
+<td><code>X-Api-Token</code></td>
+<td><strong>BEZPEČNÉ (ověření)</strong> — porovnání v konstantním čase. <em>Uložení</em> tokenu je CWE-312 → <strong>F-008</strong>.</td>
+</tr>
+<tr>
+<td><code>Content-Length</code></td>
+<td><strong>KANDIDÁT</strong> → <strong>F-003</strong> (<code>/submit</code>,<code>/upload</code>), <strong>F-005</strong> (<code>/answer</code>).</td>
+</tr>
+<tr>
+<td>hlavní <code>payload</code></td>
+<td><strong>BEZPEČNÉ</strong> — před uložením redigováno a zbaveno tajemství; žádné místo užití pro injektáž.</td>
+</tr>
+<tr>
+<td>objekt <code>metadata</code> (různá textová pole)</td>
+<td><strong>BEZPEČNÉ</strong> — zabalený/redigovaný kontext; žádné místo užití.</td>
+</tr>
+<tr>
+<td>pole <code>url</code> pro klasifikaci</td>
+<td><strong>BEZPEČNÉ</strong> — slouží jen ke klasifikaci (povolení jako výchozí stav je zaznamenáno jako kód se zápachem → viz obrana do hloubky).</td>
+</tr>
+<tr>
+<td>přepínač <code>option</code></td>
+<td><strong>BEZPEČNÉ</strong> — není místem užití.</td>
+</tr>
+<tr>
+<td>base64 <code>attachment</code></td>
+<td><strong>KANDIDÁT</strong> → <strong>F-004</strong>.</td>
+</tr>
+<tr>
+<td>klíč <code>reply_to</code></td>
+<td><strong>KANDIDÁT</strong> → <strong>F-001</strong>.</td>
+</tr>
+<tr>
+<td>tělo odpovědi <code>text</code></td>
+<td><strong>BEZPEČNÉ</strong> — zneužití jde přes navázání <code>reply_to</code>, ne přes obsah textu.</td>
+</tr>
+<tr>
+<td>id v cestě <code>{id}</code></td>
+<td><strong>BEZPEČNÉ</strong> — čistička <code>re.sub(r"[^a-z0-9\-]","",id)</code> blokuje průchod adresářem; IDOR mezi principály není vyjádřitelný (jeden sdílený token).</td>
+</tr>
+<tr>
+<td>čtení záznamů druhého řádu</td>
+<td><strong>BEZPEČNÉ</strong> — vlastní zápisy; přetržený řádek se při čtení sám ošetří.</td>
+</tr>
+<tr>
+<td>přepínače příkazové řádky</td>
+<td><strong>ZÁMĚR NÁVRHU</strong> — jen lokální operátor; není to místo užití dat.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Všechny vstupy vyřešeny.</strong> Nálezy, které nejdou navázat na jediný vstup (souběžnost,
+globální omezovač, <code>/health</code> bez vstupu), jsou zachyceny jako F-002 / F-006 / F-007.</p>
+<hr />
+<h2>Nenalezeno / vyloučeno (prověřené a čisté třídy)</h2>
+<ul>
+<li><strong>Injektáž (SQL / příkazová / kódová / SSTI / deserializace):</strong> 0 zásahů na
+  <code>eval</code> / <code>exec</code> / <code>subprocess</code> / <code>pickle</code> / <code>yaml.load</code> / <code>os.system</code> v produkčních cestách.</li>
+<li><strong>Průchod adresářem (souborové operace):</strong> BEZPEČNÉ — čistička id odstraní oddělovače před jakýmkoli spojením cesty.</li>
+<li><strong>IDOR (mezi principály):</strong> <strong>není vyjádřitelný</strong> — jeden principál se sdíleným tokenem;
+  „číst libovolný úkol" je ověřený základní stav (tohle je <em>důvod</em> vyloučení, ne přehlédnutí).</li>
+<li><strong>XSS / otevřené přesměrování / SSRF:</strong> žádné místo vykreslení HTML, žádný odchozí cíl řízený uživatelem, žádné místo přesměrování.</li>
+<li><strong>Obejití ověření:</strong> každá cesta kromě <code>/health</code> vynucuje porovnání tokenu v konstantním čase; větev, která by ověření přeskočila, neexistuje.</li>
+</ul>
+<hr />
+<h2>Ověření záběru (chytili jsme <em>každý</em> výskyt každé kořenové příčiny?)</h2>
+<table>
+<thead>
+<tr>
+<th>Kořenová příčina</th>
+<th>Nalezeno výskytů</th>
+<th>Ošetřeno (=nález)</th>
+<th>Zbývá</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Neomezené <code>rfile.read(Content-Length)</code></td>
+<td>3</td>
+<td>3 (F-003 ×2, F-005)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Neomezené <code>b64decode</code> → na disk</td>
+<td>1</td>
+<td>1 (F-004)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><code>next_id()</code> TOCTOU bez zámku</td>
+<td>3</td>
+<td>3 (F-002)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Rozpočet globálního omezovače</td>
+<td>1</td>
+<td>1 (F-006)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Cesta měnící stav před ověřením</td>
+<td>6 cest</td>
+<td>5 ověřených + 1 (F-007)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Tajemství v klidu / na výstupu</td>
+<td>3</td>
+<td>1 (F-008) + 1 vyloučeno (jen vývoj)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Místa pro injektáž</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Průchod adresářem</td>
+<td>2</td>
+<td>2 (ošetřeno čističkou)</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Každá kořenová příčina se mapuje 1:1 na nálezy — <strong>žádný osiřelý výskyt</strong>.</p>
+<hr />
+<h2>Kvalita kódu / obrana do hloubky (dnes nezneužitelné, ale stojí za zpevnění)</h2>
+<table>
+<thead>
+<tr>
+<th>Vzorec</th>
+<th>Proč to dnes není nález</th>
+<th>Riziko, když se podmínky změní</th>
+<th>Doporučení</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Klasifikátor obsahu používá <strong>blokační seznam s povolením jako výchozím stavem</strong></td>
+<td>nedosáhne na žádné místo užití řízené útočníkem — je to mezera v úplnosti politiky, ne injektáž</td>
+<td>citlivý web, jehož URL neobsahuje uvedené klíčové slovo, pošle své tělo ven</td>
+<td>přejít na seznam povolených / klasifikaci podle obsahu; ukotvovat jednotně</td>
+</tr>
+<tr>
+<td>Kontrola <code>Origin</code> přes shodu prefixu <code>startswith(...)</code></td>
+<td>jen odráží hlavičku CORS; přístup pořád hlídá token</td>
+<td>kdyby se odraz někdy použil jako rozhodnutí o přístupu, podobný původ by prošel</td>
+<td>používat přesnou shodu původu / rozebrat hostitele</td>
+</tr>
+<tr>
+<td>Externí modul redakce <strong>selhává povolením</strong> (při chybě vrátí text beze změny)</td>
+<td>mimo záběr skenu; není řízen útočníkem</td>
+<td>když modul chybí nebo je rozbitý, redakce tiše degraduje na průchod bez zásahu</td>
+<td><strong>selhávat zákazem</strong> (zadržet), když se modul nepodaří načíst; degradaci zapsat do logu</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Zabití kandidáti (co jsme sami vyvrátili)</h2>
+<p>Dvě hypotézy došly do adverzního kroku a byly <strong>vyvráceny</strong> — uvádíme je schválně,
+protože <em>co skener zahodí</em> je stejně vypovídající jako to, co si nechá:</p>
+<ul>
+<li><strong>IDOR mezi principály</strong> — planý poplach na modelu s jediným principálem; větev
+  s průchodem adresářem byla nezávisle blokovaná čističkou id. <strong>Zabito.</strong></li>
+<li><strong>Připojení do záznamu bez zámku</strong> — přetržený zápis se sám ošetří (nečitelné řádky
+  se při čtení přeskočí); pohlceno nálezem o souběžnosti F-002. <strong>Zabito</strong> jako
+  samostatná položka.</li>
+</ul>
+<hr />
+<h3>Poctivé shrnutí jednou větou</h3>
+<p>Těsně vymezená lokální služba s jedinou skutečnou vadou návrhu (F-001) a hroznem běžných
+mezer ve zpevnění — <strong>1 Medium, 7 Low, nulové nafukování a dva plané poplachy chycené
+dřív, než se dostaly do zprávy.</strong> Takhle vypadá ověřená dodávka.</p>
+<p><em>Redigovaná ukázka · útočně vedený rozbor · režim jen pro čtení · kdo hodnotí ≠ kdo psal.</em></p>
+<hr>
+<h2>Náprava — co se stalo po téhle zprávě</h2>
+<p>Zpráva výše je snímek běhu z 2026-07-19 a nepřepisuje se. Tohle je dodatek: co se změnilo, kdy, a jak se ta změna přeměřila. Ověřoval ji průchod psaný <i>proti</i> každé opravě — <b>kdo hodnotí &ne; kdo psal</b> platí i na opravu.</p>
+<table>
+<thead><tr><th>ID</th><th>Zavřeno</th><th>Co se změnilo</th><th>Jak se to přeměřilo</th></tr></thead>
+<tbody>
+<tr><td><b>F-001</b></td><td>2026-07-19</td><td>Klíč odpovědi navázán na existující, stále otevřený požadavek; dvojí odpověď se odmítá.</td><td>Přeměřeno týž den: cesta podvržení vrací 404 a nepřipojí nic; čekající požadavek přežije úklidový průchod.</td></tr>
+<tr><td><b>F-002</b></td><td>2026-08-28</td><td>Přidělování id serializováno pod zámkem s procesní značkou nejvyššího dosaženého čísla.</td><td>40 souběžných přidělení dalo 40 různých id.</td></tr>
+<tr><td><b>F-003</b></td><td>2026-08-28</td><td>Jedna sdílená čtečka těla se stropem pro všechny POST cesty — chybějící, záporné i nadměrné Content-Length se odmítá ještě před alokací.</td><td>Deklarovaných 99 MB → 413; záporná hodnota → 400; chybějící hlavička → 400.</td></tr>
+<tr><td><b>F-004</b></td><td>2026-08-28</td><td>Strop vynucen na DEKÓDOVANÉ délce přílohy, ještě před zápisem na disk.</td><td>Nadměrný obrázek → 413 a na disk se nezapsal žádný soubor.</td></tr>
+<tr><td><b>F-005</b></td><td>2026-08-28</td><td>Táž sdílená čtečka — oprava šla ke kořeni, ne třikrát do tří obsluh.</td><td>Deklarovaných 99 MB na třetí cestě → 413.</td></tr>
+<tr><td><b>F-006</b></td><td>2026-08-28</td><td>Omezovač klíčovaný podle třídy volajícího místo jednoho globálního seznamu.</td><td>Neověřené zaplavení už nedusí ověřeného volajícího (200); po návratu k jedinému globálnímu kbelíku se 429 znovu objeví.</td></tr>
+<tr><td><b>F-007</b></td><td>2026-08-28</td><td>Cesta na kontrolu života je čisté čtení; úklid běží při startu a jen na ověřené cestě.</td><td>Přechodný soubor způsobilý k úklidu přežije neověřené volání a výslovný úklid ho pořád smaže.</td></tr>
+<tr><td><b>F-008</b></td><td>2026-08-28</td><td>Přihlašovací údaj v konzoli maskován (vypsat ho jde jen na vyžádání); místo POSIXového volání, které na Windows nic nedělá, se nastavuje skutečné ACL.</td><td>Kontrola zdroje plus volání ACL na souboru s tokenem.</td></tr>
+</tbody>
+</table>
+<div class="provenance"><div class="lbl">Část, kterou většina zpráv vynechá</div>
+<div><b>Než si přečtete opravy, přečtěte si data.</b> Jediné Medium se zavřelo týž den. Sedm Low leželo <b>40 dní</b> a zavřelo se naráz. Na službě na loopbacku s jediným principálem je to obhajitelné pořadí — ale je to skutečné zpoždění a tohle je dokument, který ho zaznamenává, ne místo, kde se ztratí. <b>Nahlášeno není opraveno.</b> Účetní kniha oprav má cenu jen tehdy, když unese i to čekání. Každou opravu výše přeměřil průchod psaný <i>proti ní</i>, ne ten, který ji napsal.</div></div>
+<div class="seal" id="seal">
+  <div class="sealk">HYDRA · pečeť nad nálezy a nápravou · 8 × F · run 2026-07-19</div>
+  <div class="sealh">b2d5597ac24a8d2050506c2904c692c9b48c61132d88d7e09aa02bac22925a61</div>
+  <p class="sealr">Jeden řádek na každý nález z tabulky <i>Souhrn</i> — <b>ID|CWE|Severity|Status</b>, přesně jak je vytištěno. Jeden řádek na každý řádek tabulky <i>Náprava</i> — <b>ID|fixed|datum</b>. Jeden řádek <b>run|2026-07-19</b>. Všechny řádky seřadit abecedně dohromady, spojit znakem nového řádku (bez koncového), SHA-256. <b>Všechny vstupy jsou vytištěné na této stránce.</b></p>
+  <p class="sealr"><b>Nahrazuje</b> <code>414329d8ff0b6e68a173a6d4d1383fba…</code> — dřívější pečeť jen nad nálezovou sadou, než dodatek o nápravě existoval. Dokument, který se změnil, to má říct řetězem, ne potichu.</p>
+  <p class="sealr"><b>Co tahle pečeť NEDOKAZUJE.</b> Nedosvědčuje prózu, opravy ani to, kdy stránka vyšla, a není časovou autoritou. Zamyká <b>nálezovou sadu</b> — identifikátory, CWE, závažnosti a dispozice — aby pozdější verze téhle stránky nemohla potichu nález přidat, ztratit nebo mu snížit závažnost, aniž se změní otisk. To je celé tvrzení. <i>Otisk je shodný s anglickou verzí — pečetí se nálezová sada, ne text.</i></p>
+</div>
+<footer>
+  <div class="note"><b>Redigovaná ukázka · útočně vedený rozbor · režim jen pro čtení · kdo hodnotí &ne; kdo psal.</b><br>Identifikátory cíle jsou odstraněné; metoda, nálezy, závažnosti a trasy dat jsou doslovné. Datum běhu 2026-07-19.</div>
+  <div class="mark">TIA · HYDRA<br>hydra.tia-framework.com</div>
+</footer>
+</div>
+</body>
+</html>
