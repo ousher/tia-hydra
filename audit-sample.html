@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A real attack-first code audit report, redacted and published in full: findings, the falsification drops, the resolved-input inventory and the classes we excluded.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hydra.tia-framework.com/audit-sample.html">
+<meta property="og:title" content="TALOS — Code Security Audit, redacted sample report">
+<meta property="og:description" content="A real attack-first code audit report, redacted and published in full: findings, the falsification drops, the resolved-input inventory and the classes we excluded.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HYDRA">
+<meta property="og:url" content="https://hydra.tia-framework.com/audit-sample.html">
+<title>TALOS — Code Security Audit · Redacted Sample</title>
+<style>
+
+  /* TALOS design language: cream + red. Never cyan. (D127, locked) */
+  :root{
+    --cream:#f6f1e7; --ink:#1c1a17; --red:#b3221f; --grey:#6f685e;
+    --rule:#ddd3c2; --ghost:#eae2d3; --deep:#7a1512;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);
+       font:16px/1.5 "Iowan Old Style","Palatino Linotype",Georgia,serif;
+       -webkit-font-smoothing:antialiased}
+  .sheet{width:100%;max-width:1500px;margin:0 auto;padding:48px 66px 40px}
+
+  header{border-bottom:3px solid var(--ink);padding-bottom:15px;margin-bottom:7px}
+  .eyebrow{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;
+           color:var(--red);font-weight:700}
+  h1{font-size:46px;line-height:1;letter-spacing:-.02em;margin:7px 0 9px}
+  h1 small{font-size:18px;color:var(--grey);letter-spacing:0;font-weight:400}
+  .crit{font-size:14.5px;color:var(--grey);max-width:100ch}
+  .crit b{color:var(--ink)}
+  .crit i{font-style:italic;color:var(--deep)}
+
+  h2{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);
+     font-weight:700;margin:20px 0 9px;padding-bottom:5px;border-bottom:1px solid var(--rule)}
+
+  .pass{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:baseline;
+        padding:9px 0;border-bottom:1px solid var(--rule)}
+  .pass:last-of-type{border-bottom:0}
+  .pn{font-size:30px;line-height:1;font-weight:700;color:var(--red);
+      text-align:right;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+  .pt{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px}
+  .pt em{font-style:normal;color:var(--grey);font-weight:400;font-size:14px}
+  .pd{font-size:14px;color:#453f38;line-height:1.42}
+  .pd b{color:var(--ink)}
+
+  .funnel{background:var(--ghost);border-left:3px solid var(--red);padding:11px 16px;
+          margin:11px 0 0;font-size:13.5px;color:#453f38}
+  .funnel b{color:var(--ink)}
+  .funnel code{font:13px/1 ui-monospace,"SF Mono",Menlo,monospace;color:var(--deep)}
+
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  .r{padding:8px 0;border-bottom:1px solid var(--rule)}
+  .r b{font-size:14px;display:block;margin-bottom:1px}
+  .r span{font-size:13.2px;color:#453f38;line-height:1.4}
+  .r.hot b{color:var(--red)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.3px;margin-top:4px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--grey);font-weight:700;padding:0 12px 6px 0;border-bottom:1px solid var(--ink)}
+  td{padding:7px 12px 7px 0;border-bottom:1px solid var(--rule);color:#453f38;
+     vertical-align:top}
+  td b{color:var(--ink)}
+  td.us{color:var(--deep)}
+  tr:last-child td{border-bottom:0}
+
+  .honest{border:1px solid var(--rule);border-left:3px solid var(--ink);
+          padding:13px 17px;margin-top:14px;background:#f1ebdf}
+  .honest h3{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+             color:var(--ink);margin-bottom:6px}
+  .honest p{font-size:13.3px;color:#453f38;line-height:1.45}
+  .honest p b{color:var(--ink)}
+
+  footer{margin-top:16px;padding-top:11px;border-top:1px solid var(--rule);
+         display:flex;justify-content:space-between;align-items:flex-end;gap:26px}
+  .note{font-size:12.5px;color:var(--grey);max-width:82ch}
+  .note b{color:var(--ink)}
+  .mark{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);
+        font-weight:700;white-space:nowrap;text-align:right;line-height:1.7}
+
+  @media print{
+    @page{size:A4;margin:10mm}
+    .sheet{padding:0;max-width:none}
+    body{font-size:12px}
+    h1{font-size:31px;margin:5px 0 7px} h1 small{font-size:14px}
+    .crit{font-size:11.5px}
+    header{padding-bottom:10px;margin-bottom:3px}
+    h2{margin:12px 0 6px;font-size:9.5px;padding-bottom:4px}
+    .pass{padding:6px 0;grid-template-columns:30px 1fr;gap:11px}
+    .pn{font-size:22px} .pt{font-size:13.5px} .pt em{font-size:11.5px}
+    .pd{font-size:11.3px;line-height:1.34}
+    .funnel{padding:8px 12px;font-size:11.2px;margin-top:8px}
+    .funnel code{font-size:10.8px}
+    .r{padding:5px 0} .r b{font-size:11.6px} .r span{font-size:10.9px;line-height:1.32}
+    table{font-size:10.9px} th{font-size:9px;padding-bottom:4px} td{padding:5px 10px 5px 0}
+    .honest{padding:9px 12px;margin-top:9px}
+    .honest h3{font-size:9px;margin-bottom:4px} .honest p{font-size:11px;line-height:1.36}
+    footer{margin-top:10px;padding-top:8px}
+    .note{font-size:10.2px} .mark{font-size:8.5px}
+  }
+
+
+  .backbar{max-width:1500px;margin:0 auto;padding:14px 66px 0;
+           font:13px/1 ui-monospace,"SF Mono",Menlo,monospace}
+  .backbar a{color:var(--red);text-decoration:none;letter-spacing:.06em}
+  .backbar a:hover{text-decoration:underline}
+  @media print{.backbar{display:none}}
+
+
+  /* Dlouhý dokument, ne A4 list: JEDNA míra sloupce pro text i tabulky.
+     Před opravou se odstavce lámaly na ~730 px, ale tabulky a rámečky jely
+     přes 1230 — tři různé míry v jednom dokumentu, oko to čte jako nepořádek. */
+  .sheet{max-width:1040px;padding:34px 48px 40px}
+  .backbar{max-width:1040px;padding:14px 48px 0}
+  .sheet h1{font-size:40px;margin:10px 0 14px}
+  .sheet h2{font-size:11px}
+  .sheet h3{font-size:16.5px;margin:20px 0 7px;letter-spacing:-.01em}
+  .sheet p{font-size:14.2px;color:#453f38;margin:9px 0;max-width:none}
+  .crit{max-width:none}
+  .sheet p b,.sheet li b,.sheet td b{color:var(--ink)}
+  .sheet ul{margin:9px 0 9px 22px;font-size:14px;color:#453f38}
+  .sheet li{margin:4px 0}
+  .sheet blockquote{background:var(--ghost);border-left:3px solid var(--red);
+      padding:13px 18px;margin:14px 0;font-size:13.8px;color:#453f38}
+  .sheet blockquote p{margin:5px 0;font-size:13.8px}
+  .sheet table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 16px}
+  .sheet th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--grey);font-weight:700;padding:0 12px 6px 0;border-bottom:1px solid var(--ink)}
+  .sheet td{padding:7px 12px 7px 0;border-bottom:1px solid var(--rule);
+      color:#453f38;vertical-align:top;line-height:1.42}
+  .sheet code{font:12.6px/1.45 ui-monospace,"SF Mono",Menlo,monospace;color:var(--deep);
+      background:var(--ghost);padding:1px 4px}
+  .sheet pre{background:var(--ghost);border-left:3px solid var(--rule);
+      padding:12px 16px;margin:11px 0;overflow-x:auto}
+  .sheet pre code{background:none;padding:0;font-size:12.3px;line-height:1.5;color:#3b352e}
+  .sheet hr{border:0;border-top:1px solid var(--rule);margin:26px 0}
+  .provenance{border:1px solid var(--rule);border-left:3px solid var(--red);
+      background:#f1ebdf;padding:14px 18px;margin:16px 0 4px}
+  .provenance b{color:var(--ink)}
+  .provenance div{font-size:13.4px;color:#453f38;line-height:1.5}
+  .provenance .lbl{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--red);font-weight:700;margin-bottom:6px;font-family:ui-monospace,Menlo,monospace}
+
+
+  .seal{margin-top:34px;border:1px solid var(--rule);border-left:4px solid var(--red);
+        padding:16px 20px;background:#fbf8f1}
+  .sealk{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.16em;
+         text-transform:uppercase;color:var(--red);font-weight:700}
+  .sealh{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;
+         word-break:break-all;margin:6px 0 10px;color:var(--red)}
+  /* .sheet p je specifičtější než .sealr — recept by jel na 14,2 px a nečetl by
+     se jako drobné písmo. Chyceno spočítaným stylem, ne okem. */
+  .seal .sealr{font-size:12.8px;color:var(--grey);margin:6px 0 0;line-height:1.55}
+  .seal .sealr b{color:var(--ink)} .seal .sealr i{color:var(--deep)}
+  @media print{.seal{background:#fff!important} table,tr{break-inside:avoid}}
+
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/#codesec">&larr; BACK TO PRICING · HYDRA</a>
+&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/talos.html">HOW TALOS WORKS (CZ) &rarr;</a></div>
+<div class="sheet">
+<header>
+  <div class="eyebrow">TIA · TALOS · REDACTED SAMPLE</div>
+</header>
+<h1>Code Security Audit — Redacted Sample</h1>
+<blockquote>
+<p><strong>What this is.</strong> A sanitized excerpt of an <em>internal self-audit</em> — we ran our own
+code through our attack-first review method ("dogfooding"). Target identifiers are
+redacted; <strong>the methodology, findings, severities and data-flow traces are verbatim.</strong>
+This is a representative sample of a client deliverable, not a marketing mock-up.</p>
+</blockquote>
+<div class="provenance">
+  <div class="lbl">Provenance — read this first</div>
+  <div><b>This is a snapshot of one run, dated 2026-07-19.</b> It is published as a
+  specimen of the deliverable — what a TALOS report looks like, in full, including the
+  parts most vendors leave out. It is <b>not</b> a statement about the present state of
+  any system, ours or anyone else's. The target was our own code: we ran the method on
+  ourselves before we sold it to anyone.<br><br>
+  The counts are checkable against the tables below: <b>13 externally-controlled inputs
+  traced → 10 candidates → falsification killed 2 → 8 confirmed</b> (1 Medium, 7 Low).
+  If a number here does not reconcile with a table, the table wins — tell us and we will
+  correct it.</div>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Target</strong></td>
+<td>internal loopback API service (name redacted) — a local async task-gateway</td>
+</tr>
+<tr>
+<td><strong>Scan mode</strong></td>
+<td><strong>READ-ONLY</strong> — exploit tests were <em>written but not executed</em>; each finding carries a static source→sink trace with concrete payloads. No source file was modified.</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td>Recon → Parallel Hunt → <strong>Adversarial Falsification</strong> → Capability Filter → independent read-only Verify (maker ≠ grader)</td>
+</tr>
+<tr>
+<td><strong>Findings</strong></td>
+<td>0 Critical, 0 High, <strong>1 Medium, 7 Low</strong> — all <em>Confirmed</em> (2 further candidates <em>dropped</em> in falsification)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Why "attack-first + falsification" matters (the method)</h2>
+<p>Most scanners optimise for <strong>recall</strong> — they surface everything that pattern-matches a
+weakness and leave you to sort signal from noise. We optimise for <strong>precision under an
+adversary</strong>: every candidate must survive a step whose only job is to <strong>disprove it</strong>.</p>
+<pre><code>Recon ─▶ Parallel Hunt ─▶ Adversarial Falsify ─▶ Capability Filter ─▶ Independent Verify
+ map     many hypotheses    &quot;prove this is NOT     &quot;is it reachable    read-only grader,
+ sinks   in parallel         real&quot; (default:        by a real actor?&quot;   different context
+ &amp; inputs                    refuted)                                    (maker ≠ grader)
+</code></pre>
+<p>On this run the falsification step <strong>dropped 2 of 10 candidates</strong> as false positives
+(see <em>Falsification drops</em> below). A verified-only report is worth more than a long one:
+you spend remediation budget on real defects, not on triage.</p>
+<hr />
+<h2>Trust model (this is what caps severity)</h2>
+<p>The service binds <strong><code>127.0.0.1</code> only</strong> (<code>gateway.py:475</code>) and authenticates every route
+except <code>/health</code> with a <strong>single shared install token</strong> <code>X-Api-Token</code>
+(<code>secrets.token_urlsafe(24)</code>, constant-time compare <code>:273</code>). There is exactly <strong>one
+principal</strong> — any local process holding the token — so <strong>no cross-tenant boundary
+exists</strong>. This caps every finding: "read/write any task" is the <em>authenticated baseline</em>,
+and blast radius is one loopback host. The highest-value finding (F-001) is
+<strong>principal-independent</strong> (attribution spoof + destructive), hence <strong>Medium</strong>; everything
+else is <strong>Low</strong>. Honest scoping beats severity inflation.</p>
+<hr />
+<h2>Summary</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>CWE</th>
+<th>Severity</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-001</td>
+<td>Answer spoofing + forced deletion of any pending task</td>
+<td>CWE-290 / CWE-639</td>
+<td><strong>Medium</strong></td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-002</td>
+<td><code>next_id()</code> TOCTOU race → duplicate IDs / context overwrite</td>
+<td>CWE-367 / CWE-362</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-003</td>
+<td>Unbounded request-body read (<code>/submit</code>, <code>/upload</code>)</td>
+<td>CWE-400</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-004</td>
+<td>Unbounded base64 attachment decode + disk write (<code>/upload</code>)</td>
+<td>CWE-400</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-005</td>
+<td>Unbounded request-body read (<code>/answer</code>)</td>
+<td>CWE-400</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-006</td>
+<td>Global (non-per-caller) rate-limit shared-budget DoS</td>
+<td>CWE-770 / CWE-307</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-007</td>
+<td>Unauthenticated <code>/health</code> triggers filesystem scrub</td>
+<td>CWE-306</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>F-008</td>
+<td>Auth token in cleartext file + stdout; <code>chmod</code> no-op on Windows</td>
+<td>CWE-312</td>
+<td>Low</td>
+<td>Confirmed</td>
+</tr>
+</tbody>
+</table>
+<p>Each finding shipped with a static PoC <strong>and</strong> an exploit test (written, not run).</p>
+<hr />
+<h2>Findings</h2>
+<h3>F-001 — Answer spoofing + forced deletion of any pending task</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-290 (Auth Bypass by Spoofing) / CWE-639 (Authorization Bypass Through User-Controlled Key)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Entry point</strong></td>
+<td><code>POST /answer</code></td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:448-451</code> (write); poll read <code>:302-308</code>; scrub delete <code>:186-191</code></td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td>attacker sets <code>reply_to</code> = any task id → the handler appends <code>{author:"worker", …}</code> with <strong>no check the task exists / is still open</strong> (<code>:448-451</code>) → (a) the polling UI receives the forged answer as <strong>genuine worker output</strong> (<code>:304-307</code>); (b) the "answered" cleanup deletes the target task's <strong>full-context transient before the real worker reads it</strong> (<code>:186-191</code>).</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>In the answer handler, verify the target task <strong>exists and is open</strong> before appending; gate the answered-deletion on a <em>validated</em> answer; enforce answer provenance on read.</td>
+</tr>
+<tr>
+<td><strong>Root cause</strong></td>
+<td>No existence/open-state binding on the user-controlled <code>reply_to</code> key; hardcoded author field.</td>
+</tr>
+<tr>
+<td><strong>Why Medium (not Low)</strong></td>
+<td>Principal-independent: spoof + destroy in-flight tasks is <strong>beyond</strong> the authenticated "post answers" baseline.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The fix — shipped &amp; re-tested the same day</strong> (identifiers redacted, logic verbatim):</p>
+<pre><code class="language-diff">  # POST /answer handler
+- # any caller could answer ANY id — existence unchecked, author hardcoded
+- append_reply(author=&quot;worker&quot;, reply_to=req[&quot;reply_to&quot;], text=req[&quot;text&quot;])
++ # a reply must answer a real, still-OPEN request — everything else is refused
++ if read_request(reply_to) is None:      # no such open request  -&gt; 404
++     return 404
++ if already_answered(reply_to):          # can't double-answer    -&gt; 409
++     return 409
++ append_reply(author=&quot;worker&quot;, reply_to=reply_to, text=text)
+</code></pre>
+<p>Re-test after the fix: the spoof path now returns <strong>404 and appends nothing</strong>; a pending
+request <strong>survives</strong> the cleanup sweep (it can no longer be forced into the "answered" set
+by an attacker). Both prongs — attribution spoof <em>and</em> forced deletion — close at the same
+guard. Time from confirmation to verified fix: <strong>same day.</strong></p>
+<h3>F-002 — <code>next_id()</code> TOCTOU race</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-367 (TOCTOU) / CWE-362 (Race Condition)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Entry point</strong></td>
+<td><code>POST /submit</code>, <code>POST /upload</code> (concurrency)</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:136-138</code> (<code>next_id</code>), callers <code>:336</code>, <code>:390</code></td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td><code>next_id()</code> derives the id from <code>len(read_events())</code> (<code>:137</code>) → under the threading HTTP server (<code>:475</code>) two concurrent requests read the same count before either appends → <strong>both allocate the same id</strong> → duplicate ledger entry and one task's context transient overwritten. The rate-limit lock guards only the hit counter, not id allocation.</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Serialize <code>next_id()</code>→append→write under one dedicated lock, or derive ids from a monotonic counter / UUID instead of ledger length.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-003 — Unbounded request-body read (<code>/submit</code>, <code>/upload</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-400 (Uncontrolled Resource Consumption)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Entry point</strong></td>
+<td><code>POST /submit</code>, <code>POST /upload</code></td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:323</code>, <code>:376</code></td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td>attacker sets a large <code>Content-Length</code> → <code>rfile.read(n)</code> with <strong>no <code>MAX_BODY</code> cap</strong> → single unbounded allocation. The rate limiter caps request <em>count</em>, not <em>size</em>.</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Add a module-level <code>MAX_BODY</code>; reject over-limit / absent / negative <code>Content-Length</code> with 413/400 in one shared <code>_read_json_body()</code> helper used by every POST route.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-004 — Unbounded base64 attachment decode + disk write (<code>/upload</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-400</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Entry point</strong></td>
+<td><code>POST /upload</code></td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:392-403</code></td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td>attacker sends a large base64 attachment → <code>b64decode</code> (<code>:394</code>) → <code>open(path,"wb").write(raw)</code> (<code>:402-403</code>) with <strong>no length check</strong> → attacker-controlled bytes written to disk; the TTL sweep is slower than the write rate.</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Enforce <code>MAX_ATTACHMENT_BYTES</code> on the <em>decoded</em> length before the disk write; reject oversize.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-005 — Unbounded request-body read (<code>/answer</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-400</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Entry point</strong></td>
+<td><code>POST /answer</code></td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:445</code></td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td>same pattern as F-003 at the third handler: <code>int(Content-Length)</code> → <code>rfile.read(n)</code> with no cap.</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Same shared <code>_read_json_body()</code> cap as F-003 — fixes all three routes at the root.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-006 — Global rate-limit shared-budget DoS</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-770 (Allocation Without Limits) / CWE-307 (Improper Restriction of Excessive Attempts)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Entry point</strong></td>
+<td>all routes (gate runs pre-auth)</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:261-269</code>, checked <code>:289</code>, <code>:312</code></td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td>the limiter keeps <strong>one class-global hit list with no per-caller key</strong>, checked <em>before</em> auth → an unauthenticated local caller exceeding the window forces <code>429</code> for the legitimate operator (shared budget).</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Key the limiter per caller (client address and/or token) with an isolated per-key window.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-007 — Unauthenticated <code>/health</code> triggers filesystem scrub</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-306 (Missing Authentication for Critical Function)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Entry point</strong></td>
+<td><code>GET /health</code></td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:290-292</code> → scrub <code>:161-192</code></td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td>the <code>/health</code> branch runs the filesystem scrub <strong>before</strong> the auth check (<code>:293</code>) → any local unauth caller triggers deletion of already-eligible (answered / TTL-stale) transients. Opportunistic only, but real — and it <strong>chains with F-001</strong> (unauth deletion of attacker-marked tasks).</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Make <code>/health</code> a pure read — drop the scrub call; rely on the authenticated sweep and the startup wipe.</td>
+</tr>
+</tbody>
+</table>
+<h3>F-008 — Auth token in cleartext file + stdout</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE</strong></td>
+<td>CWE-312 (Cleartext Storage of Sensitive Information)</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>gateway.py:66-70</code> (file), <code>:468</code> (stdout)</td>
+</tr>
+<tr>
+<td><strong>Data flow</strong></td>
+<td><code>token_urlsafe(24)</code> written cleartext to <code>.api-token</code>; <code>os.chmod(...,0o600)</code> is a <strong>no-op on Windows</strong> (<code>:70</code>) → the file may be world-readable; the full token is also printed to stdout (<code>:468</code>) → a local non-operator user reading the file/console obtains the full token (which unlocks F-001/006/007).</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Encrypt at rest (OS keyring / DPAPI); set a real Windows ACL instead of relying on POSIX <code>chmod</code>; mask the stdout print (fingerprint / last-4 only).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Resolved input inventory (completeness artifact)</h2>
+<p>A finding list is only trustworthy if it also proves what was <em>checked and cleared</em>. Every
+externally-controlled input was traced to a disposition (redacted field names):</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Origin</code> header</td>
+<td><strong>SAFE</strong> — governs only CORS reflection, not access; prefix quirk not leverageable (token still required).</td>
+</tr>
+<tr>
+<td><code>X-Api-Token</code></td>
+<td><strong>SAFE (auth)</strong> — constant-time compare. Token <em>storage</em> is CWE-312 → <strong>F-008</strong>.</td>
+</tr>
+<tr>
+<td><code>Content-Length</code></td>
+<td><strong>CANDIDATE</strong> → <strong>F-003</strong> (<code>/submit</code>,<code>/upload</code>), <strong>F-005</strong> (<code>/answer</code>).</td>
+</tr>
+<tr>
+<td>primary <code>payload</code></td>
+<td><strong>SAFE</strong> — redacted/secret-scrubbed before store; no injection sink.</td>
+</tr>
+<tr>
+<td><code>metadata</code> object (assorted string fields)</td>
+<td><strong>SAFE</strong> — wrapped/redacted context; no sink.</td>
+</tr>
+<tr>
+<td>classifier <code>url</code> field</td>
+<td><strong>SAFE</strong> — classification only (allow-by-default noted as a code smell → see DiD).</td>
+</tr>
+<tr>
+<td><code>option</code> selector</td>
+<td><strong>SAFE</strong> — not a sink.</td>
+</tr>
+<tr>
+<td>base64 <code>attachment</code></td>
+<td><strong>CANDIDATE</strong> → <strong>F-004</strong>.</td>
+</tr>
+<tr>
+<td><code>reply_to</code> key</td>
+<td><strong>CANDIDATE</strong> → <strong>F-001</strong>.</td>
+</tr>
+<tr>
+<td>answer <code>text</code> body</td>
+<td><strong>SAFE</strong> — abuse is via the <code>reply_to</code> binding, not the text content.</td>
+</tr>
+<tr>
+<td>path id <code>{id}</code> (GET routes)</td>
+<td><strong>SAFE</strong> — sanitizer <code>re.sub(r"[^a-z0-9\-]","",id)</code> blocks traversal; cross-principal IDOR not expressible (single shared token).</td>
+</tr>
+<tr>
+<td>second-order ledger / store reads</td>
+<td><strong>SAFE</strong> — own writes; torn-line self-heals.</td>
+</tr>
+<tr>
+<td>CLI flags</td>
+<td><strong>DESIGN-INTENT</strong> — local operator only; not a data sink.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>All inputs resolved.</strong> Findings not tied to a single input (concurrency, global
+rate-limit, zero-input <code>/health</code>) are captured as F-002 / F-006 / F-007.</p>
+<hr />
+<h2>Not found / excluded (checked-but-clean classes)</h2>
+<ul>
+<li><strong>Injection (SQL / command / code / SSTI / deserialization):</strong> 0 hits for
+  <code>eval</code> / <code>exec</code> / <code>subprocess</code> / <code>pickle</code> / <code>yaml.load</code> / <code>os.system</code> in production paths.</li>
+<li><strong>Path traversal (file ops):</strong> SAFE — id sanitizer strips separators before any join.</li>
+<li><strong>IDOR (cross-principal):</strong> <strong>not expressible</strong> — single shared-token principal; "read
+  any task" is the authenticated baseline (this is <em>why</em> it's excluded, not overlooked).</li>
+<li><strong>XSS / open redirect / SSRF:</strong> no HTML render sink, no user-controlled outbound origin,
+  no redirect sink.</li>
+<li><strong>AuthN bypass:</strong> every non-<code>/health</code> route enforces a constant-time token compare; no
+  skip-auth branch exists.</li>
+</ul>
+<hr />
+<h2>Sweep verification (did we catch <em>every</em> instance of each root cause?)</h2>
+<table>
+<thead>
+<tr>
+<th>Root cause</th>
+<th>Instances found</th>
+<th>Mitigated (=finding)</th>
+<th>Remaining</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unbounded <code>rfile.read(Content-Length)</code></td>
+<td>3</td>
+<td>3 (F-003 ×2, F-005)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Unbounded <code>b64decode</code> → disk</td>
+<td>1</td>
+<td>1 (F-004)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Lock-free <code>next_id()</code> TOCTOU</td>
+<td>3</td>
+<td>3 (F-002)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Global rate-limit budget</td>
+<td>1</td>
+<td>1 (F-006)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Pre-auth state-changing endpoint</td>
+<td>6 routes</td>
+<td>5 auth-gated + 1 (F-007)</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Secret at rest / stdout</td>
+<td>3</td>
+<td>1 (F-008) + 1 dev-only excluded</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Injection sinks</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Path traversal</td>
+<td>2</td>
+<td>2 (sanitized)</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Every root cause maps 1:1 onto the findings — <strong>no orphaned instances</strong>.</p>
+<hr />
+<h2>Code quality / defense-in-depth (not exploitable as-is, but worth hardening)</h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Why it's not a finding today</th>
+<th>Risk if conditions change</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content classifier uses an <strong>allow-by-default</strong> keyword blocklist</td>
+<td>no attacker-controlled sink reached — a policy completeness gap, not an injection</td>
+<td>a sensitive site whose URL lacks a listed keyword gets its body egressed</td>
+<td>move to allowlist / content-based classification; anchor consistently</td>
+</tr>
+<tr>
+<td>Origin check via <code>startswith(...)</code> prefix match</td>
+<td>only reflects CORS header; token still gates access</td>
+<td>if reflection were ever used as an access decision, a look-alike origin would match</td>
+<td>use exact-origin equality / parse the host</td>
+</tr>
+<tr>
+<td>External redaction module <strong>fails <em>open</em></strong> (returns text unchanged on error)</td>
+<td>out of scan scope; not attacker-controlled</td>
+<td>if the module is missing/broken, redaction silently degrades to passthrough</td>
+<td><strong>fail-closed</strong> (withhold) when it can't load; log the degradation</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Falsification drops (the candidates we killed)</h2>
+<p>Two hypotheses reached the adversarial step and were <strong>refuted</strong> — reported here on
+purpose, because <em>what a scanner discards</em> is as diagnostic as what it keeps:</p>
+<ul>
+<li><strong>Cross-principal IDOR</strong> — false positive on a single-principal model; the path-traversal
+  prong was independently blocked by the id sanitizer. <strong>Dropped.</strong></li>
+<li><strong>Unlocked ledger append</strong> — the torn-write self-heals (unparseable lines are skipped on
+  read); subsumed by the concurrency finding F-002. <strong>Dropped</strong> as a standalone.</li>
+</ul>
+<hr />
+<h3>One-line honest summary</h3>
+<p>A tightly-scoped local service with a single real design defect (F-001) and a cluster of
+routine hardening gaps — <strong>1 Medium, 7 Low, zero inflation, two false positives caught
+before they reached the report.</strong> That is what a verified deliverable looks like.</p>
+<p><em>Redacted sample · attack-first review · read-only mode · maker ≠ grader.</em></p>
+<div class="seal" id="seal">
+  <div class="sealk">HYDRA · seal over the finding set · 8 findings · run 2026-07-19</div>
+  <div class="sealh">414329d8ff0b6e68a173a6d4d1383fba9b8af318b11a86200e1e7cb272ecf83c</div>
+  <p class="sealr">One line per finding from the <i>Summary</i> table above — <b>ID|CWE|Severity|Status</b>, exactly as printed — plus one line <b>run|2026-07-19</b>. All lines sorted alphabetically, joined with a newline (no trailing newline), SHA-256. <b>Every input is printed on this page.</b></p>
+  <p class="sealr"><b>What this seal does not do.</b> It does not attest the prose, the fixes, or when this page was published, and it is not a timestamp authority. It fixes the <b>finding set</b> — identifiers, CWEs, severities and dispositions — so a later version of this page cannot quietly gain a finding, lose one, or downgrade a severity without the digest changing. That is the whole claim.</p>
+</div>
+<footer>
+  <div class="note"><b>Redacted sample · attack-first review · read-only mode · maker &ne; grader.</b><br>
+  Target identifiers are removed; methodology, findings, severities and data-flow traces are verbatim.
+  Run date 2026-07-19.</div>
+  <div class="mark">TIA · HYDRA<br>hydra.tia-framework.com</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Jak TALOS funguje: útok → falsifikace vlastních nálezů → náprava s nezávislým ověřením. Včetně toho, co TALOS neumí.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hydra.tia-framework.com/talos.html">
+<meta property="og:title" content="TALOS — attack-first audit kódu">
+<meta property="og:description" content="Jak TALOS funguje: útok → falsifikace vlastních nálezů → náprava s nezávislým ověřením. Včetně toho, co TALOS neumí.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HYDRA">
+<meta property="og:url" content="https://hydra.tia-framework.com/talos.html">
+<title>TALOS — technický přehled</title>
+<style>
+  /* TALOS design language: cream + red. Never cyan. (D127, locked) */
+  :root{
+    --cream:#f6f1e7; --ink:#1c1a17; --red:#b3221f; --grey:#6f685e;
+    --rule:#ddd3c2; --ghost:#eae2d3; --deep:#7a1512;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);
+       font:16px/1.5 "Iowan Old Style","Palatino Linotype",Georgia,serif;
+       -webkit-font-smoothing:antialiased}
+  .sheet{width:100%;max-width:1500px;margin:0 auto;padding:48px 66px 40px}
+
+  header{border-bottom:3px solid var(--ink);padding-bottom:15px;margin-bottom:7px}
+  .eyebrow{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;
+           color:var(--red);font-weight:700}
+  h1{font-size:46px;line-height:1;letter-spacing:-.02em;margin:7px 0 9px}
+  h1 small{font-size:18px;color:var(--grey);letter-spacing:0;font-weight:400}
+  .crit{font-size:14.5px;color:var(--grey);max-width:100ch}
+  .crit b{color:var(--ink)}
+  .crit i{font-style:italic;color:var(--deep)}
+
+  h2{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);
+     font-weight:700;margin:20px 0 9px;padding-bottom:5px;border-bottom:1px solid var(--rule)}
+
+  .pass{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:baseline;
+        padding:9px 0;border-bottom:1px solid var(--rule)}
+  .pass:last-of-type{border-bottom:0}
+  .pn{font-size:30px;line-height:1;font-weight:700;color:var(--red);
+      text-align:right;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+  .pt{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px}
+  .pt em{font-style:normal;color:var(--grey);font-weight:400;font-size:14px}
+  .pd{font-size:14px;color:#453f38;line-height:1.42}
+  .pd b{color:var(--ink)}
+
+  .funnel{background:var(--ghost);border-left:3px solid var(--red);padding:11px 16px;
+          margin:11px 0 0;font-size:13.5px;color:#453f38}
+  .funnel b{color:var(--ink)}
+  .funnel code{font:13px/1 ui-monospace,"SF Mono",Menlo,monospace;color:var(--deep)}
+
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  .r{padding:8px 0;border-bottom:1px solid var(--rule)}
+  .r b{font-size:14px;display:block;margin-bottom:1px}
+  .r span{font-size:13.2px;color:#453f38;line-height:1.4}
+  .r.hot b{color:var(--red)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.3px;margin-top:4px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--grey);font-weight:700;padding:0 12px 6px 0;border-bottom:1px solid var(--ink)}
+  td{padding:7px 12px 7px 0;border-bottom:1px solid var(--rule);color:#453f38;
+     vertical-align:top}
+  td b{color:var(--ink)}
+  td.us{color:var(--deep)}
+  tr:last-child td{border-bottom:0}
+
+  .honest{border:1px solid var(--rule);border-left:3px solid var(--ink);
+          padding:13px 17px;margin-top:14px;background:#f1ebdf}
+  .honest h3{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+             color:var(--ink);margin-bottom:6px}
+  .honest p{font-size:13.3px;color:#453f38;line-height:1.45}
+  .honest p b{color:var(--ink)}
+
+  footer{margin-top:16px;padding-top:11px;border-top:1px solid var(--rule);
+         display:flex;justify-content:space-between;align-items:flex-end;gap:26px}
+  .note{font-size:12.5px;color:var(--grey);max-width:82ch}
+  .note b{color:var(--ink)}
+  .mark{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);
+        font-weight:700;white-space:nowrap;text-align:right;line-height:1.7}
+
+  @media print{
+    @page{size:A4;margin:10mm}
+    .sheet{padding:0;max-width:none}
+    body{font-size:12px}
+    h1{font-size:31px;margin:5px 0 7px} h1 small{font-size:14px}
+    .crit{font-size:11.5px}
+    header{padding-bottom:10px;margin-bottom:3px}
+    h2{margin:12px 0 6px;font-size:9.5px;padding-bottom:4px}
+    .pass{padding:6px 0;grid-template-columns:30px 1fr;gap:11px}
+    .pn{font-size:22px} .pt{font-size:13.5px} .pt em{font-size:11.5px}
+    .pd{font-size:11.3px;line-height:1.34}
+    .funnel{padding:8px 12px;font-size:11.2px;margin-top:8px}
+    .funnel code{font-size:10.8px}
+    .r{padding:5px 0} .r b{font-size:11.6px} .r span{font-size:10.9px;line-height:1.32}
+    table{font-size:10.9px} th{font-size:9px;padding-bottom:4px} td{padding:5px 10px 5px 0}
+    .honest{padding:9px 12px;margin-top:9px}
+    .honest h3{font-size:9px;margin-bottom:4px} .honest p{font-size:11px;line-height:1.36}
+    footer{margin-top:10px;padding-top:8px}
+    .note{font-size:10.2px} .mark{font-size:8.5px}
+  }
+
+  .backbar{max-width:1500px;margin:0 auto;padding:14px 66px 0;
+           font:13px/1 ui-monospace,"SF Mono",Menlo,monospace}
+  .backbar a{color:var(--red);text-decoration:none;letter-spacing:.06em}
+  .backbar a:hover{text-decoration:underline}
+  @media print{.backbar{display:none}}
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/#codesec">&larr; ZPĚT NA CENÍK · HYDRA</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/audit-sample.html">UKÁZKOVÁ ZPRÁVA (EN) &rarr;</a></div>
+<div class="sheet">
+
+  <header>
+    <div class="eyebrow">TIA · technický přehled</div>
+    <h1>TALOS <small>— audit kódu vedený útokem</small></h1>
+    <p class="crit"><i>„Talos bránil tím, že útočil."</i> Bronzový automat, který
+      hlídal Krétu tak, že šel útočníkům naproti. <b>Nejdřív útok, pak pokus vyvrátit
+      vlastní nález, teprve potom hlášení</b> — a opravu ověřuje někdo jiný než ten,
+      kdo ji psal.</p>
+  </header>
+
+  <h2>Tři průchody, vždy v tomto pořadí</h2>
+
+  <div class="pass">
+    <span class="pn">1</span>
+    <span>
+      <div class="pt">ÚTOK <em>— číst kód jako útočník, ne jako recenzent</em></div>
+      <div class="pd">Trasování vstupů ke koncovým bodům, kde můžou uškodit.
+        <b>Předpoklad je, že volající je nepřátelský.</b> Ne kontrola stylu, ne
+        shoda se standardem — hledá se cesta dovnitř.</div>
+    </span>
+  </div>
+
+  <div class="pass">
+    <span class="pn">2</span>
+    <span>
+      <div class="pt">FALSIFIKACE <em>— zaútočit na vlastní nálezy</em></div>
+      <div class="pd">Každý kandidát musí <b>přežít pokus o vlastní vyvrácení.</b>
+        Tenhle průchod je vůči prvnímu záměrně nepřátelský, ne razítkovací —
+        <b>kdo hodnotí, není ten, kdo našel.</b></div>
+    </span>
+  </div>
+
+  <div class="pass">
+    <span class="pn">3</span>
+    <span>
+      <div class="pt">NÁPRAVA <em>— a nezávislé ověření opravy</em></div>
+      <div class="pd">Oprava, kterou testoval jen její autor, <b>není doložená oprava
+        — je to tvrzení.</b> Ověřuje ji jiná instance.</div>
+    </span>
+  </div>
+
+  <div class="funnel">
+    <b>Doloženo na vlastním kódu při zrodu služby:</b>
+    <code>13 sledovaných vstupů → 10 kandidátů → falsifikace zabila 2 → 8 potvrzených</code>
+    — a <b>nulová inflace závažnosti.</b> Dvě zabité položky jsou ten nejdůležitější
+    údaj: měří, jestli ta druhá brána vůbec může selhat.
+  </div>
+
+  <h2>Pravidla, která z toho dělají službu, ne skener</h2>
+
+  <div class="rules">
+    <div class="r"><b>Pouze doložené, ve výchozím stavu jen pro čtení</b>
+      <span>K nalezení věcí nepotřebujeme zápisová práva.</span></div>
+    <div class="r hot"><b>Žádná inflace závažnosti</b>
+      <span>Jedno poctivé Medium poráží sedm vymyšlených Highů. Reputace JE produkt.</span></div>
+    <div class="r hot"><b>Záplatované ≠ nasazené</b>
+      <span>Nejostřejší nález interního auditu: jediná naslouchající brána běžela
+        na buildu <em>před</em> opravou. Kontroluje se, co BĚŽÍ, ne co je commitnuté.</span></div>
+    <div class="r"><b>Localhost není hranice</b>
+      <span>„Je to jen lokálně" není bezpečnostní vlastnost.</span></div>
+  </div>
+
+  <h2>Kde je příkop — a kde není</h2>
+
+  <table>
+    <tr><th style="width:20%">Tvrzení</th><th>Stav</th></tr>
+    <tr>
+      <td><b>Suverenita / on-prem</b></td>
+      <td>🔴 <b>NENÍ příkop.</b> Vyvráceno vlastní Radou s doklady: on-prem nebo
+        self-hosted nabízí Mend, Semgrep, GitLab, GitHub i XBOW.
+        <b>Tímhle se neodlišujeme a nemá se tím argumentovat.</b></td>
+    </tr>
+    <tr>
+      <td class="us"><b>Skladebná paměť o zákazníkovi</b></td>
+      <td class="us">Bezpečnostní kontext klienta, který roste napříč zakázkami
+        a přežívá výměnu modelu. <b>Nedá se koupit, jen odžít.</b></td>
+    </tr>
+    <tr>
+      <td class="us"><b>Účetní kniha oprav</b></td>
+      <td class="us">Zapečetěná historie: co se našlo, čím se to vyvrátit nepodařilo,
+        co se opravilo a kdo to ověřil. Zpětně se pozná, že se s ní hnulo.</td>
+    </tr>
+    <tr>
+      <td class="us"><b>Kdo hodnotí ≠ kdo psal</b></td>
+      <td class="us">Strukturální oddělení, ne dobrá vůle. Platí i na opravu.</td>
+    </tr>
+  </table>
+
+  <div class="honest">
+    <h3>Co TALOS NEUMÍ — a co je potřeba říct dřív, než se někdo zeptá</h3>
+    <p><b>Nemá nezávislý benchmark ani certifikaci.</b> Žádné SOC 2, žádné ISO,
+      žádné umístění ve veřejném žebříčku. <b>Negeneruje autonomní pull requesty</b>
+      do zákazníkova repozitáře a neběží nepřetržitě v CI. <b>Stojí na jednom
+      člověku</b> — což je zároveň důvod, proč u něj nefunguje inflace nálezů,
+      i důvod, proč neškáluje. <b>Není to nástroj, je to služba</b> — a nástroj
+      za stejné peníze pokryje víc řádků kódu.</p>
+  </div>
+
+  <footer>
+    <p class="note"><b>Postup je pevný, závěry ne.</b> Každý nález prošel pokusem
+      o vlastní vyvrácení a u každého se uvádí i to, co jím prokázat nelze.
+      Konkrétní nástrojová základna se neuvádí — <b>ukazuje se schopnost,
+      ne implementace.</b></p>
+    <div class="mark">TIA · 2026-08-11<br>ondrej.sramek</div>
+  </footer>
+
+</div>
+</body>
+</html>

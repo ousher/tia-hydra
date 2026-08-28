@@ -838,3 +838,6 @@ body { counter-reset: sec; }
 @media (min-width: 2400px) {
   .container { max-width: 1640px; }
 }
+
+.tier-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px;justify-content:center}
+.tier-links .btn-secondary{font-size:.92rem}
