@@ -320,6 +320,37 @@
     </div>
 
 
+    <section class="wk" id="week">
+      <div class="container">
+        <div class="section-mark glt">EDITION 2 · 12–30 AUGUST 2026 · 19 COLLECTION DAYS</div>
+        <h2 class="wk-h">The machine room, not the model</h2>
+        <p class="section-lead wk-lead">Nineteen collection days, no gaps, 183 published items. One at a time these were separate vulnerabilities. In order, they show the target moving — away from the thing that answers, toward the thing that runs it.</p>
+
+        <div class="wk-cols">
+         <div>
+          <h5 class="wk-sub">What actually moved</h5>
+          <ol class="wk-arc"><li><span class="wk-d">13 Aug</span><span class="wk-t">Malicious releases of LiteLLM, tied to a compromise at a scanning vendor, may have exposed more than 2,100 organisations.</span></li><li><span class="wk-d">18 Aug</span><span class="wk-t">A code-injection flaw in Ray — the distributed-compute framework behind many machine-learning workloads — entered active exploitation.</span></li><li><span class="wk-d">19 Aug</span><span class="wk-t">Attackers exploited an MLflow flaw to steal cloud credentials and secrets. The same day, a report described instructions spreading between agents through prompt files that persist across sessions.</span></li><li><span class="wk-d">20 Aug</span><span class="wk-t">US authorities warned of AI-assisted attacks against Siemens PLCs in critical infrastructure.</span></li><li><span class="wk-d">22 Aug</span><span class="wk-t">Fourteen trojanised npm packages delivered a Linux backdoor whose command-and-control was described as AI-assisted.</span></li><li><span class="wk-d">27 Aug</span><span class="wk-t">Published analysis: AI speeds up malware <em>development</em> — not its success rate.</span></li><li><span class="wk-d">28 Aug</span><span class="wk-t">Prompt injection in a vendor's AI coding assistant was shown to exfiltrate data through the assistant's own privileges.</span></li></ol>
+         </div>
+         <div>
+        <div class="wk-turn">
+          <h5 class="wk-sub">The shift</h5>
+          <p>The previous edition ended with the agent as the <strong>path</strong> rather than the actor. This period gives that path an address. Ray, MLflow and LiteLLM are not models — they are the plumbing that trains, serves and routes them, and all three appear in this record within three weeks as an exploited flaw or a compromised release. What they have in common is not that they are &ldquo;AI&rdquo;. It is <strong>where they sit</strong>: inside build and training environments, holding the access those environments need. In the MLflow case the reported outcome was explicit — cloud credentials and secrets.<br><br>Set against that, the offensive story stayed unproven: analysis published on 27 August found that AI accelerates malware development without improving its success rate. So the risk this period actually recorded is not what AI can attack. It is <strong>what runs AI, being attacked.</strong></p>
+        </div>
+
+        <div class="wk-stat">
+          <div class="wk-n">3</div>
+          <div class="wk-sl">named pieces of machine-learning infrastructure — Ray, MLflow, LiteLLM — reached active exploitation or a compromised release inside one 19-day period<span>Counted by name, not by tag: each appears in the record with a CVE, a CISA advisory, or a poisoned package. None of them is a model. All of them run where the credentials are.</span></div>
+        </div>
+
+        <div class="wk-lim">
+          <h5 class="wk-sub">What this does not show</h5>
+          <p>Three names is a count we made by reading our own record, not an independent taxonomy — another reader could add to it or take from it. Of 425 items that crossed the reporting threshold across these nineteen days, 183 were published; the remaining 242 are kept in the record but appeared on no daily page. And the scoring rubric changed once inside the period, on 16 August, while the first two days carry no recorded configuration at all. That is why the arc above carries no scores: even within this period they are not strictly comparable.</p>
+        </div>
+         </div>
+        </div>
+        <p class="wk-cta">Nineteen days, nineteen pages, nothing overwritten.</p>
+      </div>
+    </section>
 
     <div class="sg-wrap">
       <div class="sg-rail">
