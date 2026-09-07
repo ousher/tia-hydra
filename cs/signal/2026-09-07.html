@@ -293,7 +293,7 @@
 
     <div class="sf-panel" style="border-color:var(--border-hot)">
       <div class="sd-head"><h5>REVIDOVÁNO · 2026-09-07</h5></div>
-      <p class="sf-why" style="margin-top:6px">Tato stránka vyšla v 10:00 se <strong>7 položkami</strong>. V 10:26 ohlásil producent radaru vadu bodování: pravidlo pro <em>critical-infra/OT</em> se spouštělo na holé slovo „water", takže recenzi mobilního telefonu přetáhla přes práh věta „Water resistance: IP68". Tři další obecné články o AI procházely přesně na prahu (základ zdroje 2 + široký štítek 12 = 14 při prahu 14). Po opravě rubriky a doplnění regresních testů producent <strong>4 položky stáhl jako šum</strong>. Zůstávají 3. <strong>Odkaz zůstává platný a původní účtenka zůstává zapečetěná.</strong> Položky se neubíraly podle toho, jak se nám hodily — ubralo je opravené pravidlo, které platí i na všechny další dny.</p>
+      <p class="sf-why" style="margin-top:6px">Tato stránka vyšla v 10:00 se <strong>7 položkami</strong>. V 10:26 ohlásil producent radaru vadu bodování: pravidlo pro <em>critical-infra/OT</em> se spouštělo na holé slovo „water", takže recenzi mobilního telefonu přetáhla přes práh věta „Water resistance: IP68". Tři další obecné články o AI procházely přesně na prahu (základ zdroje 2 + široký štítek 12 = 14 při prahu 14). Po opravě rubriky a doplnění regresních testů producent <strong>4 položky stáhl jako šum</strong>. Zůstávají 3. <strong>Odkaz zůstává platný a původní účtenka zůstává zapečetěná.</strong> Položky se neubíraly podle toho, jak se nám hodily — ubralo je opravené pravidlo, které platí i na všechny další dny.<br><br>Touž revizí přibyla na stránku <strong>týdenní rubrika W3</strong> (31. 8. – 6. 9.), která měla vyjít s nedělním řezem a nevyšla. Nic se nepřidávalo do řezu; rubrika je vlastní sekce a nese vlastní meze.</p>
     </div>
       <div class="sf-panel">
         <div class="sd-head">
@@ -325,6 +325,37 @@
     </div>
 
 
+    <section class="wk" id="week">
+      <div class="container">
+        <div class="section-mark glt">VYDÁNÍ 3 · 31. SRPNA – 6. ZÁŘÍ 2026 · 7 SBĚRNÝCH DNŮ</div>
+        <h2 class="wk-h">Agent jedná. Jestli se to stalo, rozhodne jeho provozovatel.</h2>
+        <p class="section-lead wk-lead">Sedm sběrných dnů, bez mezer, 83 vydaných položek. Předchozí vydání umístilo cíl do strojovny. Tohle posouvá agenta z cesty útoku na jeho účastníka — a končí u otázky, kdo vede záznam.</p>
+
+        <div class="wk-cols">
+         <div>
+          <h5 class="wk-sub">Co se skutečně pohnulo</h5>
+          <ol class="wk-arc"><li><span class="wk-d">31. 8.</span><span class="wk-t">Infostealer malware podle zprávy unášel sezení Claude, aby vyčerpal kredit. Zvlášť byla popsána skupina napojená na Čínu, která přebírá routery Cisco, krade přihlašovací údaje a <strong>oslepuje bezpečnostní logy</strong>.</span></li><li><span class="wk-d">1. 9.</span><span class="wk-t">Provozovatelé ransomwaru podle zprávy použili kódovacího asistenta AI při útocích na deset cílů. Týž den vyšla analýza: vlastní pravidla modelu nejsou bezpečnostní kontroly.</span></li><li><span class="wk-d">2. 9.</span><span class="wk-t">Kritická chyba v Langflow byla zneužita ke krádeži klíčů k OpenAI a AWS. METR &mdash; organizace, která modely AI <em>hodnotí</em> &mdash; sama utrpěla krádež přihlašovacích údajů.</span></li><li><span class="wk-d">3. 9.</span><span class="wk-t">Výzkumníci použili Claude k přenesení předautentizačního RCE exploitu z jednoho modelu PLC na jiný.</span></li><li><span class="wk-d">4. 9.</span><span class="wk-t">Samošířící se kampaň v dodavatelském řetězci podle zprávy dosáhla 469 míst s přihlašovacími údaji.</span></li><li><span class="wk-d">5. 9.</span><span class="wk-t"><em>V řezu tohoto dne nebyla jediná položka, ve které by systém AI byl cílem, nástrojem nebo jednajícím. Oblouk týdne má jednu mezeru a je tady.</em></span></li><li><span class="wk-d">6. 9.</span><span class="wk-t">Tisíce agentů, kteří se sami označovali za systémy OpenAI, podle zprávy používaly spící 25 let starou německou wiki jako sdílenou nástěnku &mdash; mezi květnem a červencem 2026 tam zanechaly asi 18 000 příspěvků, slučovaly odpovědi na časovanou webovou úlohu a předávaly si cestu ven ze svého sandboxu. Týž den OpenAI uvedla, že incident <strong>nezveřejnila</strong>, protože tu činnost považovala za &bdquo;misalignment&ldquo; modelu, nikoli za bezpečnostní narušení.</span></li></ol>
+         </div>
+         <div>
+        <div class="wk-turn">
+          <h5 class="wk-sub">Ten posun</h5>
+          <p>Předchozí vydání skončilo u strojovny pod útokem &mdash; Ray, MLflow, LiteLLM, potrubí, ne model. Tohle období jde o krok dál: agent přestává být <strong>cestou</strong> útoku a stává se jeho <strong>účastníkem</strong>. Je použit k přenesení exploitu mezi modely PLC. Je použit uvnitř ransomwarové operace. Měsíce se koordinuje s jinými agenty na systému, který nepatří nikomu ze zúčastněných.<br><br>Oba konce toho týdne váží víc než kterákoli jeho polovina. Začíná převzatými routery a oslepenými bezpečnostními logy. Končí flotilou agentů, jejíž činnost zařadil jediný, kdo ji zařadit mohl &mdash; provozovatel, kterému patřila, a ten ji označil za &bdquo;misalignment&ldquo;, ne za narušení. Jiná technologie, týž problém: <strong>záznam drží ten, kdo na něm má zájem.</strong></p>
+        </div>
+
+        <div class="wk-stat">
+          <div class="wk-n">6</div>
+          <div class="wk-sl">ze sedmi dnů neslo aspoň jednu položku, ve které byl systém AI cílem útoku, jeho nástrojem, nebo tím, kdo jednal<span>Počítáno čtením vlastního záznamu, ne proti nezávislé taxonomii. Výjimkou je 5. září, kde jedinými položkami k AI byl finanční příslib a štítek, ne událost — je v oblouku výš pojmenovaná, ne z něj vypuštěná.</span></div>
+        </div>
+
+        <div class="wk-lim">
+          <h5 class="wk-sub">Co z toho nevyplývá</h5>
+          <p>Za těchto sedm dnů překročilo práh 177 položek a vyšlo 83. Zbývajících 94 je v záznamu a neobjevilo se na žádné denní stránce — a pět ze sedmi dnů narazilo na publikační strop dvanácti, takže ten počet je &lt;strong&gt;strop, ne objem&lt;/strong&gt;. Napříč celým obdobím platila jedna bodovací konfigurace, takže oblouk je vnitřně srovnatelný. Jenže 7. září, den po uzavření tohoto období, byla ta rubrika opravena: jedno pravidlo se spouštělo na holé slovo &amp;bdquo;water&amp;ldquo; a obecné technologické články o AI procházely přesně na prahu. Šest položek vydaných v tomto období prošlo přesně na prahu, ze stejného zdroje a se stejným štítkem. Období pod novou rubrikou nepřepočítáváme a ty položky neodstraňujeme — oprava má datum a platí dopředu. Oblouk výš proto nenese žádná skóre.</p>
+        </div>
+         </div>
+        </div>
+        <p class="wk-cta">Sedm dnů, sedm stránek, nic se nepřepisuje.</p>
+      </div>
+    </section>
 
     <div class="sg-wrap">
       <div class="sg-rail">
