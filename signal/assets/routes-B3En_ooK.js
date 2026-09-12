@@ -1,1 +1,0 @@
-import{f as e,t}from"./digests-DJCtre-W.js";import{t as n}from"./cut-view-Cqk4G3W9.js";var r=e();function i(){return(0,r.jsx)(n,{date:t})}export{i as component};
