@@ -21,6 +21,12 @@
      mu podstrčili vlastní formulaci jako by byla zdroj. */
   .sg-en { font-size:.62em; letter-spacing:.08em; padding:1px 4px; border:1px solid var(--border);
            border-radius:3px; color:var(--text-muted); vertical-align:middle; margin-left:6px; }
+  /* 🔗 D180 — jiný zdroj, týž příběh. Tlumené schválně: je to kontext,
+     ne poplach; nesmí přebít závažnost položky. */
+  .sg-fu { font-size:.62em; letter-spacing:.08em; padding:1px 5px; border-radius:3px;
+           background:var(--accent-soft, rgba(127,127,127,.14)); color:var(--text-muted);
+           border:1px solid var(--border); vertical-align:middle; margin-left:6px;
+           white-space:nowrap; font-weight:600; }
   /* 📦 D144 ekosystémový pruh — sloupce nesou baseline, ne jen dnešek */
   .eco { margin-top:14px; }
   .eco-chart { display:flex; align-items:flex-end; gap:5px; height:50px; margin:12px 0 3px; }
@@ -263,7 +269,7 @@
   <div class="container">
     <div class="sg-top">
       <h2>TODAY&#x27;S CUT</h2>
-      <span class="sg-n">5 items</span>
+      <span class="sg-n">4 items</span>
       <div class="sg-days"><a href="/signal/2026-09-12.html">← 12 Sep</a><b>13 September 2026</b><a href="/signal/" class="sg-arch">ARCHIVE</a></div>
       <span class="sg-cad">◢ Daily 06:00 UTC</span>
     </div>
@@ -282,23 +288,23 @@
           <div class="sd-col"><span class="sd-bars"><i class="sg-green" style="height:7.1%"></i><i class="sg-yellow" style="height:28.6%"></i><i class="sg-red" style="height:57.1%"></i></span><span class="sd-num">13</span><span class="sd-dow">Thu</span></div>
           <div class="sd-col"><span class="sd-bars"><i class="sg-green" style="height:7.1%"></i><i class="sg-yellow" style="height:57.1%"></i><i class="sg-red" style="height:35.7%"></i></span><span class="sd-num">14</span><span class="sd-dow">Fri</span></div>
           <div class="sd-col"><span class="sd-bars"><i class="sg-green" style="height:7.1%"></i><i class="sg-yellow" style="height:57.1%"></i><i class="sg-red" style="height:35.7%"></i></span><span class="sd-num">14</span><span class="sd-dow">Sat</span></div>
-          <div class="sd-col sd-now"><span class="sd-bars"><i class="sg-green" style="height:14.3%"></i><i class="sg-yellow" style="height:7.1%"></i><i class="sg-red" style="height:14.3%"></i></span><span class="sd-num">5</span><span class="sd-dow">Sun</span></div>
+          <div class="sd-col sd-now"><span class="sd-bars"><i class="sg-green" style="height:14.3%"></i><i class="sg-red" style="height:14.3%"></i></span><span class="sd-num">4</span><span class="sd-dow">Sun</span></div>
         </div>
       </div>
       <div class="iw-panel">
         <h5>IN THE WILD</h5>
-        <div class="iw-n">1<span>/ 5</span></div><p class="iw-t">items report exploitation — not proof of concept</p>
+        <div class="iw-n">1<span>/ 4</span></div><p class="iw-t">items report exploitation — not proof of concept</p>
       </div>
     </div>
 
       <div class="sf-panel">
         <div class="sd-head">
           <h5>WHAT DID NOT MAKE IT</h5>
-          <span class="sd-sub">99.7% of parsed records are not here.</span>
+          <span class="sd-sub">99.8% of parsed records are not here.</span>
         </div>
-        <div class="sf-rail"><button class="sf-step sf-on" data-why="records parsed from the source feeds — before the time window and de-duplication" type="button" aria-label="parsed"><b>1 931</b><i>parsed</i></button><s>▸</s><button class="sf-step" data-why="left after the 30-hour window and de-duplication" type="button" aria-label="candidates"><b>13</b><i>candidates</i></button><s>▸</s><button class="sf-step" data-why="cleared the reporting threshold" type="button" aria-label="qualified"><b>5</b><i>qualified</i></button><s>▸</s><button class="sf-step" data-why="made it onto this page" type="button" aria-label="published"><b>5</b><i>published</i></button></div>
+        <div class="sf-rail"><button class="sf-step sf-on" data-why="records parsed from the source feeds — before the time window and de-duplication" type="button" aria-label="parsed"><b>1 931</b><i>parsed</i></button><s>▸</s><button class="sf-step" data-why="left after the 30-hour window and de-duplication" type="button" aria-label="candidates"><b>13</b><i>candidates</i></button><s>▸</s><button class="sf-step" data-why="cleared the reporting threshold" type="button" aria-label="qualified"><b>5</b><i>qualified</i></button><s>▸</s><button class="sf-step" data-why="made it onto this page" type="button" aria-label="published"><b>4</b><i>published</i></button></div>
         <p class="sf-why" data-default="records parsed from the source feeds — before the time window and de-duplication">records parsed from the source feeds — before the time window and de-duplication</p>
-        <p class="sf-meta">8 dropped by rule · 0 held by the daily cap · config <code>90E3557B</code> — unchanged since 2026-09-12</p>
+        <p class="sf-meta">8 dropped by rule · 0 held by the daily cap · −1 removed from today&#x27;s cut — the same link and headline already went out on an earlier day. This is the only place where we subtract from the selection, which is why it is stated here. · config <code>90E3557B</code> — unchanged since 2026-09-12</p>
         <p class="sf-lim">The digest hands us counts, not the discarded items — so this shows how many and why, not which.</p>
       </div>
 
@@ -319,25 +325,24 @@
       <div class="sg-rail">
         <section>
           <h5>ATTENTION</h5>
-          <div class="sg-split"><i class="sg-red" style="width:40.0%"></i><i class="sg-yellow" style="width:20.0%"></i><i class="sg-green" style="width:40.0%"></i></div>
-          <div class="sg-legend"><span class="sg-lg"><b class="sg-red"></b>2</span> <span class="sg-lg"><b class="sg-yellow"></b>1</span> <span class="sg-lg"><b class="sg-green"></b>2</span></div>
+          <div class="sg-split"><i class="sg-red" style="width:50.0%"></i><i class="sg-green" style="width:50.0%"></i></div>
+          <div class="sg-legend"><span class="sg-lg"><b class="sg-red"></b>2</span> <span class="sg-lg"><b class="sg-green"></b>2</span></div>
         </section>
         <section>
           <h5>CATEGORIES</h5>
-        <div class="sg-row"><span class="sg-k">AI/agent</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">2</span></div>
+        <div class="sg-row"><span class="sg-k">AI/agent</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">1</span></div>
         <div class="sg-row"><span class="sg-k">AI/agent
-   Gates: attention_class=GREEN | publication_severity=GREEN</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">1</span></div>
-        <div class="sg-row"><span class="sg-k">CVE</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">1</span></div>
+   Gates: attention_class=GREEN | publication_severity=GREEN</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">1</span></div>
+        <div class="sg-row"><span class="sg-k">CVE</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">1</span></div>
         <div class="sg-row"><span class="sg-k">CVE
-   Gates: attention_class=GREEN | publication_severity=GREEN</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">1</span></div>
-        <div class="sg-row"><span class="sg-k">auth-bypass</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">1</span></div>
-        <div class="sg-row"><span class="sg-k">cloud/AI-stack</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">1</span></div>
+   Gates: attention_class=GREEN | publication_severity=GREEN</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">1</span></div>
+        <div class="sg-row"><span class="sg-k">auth-bypass</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">1</span></div>
+        <div class="sg-row"><span class="sg-k">cloud/AI-stack</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">1</span></div>
         </section>
         <section>
           <h5>SOURCES</h5>
         <div class="sg-row"><span class="sg-k">The Hacker News</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">3</span></div>
         <div class="sg-row"><span class="sg-k">BleepingComputer</span><span class="sg-bar"><i style="width:33%"></i></span><span class="sg-v">1</span></div>
-        <div class="sg-row"><span class="sg-k">SecurityWeek</span><span class="sg-bar"><i style="width:33%"></i></span><span class="sg-v">1</span></div>
         </section>
         <p class="sg-note">Attention classes are how much attention we gave an item. They are not severity verdicts.</p>
       </div>
@@ -354,13 +359,6 @@
         <h4><span class="sg-gl">📦</span>OpenAI Agents Linked to RubyGems Campaign That Gained RCE on RubyDoc Servers</h4>
         <p class="sg-meta">The Hacker News · AI/agent · supply-chain</p>
         <p class="sg-why">The &quot;major malicious attack&quot; that targeted RubyGems in May 2026 was the work of a swarm of OpenAI agents, according to a new…</p>
-      </a>
-      <a class="sg-card sg-yellow" href="https://www.securityweek.com/users-in-houthi-held-yemen-tried-to-develop-advanced-weapons-with-ai-anthropic-says/" target="_blank" rel="noopener nofollow">
-        <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🤖</span>Users in Houthi-Held Yemen Tried to Develop Advanced Weapons With AI, Anthropic Says</h4>
-        <p class="sg-meta">SecurityWeek · AI/agent · cloud/AI-stack
-   Gates: attention_class=YELLOW | publication_severity=YELLOW</p>
-        <p class="sg-why">Anthropic said the users did not succeed in “fielding an operational device” but did carry out a failed test of a guided rocket.</p>
       </a>
       <a class="sg-card sg-green" href="https://thehackernews.com/2026/09/when-whole-company-adopts-ai-what-it.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
