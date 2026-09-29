@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) — Google Ads conversion tracking -->
+<!-- Consent Mode v2 — defaults denied until the visitor chooses.
+     Must run BEFORE gtag.js. Google requires all four signals for EEA traffic
+     (mandatory since 2024-03-06) or remarketing + conversion modelling are off. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('hydra-consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted', ad_user_data: 'granted',
+        ad_personalization: 'granted', analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VBWEDBCCER"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'AW-18155860192');
+  // GA4 — paste your Measurement ID (G-…) here to activate. Find it in
+  // Google Analytics → Admin → Data streams → your web stream.
+  var GA4_ID = 'G-VBWEDBCCER';
+  if (GA4_ID.indexOf('XXXX') === -1) gtag('config', GA4_ID);
+</script>
+<title>SORTIE — AI sizing: změřeno, ne odhadnuto</title>
+<meta name="description" content="SORTIE — AI sizing: změříme, jaký jazykový model a jaký hardware vaše úloha opravdu potřebuje. Výsledek do jednoho pracovního dne, vstupní měření od 5 000 Kč.">
+<meta name="theme-color" content="#050507">
+<meta name="color-scheme" content="dark">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="index, follow">
+<meta name="author" content="TIA">
+<link rel="canonical" href="https://hydra.tia-framework.com/cs/sortie.html">
+<link rel="alternate" hreflang="en" href="https://hydra.tia-framework.com/sortie.html">
+<link rel="alternate" hreflang="cs" href="https://hydra.tia-framework.com/cs/sortie.html">
+<link rel="alternate" hreflang="x-default" href="https://hydra.tia-framework.com/sortie.html">
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
+<meta property="og:title" content="SORTIE — AI sizing: změřeno, ne odhadnuto">
+<meta property="og:description" content="Jaký model a jaké železo vaše AI opravdu potřebuje. Měříme na pronajatém GPU, výsledek do jednoho dne, vaše data na pronajatý stroj nejdou nikdy.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HYDRA">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://hydra.tia-framework.com/cs/sortie.html">
+<meta property="og:image" content="https://hydra.tia-framework.com/media/sortie-og-cs.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SORTIE — AI sizing: změřeno, ne odhadnuto">
+<meta name="twitter:description" content="Jaký model a jaké železo vaše AI opravdu potřebuje. Měříme na pronajatém GPU, výsledek do jednoho dne, vaše data na pronajatý stroj nejdou nikdy.">
+<meta name="twitter:image" content="https://hydra.tia-framework.com/media/sortie-og-cs.png">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/style.css">
+
+<style>
+  /* SORTIE — page-local additions on top of /style.css (HYDRA dark). No new colours: tokens only. */
+  .sortie-hero { padding: 150px 0 70px; }
+  .sortie-hero h1 { font-size: clamp(36px, 5.4vw, 60px); }
+  .sortie-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin-top: 8px; max-width: 900px; }
+  .sortie-strip div { background: var(--surface); padding: 18px 18px 16px; }
+  .sortie-strip b { display: block; font-family: 'JetBrains Mono', monospace; font-size: 22px; color: var(--hydra);
+    font-weight: 700; letter-spacing: -.5px; white-space: nowrap; }
+  .sortie-strip span { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; }
+  .tiers.two { grid-template-columns: repeat(2, 1fr); max-width: 900px; }
+  .bench-wrap { overflow-x: auto; border: 1px solid var(--border); background: var(--surface); max-width: 900px; }
+  table.bench { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+  table.bench th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--text-muted); font-weight: 400; padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border); }
+  table.bench td { padding: 14px 20px; border-bottom: 1px solid var(--border); color: var(--text-dim); }
+  table.bench tr:last-child td { border-bottom: 0; }
+  table.bench td.num { font-family: 'JetBrains Mono', monospace; font-size: 13px; white-space: nowrap; }
+  table.bench tr.win td { color: #fff; background: rgba(196,30,30,.06); }
+  table.bench tr.win td:first-child { box-shadow: inset 2px 0 0 var(--hydra); font-weight: 700; }
+  .finding { margin-top: 18px; max-width: 900px; padding: 18px 22px; border-left: 2px solid var(--hydra);
+    background: linear-gradient(90deg, rgba(61,17,19,.42), transparent 80%); color: var(--text-dim);
+    font-size: 15px; line-height: 1.65; font-weight: 300; }
+  .finding strong, .sortie-hero strong, .method-item strong, .sample-box strong { color: var(--text); font-weight: 600; }
+  .sample-box ul { list-style: none; padding: 0; margin: 0; }
+  .sample-box li { color: var(--text-dim); padding: 8px 0 8px 18px; position: relative; line-height: 1.6; font-size: 15px; }
+  .sample-box li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-size: 11px; top: 11px; }
+  .sample-box { max-width: 900px; }
+  @media (max-width: 768px) {
+    .sortie-hero { padding: 120px 0 50px; }
+    .sortie-strip { grid-template-columns: repeat(2, 1fr); }
+    .tiers.two { grid-template-columns: 1fr; }
+    /* the last column (tasks passed) is the verdict — it must never hide behind a scroll */
+    table.bench { min-width: 0; font-size: 12.5px; }
+    table.bench th { padding: 12px 8px 10px; letter-spacing: 1px; font-size: 9px; }
+    table.bench td { padding: 11px 8px; }
+    table.bench td.num { font-size: 11.5px; }
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Přeskočit na obsah</a>
+
+<nav>
+  <div class="container">
+    <a href="/cs/" class="nav-logo"><svg class="nav-logo-svg" viewBox="0 0 64 64" role="img" aria-label="HYDRA logo"><defs><linearGradient id="hbar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c41e1e"/><stop offset="1" stop-color="#ff6b35"/></linearGradient><linearGradient id="hdg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e22a2a"/><stop offset="1" stop-color="#a81818"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="14" fill="#0c0c0e" stroke="rgba(255,255,255,.06)"/><rect x="10" y="7" width="44" height="5" rx="2.5" fill="url(#hbar)"/><g class="dia"><polygon points="32,20 47,39 32,58 17,39" fill="url(#hdg)"/><polygon points="32,29 40,39 32,49 24,39" fill="#6e0f0f"/></g></svg>HYDRA</a>
+    <div class="nav-links">
+      <a href="/cs/#tiers">STUPNĚ</a>
+      <a href="/cs/#shield">SHIELD</a>
+      <a href="/cs/#codesec">TALOS</a>
+      <a href="/cs/sortie.html" aria-current="page" style="color:var(--text)">SORTIE</a>
+      <a href="/custodians/?lang=cs">CUSTODIANS</a>
+      <a href="/signal/">CYBER SIGNAL</a>
+      <a href="/resources.html">ZDROJE</a>
+      <a href="#contact" class="nav-cta">NAPSAT NÁM</a>
+      <span class="lang-switch">
+        <a href="/sortie.html" hreflang="en">EN</a>
+        <span class="sep">/</span>
+        <a href="/cs/sortie.html" class="active" aria-current="true">CZ</a>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<section class="sortie-hero" id="main">
+  <div class="container">
+    <div class="hero-mark">TIA · HYDRA · SORTIE · AI SIZING</div>
+    <h1>Jaký model a jaké železo.<br><span class="accent">Změřeno,</span> ne odhadnuto.</h1>
+    <p class="hero-sub">Chcete AI provozovat u sebe, ale nevíte, jaký model zvolit, kolik paměti bude potřebovat a jestli vůbec zvládne vaši úlohu v češtině. <strong>Místo odhadu to změříme.</strong> Kandidátní modely spustíme na pronajatém GPU nad úlohami, které vypadají jako ty vaše, a <strong>do jednoho pracovního dne</strong> dostanete čísla. Potom se výpočetní stroj zničí.</p>
+    <div class="hero-doctrine">Vaše skutečná data na pronajatý stroj nejdou nikdy.<br>Měříme na syntetických, veřejných nebo vámi anonymizovaných vzorcích.</div>
+    <div class="sortie-strip">
+      <div><b>1 den</b><span>do výsledku</span></div>
+      <div><b>11 min</b><span>pilot, 3 modely</span></div>
+      <div><b>0</b><span>vašich dat na GPU</span></div>
+      <div><b>od 5 000 Kč</b><span>vstupní měření</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="questions">
+  <div class="container">
+    <div class="section-mark glt" style="animation-delay:-5s">NA CO SORTIE ODPOVÍDÁ</div>
+    <h2>Tři otázky, na které se obvykle odpovídá odhadem.</h2>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tier-mark">01</div>
+        <div class="tier-name">Jaký model</div>
+        <div class="tier-tag">Kvalita na vaší úloze</div>
+        <ul class="tier-bullets">
+          <li>Měříme na <strong>vaší</strong> úloze, ne na obecném žebříčku</li>
+          <li>I to, co žebříčky přehlížejí: jestli model <strong>správně odmítne</strong>, když odpověď v podkladech není</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <div class="tier-mark">02</div>
+        <div class="tier-name">Jaké železo</div>
+        <div class="tier-tag">Paměť a rychlost, změřené</div>
+        <ul class="tier-bullets">
+          <li>Skutečně obsazená paměť grafické karty v GB</li>
+          <li>Rychlost v tokenech za sekundu</li>
+          <li>Dimenzování serveru <strong>na gigabajty přesně</strong>, ne podle odhadu prodejce</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <div class="tier-mark">03</div>
+        <div class="tier-name">Co se nevyplatí</div>
+        <div class="tier-tag">Často nejcennější řádek</div>
+        <ul class="tier-bullets">
+          <li><strong>Větší model, který na vaší úloze nepřinese nic navíc</strong>, jen dvojnásobnou cenu hardwaru</li>
+          <li>Odhadem se to nepozná, jen měřením</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="doctrine">
+  <div class="container">
+    <div class="section-mark glr" style="animation-delay:-2s">JAK TO PROBÍHÁ</div>
+    <h2>Čtyři kroky. Jeden pracovní den.</h2>
+    <div class="method-grid">
+      <div class="method-item"><h4>1 · Zadání</h4><p>Popíšete úlohu (smlouvy, e-maily, dokumentace, podpora…) a omezení: provoz u vás, jazyk, rozpočet, citlivost dat.</p></div>
+      <div class="method-item"><h4>2 · Vzorek</h4><p>Postavíme reprezentativní úlohy: syntetické, veřejné, nebo z vámi anonymizovaného vzorku. <strong>Skutečné dokumenty zůstávají u vás.</strong></p></div>
+      <div class="method-item"><h4>3 · Měření</h4><p>Kandidátní modely běží na pronajatém GPU (80 GB). Běh trvá minuty, po skončení se stroj automaticky zničí — i kdyby cokoli spadlo.</p></div>
+      <div class="method-item"><h4>4 · Výsledek</h4><p>Tabulka, doporučení a záznam měření, který jde zpětně zkontrolovat: co se měřilo, na čem a s jakým výsledkem.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pilot">
+  <div class="container">
+    <div class="section-mark glt" style="animation-delay:-4.5s">UKÁZKA · PILOT PRO ADVOKÁTNÍ KANCELÁŘ · ANONYMIZOVÁNO</div>
+    <h2>Který otevřený model zvládne české právní dokumenty?</h2>
+    <p class="section-lead">Sedm úloh: vytažení stran, lhůt a sankcí ze smluv, shrnutí rozsudku, práce napříč více dokumenty, dotaz na zákon — a jedna úloha, kde správná odpověď zní <strong>„v podkladech to není“</strong>. Všechna data byla <strong>syntetická</strong>.</p>
+    <div class="bench-wrap">
+      <table class="bench">
+        <tr><th>Model</th><th>Paměť GPU</th><th>Rychlost</th><th>Úlohy splněny</th></tr>
+        <tr><td>mistral-small 24B</td><td class="num">19,4 GB</td><td class="num">30,7 tok/s</td><td class="num">6 / 7</td></tr>
+        <tr class="win"><td>gemma3 27B</td><td class="num">28,3 GB</td><td class="num">15,1 tok/s</td><td class="num">7 / 7</td></tr>
+        <tr><td>qwen2.5 72B</td><td class="num">55,8 GB</td><td class="num">15,4 tok/s</td><td class="num">7 / 7</td></tr>
+      </table>
+    </div>
+    <div class="finding"><strong>Co z toho plynulo:</strong> největší model (72B) na těchto úlohách <strong>nepřinesl nic navíc</strong> za zhruba dvojnásobnou paměť. Model 27B zvládl vše a vejde se do karty s 32 GB paměti, se zdravou rezervou do 48 GB. Nejrychlejší 24B selhal v jedné úloze ze sedmi. <strong>Celé měření tří modelů trvalo 11 minut</strong> na jedné kartě A100 80 GB; výpočet stál méně než dolar.</div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="container">
+    <div class="section-mark glr" style="animation-delay:-6.5s">CENÍK</div>
+    <h2>Vstupné je malé. Rozšíření vždy s cenou předem.</h2>
+    <div class="tiers two">
+      <div class="tier">
+        <div class="tier-mark">VSTUP</div>
+        <div class="tier-name">Vstupní měření</div>
+        <div class="tier-tag">Rychlý předběžný výsledek</div>
+        <div class="tier-price">od 5 000 Kč</div>
+        <div class="tier-price-eur">/ 200 EUR · bez DPH</div>
+        <div class="tier-eta">⏱ do 1 pracovního dne</div>
+        <ul class="tier-bullets">
+          <li>Jeden až tři kandidátní modely</li>
+          <li>Sada úloh podle vašeho zadání</li>
+          <li>Paměť, rychlost, kvalita, doporučení</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <div class="tier-mark">+ ROZŠÍŘENÍ</div>
+        <div class="tier-name">Rozšířené měření</div>
+        <div class="tier-tag">Podle počtu modelů a variant</div>
+        <div class="tier-price">na míru</div>
+        <div class="tier-price-eur">/ cena vždy potvrzená předem</div>
+        <div class="tier-eta">⏱ podle rozsahu</div>
+        <ul class="tier-bullets">
+          <li>Víc modelů a víc variant nastavení</li>
+          <li>Větší sada úloh postavená s vámi</li>
+          <li>Záznam měření ke zpětné kontrole</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="limits">
+  <div class="container">
+    <div class="sample-box" data-badge="CO SORTIE NEUMÍ">
+      <h3>Co je potřeba říct dřív, než se někdo zeptá</h3>
+      <ul>
+        <li><strong>Není to zátěžový test produkce</strong> se stovkami souběžných uživatelů; měříme model a úlohu, ne celou vaši aplikaci.</li>
+        <li><strong>Výsledek platí pro změřenou konfiguraci</strong> a vzorek úloh. Sedm úloh v pilotu je malý vzorek, u zakázky se sada staví s vámi a bývá větší.</li>
+        <li><strong>Vaše skutečná data na pronajatém stroji neměříme.</strong> Měření nad ostrými daty je možné jen na vašem vlastním hardwaru.</li>
+        <li><strong>Neprodáváme hardware ani licence modelů</strong> — takže nemáme důvod vám doporučit větší, než potřebujete.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="section-mark glt" style="animation-delay:-0.5s">MÁTE KONKRÉTNÍ ÚLOHU?</div>
+    <h2>Napište, co má AI dělat a kde má běžet.</h2>
+    <p class="section-lead" style="text-align:center;margin-left:auto;margin-right:auto">Ozveme se v ten samý pracovní den s návrhem sady úloh a cenou.</p>
+    <a href="mailto:hydra@tia-framework.com?subject=SORTIE%20%E2%80%94%20AI%20sizing" class="contact-cta">Napsat e-mail</a>
+    <div class="contact-channels">
+      <a href="mailto:hydra@tia-framework.com?subject=SORTIE%20%E2%80%94%20AI%20sizing">hydra@tia-framework.com</a> ·
+      <a href="https://wa.me/420603227456" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div><span class="hot">HYDRA</span> · SORTIE · Zpravodajský produkt od <a href="https://www.tia-framework.com">TIA</a></div>
+    <div>Praha · CZ/EU · IČO 24974803<br>© 2026 · Postup je pevný, závěry ne · Ukazuje se schopnost, ne implementace</div>
+  </div>
+</footer>
+
+<script>
+  // Google Ads conversion tracking — fires a lead event on real contact actions
+  // (WhatsApp / email / phone). Fill the LABEL from Google Ads to count these as
+  // formal conversions; until then they fire as 'generate_lead' (visible + promotable).
+  (function () {
+    var GADS = 'AW-18155860192';
+    var LABEL = 'fkQ0CICHp9EcEODhsdFD';   // ← paste Google Ads conversion label here, e.g. 'AbC-D_efGhIjKl'
+    function lead(method) {
+      if (typeof gtag !== 'function') return;
+      // GA4 event — NO send_to → routes to ALL configured tags incl. GA4, so it
+      // shows up in Analytics events (promote there to a key event/conversion).
+      gtag('event', 'generate_lead', { method: method, currency: 'CZK', value: 0 });
+      // Google Ads formal conversion — active once LABEL is filled from Google Ads.
+      if (LABEL) gtag('event', 'conversion', { send_to: GADS + '/' + LABEL, event_label: method });
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var h = a.getAttribute('href') || '';
+      if (/wa\.me\//i.test(h)) lead('whatsapp');
+      else if (/^mailto:/i.test(h)) lead('email');
+      else if (/^tel:/i.test(h)) lead('phone');
+    }, true);
+  })();
+</script>
+<script src="/consent.js" defer></script>
+</body>
+</html>

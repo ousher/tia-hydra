@@ -71,6 +71,18 @@
 
   <url>
     <loc>https://hydra.tia-framework.com/sortie.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hydra.tia-framework.com/sortie.html"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://hydra.tia-framework.com/cs/sortie.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hydra.tia-framework.com/sortie.html"/>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hydra.tia-framework.com/cs/sortie.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hydra.tia-framework.com/sortie.html"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://hydra.tia-framework.com/cs/sortie.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hydra.tia-framework.com/sortie.html"/>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
