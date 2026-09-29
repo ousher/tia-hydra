@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SORTIE — AI sizing: změříme, jaký jazykový model a jaký hardware vaše úloha opravdu potřebuje. Výsledek do jednoho pracovního dne, vstupní měření od 5 000 Kč.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hydra.tia-framework.com/sortie.html">
+<meta property="og:title" content="SORTIE — AI sizing: změřeno, ne odhadnuto">
+<meta property="og:description" content="Jaký model a jaké železo vaše AI opravdu potřebuje. Měříme na pronajatém GPU, výsledek do jednoho dne, vaše data na pronajatý stroj nejdou nikdy.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HYDRA">
+<meta property="og:url" content="https://hydra.tia-framework.com/sortie.html">
+<title>SORTIE — AI sizing</title>
+<style>
+  /* Rodina TALOS: cream + red. Nikdy cyan. (D127, locked) */
+  :root{
+    --cream:#f6f1e7; --ink:#1c1a17; --red:#b3221f; --grey:#6f685e;
+    --rule:#ddd3c2; --ghost:#eae2d3; --deep:#7a1512;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);
+       font:16px/1.5 "Iowan Old Style","Palatino Linotype",Georgia,serif;
+       -webkit-font-smoothing:antialiased}
+  .sheet{width:100%;max-width:1200px;margin:0 auto;padding:40px 48px 40px}
+  header{border-bottom:3px solid var(--ink);padding-bottom:15px;margin-bottom:7px}
+  .eyebrow{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);font-weight:700}
+  h1{font-size:46px;line-height:1.02;letter-spacing:-.02em;margin:7px 0 10px}
+  h1 small{display:block;font-size:20px;color:var(--grey);letter-spacing:0;font-weight:400;margin-top:6px}
+  .crit{font-size:16px;color:#453f38;max-width:90ch}
+  .crit b{color:var(--ink)}
+  h2{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);
+     font-weight:700;margin:26px 0 9px;padding-bottom:5px;border-bottom:1px solid var(--rule)}
+  .pass{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:baseline;
+        padding:9px 0;border-bottom:1px solid var(--rule)}
+  .pass:last-of-type{border-bottom:0}
+  .pn{font-size:30px;line-height:1;font-weight:700;color:var(--red);text-align:right;
+      font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+  .pt{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px}
+  .pd{font-size:14.5px;color:#453f38;line-height:1.45}
+  .pd b{color:var(--ink)}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  .r{padding:9px 0;border-bottom:1px solid var(--rule)}
+  .r b{font-size:14.5px;display:block;margin-bottom:2px}
+  .r span{font-size:13.8px;color:#453f38;line-height:1.42}
+  .r.hot b{color:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:4px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--grey);font-weight:700;padding:0 12px 6px 0;border-bottom:1px solid var(--ink)}
+  td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);color:#453f38;vertical-align:top}
+  td b{color:var(--ink)}
+  td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  .funnel{background:var(--ghost);border-left:3px solid var(--red);padding:12px 16px;
+          margin:12px 0 0;font-size:14px;color:#453f38;line-height:1.5}
+  .funnel b{color:var(--ink)}
+  .price{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  .price .p{padding:12px 0;border-bottom:1px solid var(--rule)}
+  .price .amt{font-size:30px;font-weight:700;color:var(--red);letter-spacing:-.02em;line-height:1.1}
+  .price .lbl{font-size:15px;font-weight:700;margin:2px 0}
+  .price .d{font-size:13.8px;color:#453f38;line-height:1.42}
+  .honest{border:1px solid var(--rule);border-left:3px solid var(--ink);
+          padding:14px 18px;margin-top:18px;background:#f1ebdf}
+  .honest h3{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
+  .honest p{font-size:14px;color:#453f38;line-height:1.5}
+  .honest p b{color:var(--ink)}
+  .cta{margin-top:18px;padding:14px 18px;background:var(--ink);color:var(--cream);font-size:15px}
+  .cta a{color:#fff;font-weight:700}
+  footer{margin-top:18px;padding-top:11px;border-top:1px solid var(--rule);
+         display:flex;justify-content:space-between;align-items:flex-end;gap:26px}
+  .note{font-size:12.5px;color:var(--grey);max-width:82ch}
+  .note b{color:var(--ink)}
+  .mark{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);
+        font-weight:700;white-space:nowrap;text-align:right;line-height:1.7}
+  .backbar{max-width:1200px;margin:0 auto;padding:14px 48px 0;
+           font:13px/1 ui-monospace,"SF Mono",Menlo,monospace}
+  .backbar a{color:var(--red);text-decoration:none;letter-spacing:.06em}
+  .backbar a:hover{text-decoration:underline}
+  @media (max-width:760px){
+    .sheet{padding:24px 16px}
+    .backbar{padding:12px 16px 0}
+    h1{font-size:34px} h1 small{font-size:17px}
+    .rules,.price{grid-template-columns:1fr}
+    table{font-size:12.5px}
+    footer{flex-direction:column;align-items:flex-start}
+  }
+  @media print{.backbar,.cta{display:none}}
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/">&larr; HYDRA</a></div>
+<div class="sheet">
+
+  <header>
+    <div class="eyebrow">HYDRA · SORTIE · AI SIZING</div>
+    <h1>SORTIE<small>Jaký model a jaké železo vaše AI opravdu potřebuje. Změřeno, ne odhadnuto.</small></h1>
+    <p class="crit">Chcete AI provozovat u sebe, ale nevíte, jaký model zvolit, kolik paměti bude potřebovat
+      a jestli vůbec zvládne vaši úlohu v češtině. <b>Místo odhadu to změříme.</b> Kandidátní modely spustíme
+      na pronajatém GPU nad úlohami, které vypadají jako ty vaše, a <b>do jednoho pracovního dne</b> dostanete
+      čísla: kolik paměti, jakou rychlost a jak dobře úlohu zvládnou. Potom se výpočetní stroj zničí.</p>
+  </header>
+
+  <h2>Na co SORTIE odpovídá</h2>
+  <div class="pass"><div class="pn">1</div><div>
+    <div class="pt">Jaký model</div>
+    <div class="pd">Kvalita na <b>vaší</b> úloze, ne na obecném žebříčku. Měříme i to, co žebříčky přehlížejí:
+      jestli model <b>správně odmítne odpovědět</b>, když odpověď v podkladech není, místo aby si ji vymyslel.</div>
+  </div></div>
+  <div class="pass"><div class="pn">2</div><div>
+    <div class="pt">Jaké železo</div>
+    <div class="pd">Skutečně obsazená paměť grafické karty v GB a rychlost v tokenech za sekundu.
+      Z toho plyne <b>dimenzování serveru na gigabajty přesně</b>, ne podle odhadu prodejce.</div>
+  </div></div>
+  <div class="pass"><div class="pn">3</div><div>
+    <div class="pt">Co se nevyplatí</div>
+    <div class="pd">Často nejcennější řádek: <b>větší model, který na vaší úloze nepřinese nic navíc</b>,
+      jen dvojnásobnou cenu hardwaru. Tohle se odhadem nepozná, jen měřením.</div>
+  </div></div>
+
+  <h2>Jak to probíhá</h2>
+  <div class="rules">
+    <div class="r"><b>1 · Zadání</b><span>Popíšete úlohu (smlouvy, e-maily, dokumentace, podpora…) a omezení:
+      provoz u vás, jazyk, rozpočet, citlivost dat.</span></div>
+    <div class="r hot"><b>2 · Vzorek — vaše data na pronajatý stroj nejdou nikdy</b><span>Postavíme reprezentativní
+      úlohy: syntetické, veřejné, nebo z vámi anonymizovaného vzorku. Skutečné dokumenty zůstávají u vás.</span></div>
+    <div class="r"><b>3 · Měření</b><span>Kandidátní modely běží na pronajatém GPU (80 GB). Běh trvá minuty,
+      po skončení se stroj automaticky zničí — i kdyby cokoli spadlo.</span></div>
+    <div class="r"><b>4 · Výsledek</b><span>Tabulka, doporučení a záznam měření, který jde zpětně zkontrolovat:
+      co se měřilo, na čem a s jakým výsledkem.</span></div>
+  </div>
+
+  <h2>Ukázka — pilot pro advokátní kancelář (anonymizováno)</h2>
+  <p class="pd" style="margin-bottom:6px">Otázka: <b>který otevřený model zvládne české právní dokumenty
+    a na jakém serveru poběží v kanceláři.</b> Sedm úloh: vytažení stran, lhůt a sankcí ze smluv, shrnutí
+    rozsudku, práce napříč více dokumenty, dotaz na zákon — a jedna úloha, kde správná odpověď zní
+    <b>„v podkladech to není“</b>. Všechna data byla <b>syntetická</b>.</p>
+  <table>
+    <tr><th>Model</th><th>Paměť GPU</th><th>Rychlost</th><th>Úlohy splněny</th></tr>
+    <tr><td>mistral-small 24B</td><td class="num">19,4 GB</td><td class="num">30,7 tok/s</td><td class="num">6 / 7</td></tr>
+    <tr><td><b>gemma3 27B</b></td><td class="num"><b>28,3 GB</b></td><td class="num">15,1 tok/s</td><td class="num"><b>7 / 7</b></td></tr>
+    <tr><td>qwen2.5 72B</td><td class="num">55,8 GB</td><td class="num">15,4 tok/s</td><td class="num">7 / 7</td></tr>
+  </table>
+  <div class="funnel"><b>Co z toho plynulo:</b> největší model (72B) na těchto úlohách <b>nepřinesl nic navíc</b>
+    za zhruba dvojnásobnou paměť. Model 27B zvládl vše a vejde se do karty s 32 GB paměti, se zdravou
+    rezervou do 48 GB. Nejrychlejší 24B selhal v jedné úloze ze sedmi.
+    <b>Celé měření tří modelů trvalo 11 minut</b> na jedné kartě A100 80 GB; výpočet stál méně než dolar.</div>
+
+  <h2>Ceník</h2>
+  <div class="price">
+    <div class="p"><div class="amt">od 5 000 Kč</div><div class="lbl">Vstupní měření</div>
+      <div class="d">Jeden až tři kandidátní modely nad sadou úloh podle vašeho zadání. Předběžný výsledek:
+        paměť, rychlost, kvalita, doporučení. Do jednoho pracovního dne.</div></div>
+    <div class="p"><div class="amt">na míru</div><div class="lbl">Rozšířené měření</div>
+      <div class="d">Víc modelů, víc variant nastavení a větší sada úloh postavená s vámi.
+        Cena podle počtu modelů a variant, <b>vždy potvrzená předem</b>.</div></div>
+  </div>
+
+  <div class="honest">
+    <h3>Co SORTIE NEUMÍ — a co je potřeba říct dřív, než se někdo zeptá</h3>
+    <p><b>Nejde o zátěžový test produkce</b> se stovkami souběžných uživatelů; měříme model a úlohu,
+      ne celou vaši aplikaci. <b>Výsledek platí pro změřenou konfiguraci</b> a vzorek úloh. Sedm úloh v pilotu
+      je malý vzorek, u zakázky se sada staví s vámi a bývá větší. <b>Vaše skutečná data neměříme</b> na
+      pronajatém stroji, jde jen o syntetické, veřejné nebo vámi anonymizované vzorky; měření nad ostrými daty
+      je možné jen na vašem vlastním hardwaru. A jedna věc, která je výhodou: <b>neprodáváme hardware ani licence
+      modelů</b>, takže nemáme důvod vám doporučit větší, než potřebujete.</p>
+  </div>
+
+  <div class="cta">Máte konkrétní úlohu? Napište, co má AI dělat a kde má běžet:
+    <a href="mailto:hydra@tia-framework.com?subject=SORTIE%20%E2%80%94%20AI%20sizing">hydra@tia-framework.com</a></div>
+
+  <footer>
+    <p class="note"><b>Postup je pevný, závěry ne.</b> Každé měření nese, na čem a jak proběhlo.
+      Konkrétní nástrojová základna se neuvádí — <b>ukazuje se schopnost, ne implementace.</b></p>
+    <div class="mark">TIA · 2026-09-30<br>ondrej.sramek</div>
+  </footer>
+
+</div>
+</body>
+</html>
