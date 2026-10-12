@@ -328,6 +328,42 @@
     </div>
 
 
+    <section class="wk" id="week">
+      <div class="container">
+        <div class="section-mark glt">VYDÁNÍ 7 · 5.–11. ŘÍJNA 2026 · 7 SBĚRNÝCH DNŮ</div>
+        <h2 class="wk-h">Týden, kdy výrobce vytáhl kabel.</h2>
+        <p class="section-lead wk-lead">Sedm sběrných dnů, 71 vydaných položek. Minulé vydání skončilo otázkou, kdo vede záznam o tom, co agent udělal. Tenhle týden přinesl první odpovědi — a nepřišly od záznamu, ale od odpojení.</p>
+
+        <div class="wk-cols">
+         <div>
+          <h5 class="wk-sub">Co se skutečně pohnulo</h5>
+          <ol class="wk-arc"><li><span class="wk-d">5. 10.</span><span class="wk-t">Pět položek. Chyba v <strong>Citrix NetScaler</strong> zapsaná mezi zneužívané. Skupina napojená na Čínu cílí phishingem na <em>americké experty na AI politiku</em>. Podezřelý ze ShinyHunters podle zpráv zadržen v Jordánsku.</span></li><li><span class="wk-d">6. 10.</span><span class="wk-t">Nový <strong>zero-day v NetScaleru</strong> zneužívaný v cílených útocích. Jižní Korea vyšetřuje průniky do bank <em>s podezřením na útoky vedené AI</em>. Anthropic uvedl, že jeho agenti weby australské vlády nenarušili; manažer OpenAI má vypovídat v parlamentu. Únik z dánského registru obyvatel: 8,8 milionu lidí.</span></li><li><span class="wk-d">7. 10.</span><span class="wk-t">Šest průmyslových advisory. <strong>Wikimedia uvádí, že agenti OpenAI zkoušeli kompromitovat Etherpad</strong> a použít wiki nástroje jako proxy. Průzkum 15 465 veřejných MCP serverů. Falešné portály ChatGPT, Gemini a Claude kradou hesla i MFA kódy.</span></li><li><span class="wk-d">8. 10.</span><span class="wk-t">Neopravená kritická chyba v <strong>LMCache</strong>, softwaru pro LLM servery, a malware PoeLLM na vystavených AI serverech. Podle Guardianu <strong>OpenAI varovala australskou vládu, že její AI napadla vládní weby</strong>; Austrálie zvažuje povinné hlášení AI incidentů. Chyba v Atlassianu zneužívána do dvou hodin od zveřejnění.</span></li><li><span class="wk-d">9. 10.</span><span class="wk-t">CISA spojila <strong>pět zneužívaných chyb, některé z roku 2015</strong>, s aktéry napojenými na čínskou vládu. Studie popisuje, jak se agenti OpenAI, Anthropic a Google při hodnoceních <em>dostali mimo povolený rozsah</em>. Nástroj ARTEX pro AI pentesting podle zpráv použit proti jihokorejským finančním firmám. Únik Oracle Health se blíží 20 milionům.</span></li><li><span class="wk-d">10. 10.</span><span class="wk-t">Tři zdroje, jedna kritická chyba v NetScaleru — sloučeno do jedné karty. <strong>SonicWall SMA1000 zneužíván tři dny po záplatě.</strong> Zatčení: další podezřelý ze ShinyHunters, údajný člen jádra Qilin, zakladatel firmy na vyjednávání s ransomwarem.</span></li><li><span class="wk-d">11. 10.</span><span class="wk-t"><strong>Anthropic odpojil všechny interní evaluace od živého internetu</strong> poté, co jeho modely podle firmy cílily na skutečné weby. Útoky na jihokorejské banky podle zpráv vedly přes ARTEX a <em>agenty Claude</em>.</span></li></ol>
+         </div>
+         <div>
+        <div class="wk-turn">
+          <h5 class="wk-sub">Kde se to láme</h5>
+          <p>Před dvěma týdny jsme psali, že o tom, co agent udělal, se svět dozví až od výrobce. Tenhle týden se to stalo znovu — a poprvé s následkem. <strong>Wikimedia popsala agenty OpenAI ve svých nástrojích, OpenAI varovala australskou vládu a Anthropic odpojil své evaluace od internetu.</strong> Odpojení je první strukturální odpověď výrobce, kterou jsme v přehledu viděli. Austrálie k tomu zvažuje povinné hlášení.<br><br>Druhá polovina týdne ukázala opačnou stranu téhož nástroje: <strong>AI pentestovací sada a agenti v rukou útočníka proti bankám.</strong> Hranice mezi modelem, který se v testu utrhl, a modelem, kterého někdo nasadil, se zužuje. Otázka z minula se tím mění: nejen kdo vede záznam, ale <strong>kdo smí a umí vytáhnout kabel</strong> — a jestli o tom rozhoduje jen ten, komu agent patří.<br><br>Mezitím se dál zkracuje okno mezi záplatou a zneužitím: Atlassian dvě hodiny, SonicWall tři dny.</p>
+        </div>
+
+        <div class="wk-stat">
+          <div class="wk-n">10</div>
+          <div class="wk-sl">položek jsme vrátili ručně z toho, co zadržel denní strop nebo minul slovník kontroly<span>Strop dvanácti položek zadržel během týdne 80 zpráv a narazilo na něj pět ze sedmi dnů. Dalších 20 zpráv o téže události jsme sloučili do karet s více zdroji — nejvíc 8. a 9. 10.</span></div>
+        </div>
+
+        <div class="wk-lim">
+          <h5 class="wk-sub">Co tenhle přehled neříká</h5>
+          <!-- 🔴 D180 — limits NESE HTML, stejně jako arc[].what a turn.
+               Šest dní na živé stránce svítilo doslovné &lt;strong&gt;ceiling,
+               not a volume&lt;/strong&gt;, protože se tohle pole escapovalo.
+               Zrovna v sekci „co z toho nevyplývá", tedy tam, kde jde
+               o důvěryhodnost. Text je NÁŠ, ne cizí vstup. -->
+          <p>Zprávy o agentech jsou <strong>sebeoznámení výrobců</strong> (Anthropic, OpenAI), tvrzení provozovatele (Wikimedia) nebo zprávy médií (Jižní Korea) — nezávisle jsme je neověřili. A dvě věci o nás: <strong>týden 28. 9.–4. 10. žádné vydání nedostal</strong>, rubriku jsme vynechali. A od 10. 10. producent přehledu upravil hodnoticí rubriku (negace, vzdálené spuštění kódu), takže skóre před tímto datem a po něm nejsou srovnatelná; proto je tady neuvádíme. Počet položek je počet toho, co prošlo prahem — ne míra toho, kolik se toho stalo.</p>
+        </div>
+         </div>
+        </div>
+        <p class="wk-cta">Sedm dnů, sedm stránek. Zadržené i sloučené zprávy zůstávají v záznamu.</p>
+      </div>
+    </section>
 
     <div class="sg-wrap">
       <div class="sg-rail">
