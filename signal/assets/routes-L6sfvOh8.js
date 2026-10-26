@@ -1,1 +1,0 @@
-import{m as e,n as t}from"./digests-CeM-H1f5.js";import{t as n}from"./cut-view-D5TdgDxJ.js";var r=e();function i(){return(0,r.jsx)(n,{date:t})}export{i as component};
