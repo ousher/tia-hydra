@@ -175,6 +175,11 @@
   /* poslední stupeň = to, co vyšlo. Zlatě, protože to je jediné, co čtenář vidí jinde. */
   .sf-step:last-of-type b { color:var(--gold); }
   .sf-why { margin:0 0 8px; font-size:.86rem; color:var(--text-dim); min-height:1.2em; }
+  .sg-mitre { margin:6px 0 0; font-size:.74rem; color:var(--text-dim); font-family:var(--mono, monospace); letter-spacing:.02em; }
+  .mi-list { margin:8px 0 6px 18px; padding:0; font-size:.84rem; line-height:1.45; }
+  .mi-list li { margin:0 0 8px; } .mi-list q { color:var(--text-dim); font-style:italic; }
+  .mi-list a { font-family:var(--mono, monospace); } .mi-it { color:var(--text-dim); }
+  .mi-note { font-size:.76rem; }
   .sf-meta { margin:0 0 6px; font-family:'JetBrains Mono',monospace; font-size:.7rem;
              color:var(--text-muted); letter-spacing:.03em; }
   .sf-meta code { color:var(--text-dim); font-size:.95em; }
@@ -322,6 +327,14 @@
     </div>
 
 
+    <div class="sf-panel sg-mitre-panel">
+      <div class="sd-head"><h5>MITRE ATT&amp;CK V DNEŠNÍM ŘEZU</h5></div>
+      <p class="sf-why" style="margin-top:6px">5 z 15 položek má techniku · útoků celkem 7 · AI útoků bez techniky v ATT&amp;CK i ATLAS: 0 z 1</p>
+      <ul class="mi-list"><li><a href="https://attack.mitre.org/techniques/T1190/" target="_blank" rel="noopener">T1190</a> <b>Exploit Public-Facing Application</b> · <span class="mi-it">Cisco: oprava aktivně zneužívané VPN zranitelnosti v ASA a FTD, která může shodit firewally</span><br><q>Secure Firewall Threat Defense (FTD) Software that it said has been exploited in the wild</q></li><li><a href="https://attack.mitre.org/techniques/T1496/001/" target="_blank" rel="noopener">T1496.001</a> <b>Compute Hijacking</b> · <span class="mi-it">Hugging Face malware campaign returns to hijack GPUs for crypto mining</span><br><q>hijacking GPU servers and planting backdoors</q></li><li><a href="https://attack.mitre.org/techniques/T1608/001/" target="_blank" rel="noopener">T1608.001</a> <b>Upload Malware</b> · <span class="mi-it">Hugging Face malware campaign returns to hijack GPUs for crypto mining</span><br><q>A crypto-mining campaign abusing Hugging Face models returned days after takedown</q></li><li><a href="https://attack.mitre.org/techniques/T1219/" target="_blank" rel="noopener">T1219</a> <b>Remote Access Tools</b> · <span class="mi-it">Hugging Face malware campaign returns to hijack GPUs for crypto mining</span><br><q>trick AI coding agents into installing a NetSupport RAT</q></li><li><a href="https://atlas.mitre.org/techniques/AML.T0058" target="_blank" rel="noopener">AML.T0058</a> <b>Publish Poisoned Models</b> · <span class="mi-it">Hugging Face malware campaign returns to hijack GPUs for crypto mining</span><br><q>A crypto-mining campaign abusing Hugging Face models returned days after takedown</q></li><li><a href="https://atlas.mitre.org/techniques/AML.T0100" target="_blank" rel="noopener">AML.T0100</a> <b>AI Agent Clickbait</b> · <span class="mi-it">Hugging Face malware campaign returns to hijack GPUs for crypto mining</span><br><q>positioned to trick AI coding agents into installing a NetSupport RAT</q></li><li><a href="https://atlas.mitre.org/techniques/AML.T0011.001" target="_blank" rel="noopener">AML.T0011.001</a> <b>Malicious Package</b> · <span class="mi-it">Hugging Face malware campaign returns to hijack GPUs for crypto mining</span><br><q>a fake Solana starter kit on GitHub is positioned to trick AI coding agents</q></li><li><a href="https://attack.mitre.org/techniques/T1687/" target="_blank" rel="noopener">T1687</a> <b>Exploitation for Defense Impairment</b> · <span class="mi-it">VMware ESX: hackeři napojení na Čínu zneužili zero-day ke snížení viditelnosti auditních záznamů</span><br><q>Exploited VMware ESX Zero-Day to Reduce Audit Trail Visibility</q></li><li><a href="https://attack.mitre.org/techniques/T1036/005/" target="_blank" rel="noopener">T1036.005</a> <b>Match Legitimate Resource Name or Location</b> · <span class="mi-it">Falešné aplikace ChatGPT a Claude zneužívají podepsané spustitelné soubory k nasazení kryptominerů</span><br><q>under the guise of artificial intelligence (AI) desktop applications</q></li><li><a href="https://attack.mitre.org/techniques/T1496/001/" target="_blank" rel="noopener">T1496.001</a> <b>Compute Hijacking</b> · <span class="mi-it">Falešné aplikace ChatGPT a Claude zneužívají podepsané spustitelné soubory k nasazení kryptominerů</span><br><q>delivering malicious loaders and cryptocurrency miners</q></li><li><a href="https://attack.mitre.org/techniques/T1566/" target="_blank" rel="noopener">T1566</a> <b>Phishing</b> · <span class="mi-it">Phishingové e-maily s tématikou Anthropic obcházejí přední bezpečnostní nástroje</span><br><q>Anthropic-Themed Phishing Emails Bypass Top Security Tools</q></li></ul>
+      <p class="sf-why mi-note">Techniku přiřazuje model jen z uzavřeného slovníku ATT&amp;CK v20 / ATLAS v5.6 a ke každé musí doložit doslovnou citaci ze zdroje (anglicky). Zranitelnost bez popsaného útoku techniku nedostane. Ověřeno druhým posuzovatelem naslepo: 22/27 (28. 10. 2026) technik správně. Jména útočných skupin zatím neuvádíme (ověření pod laťkou).</p>
+      <p class="sf-why mi-note">MITRE ATT&amp;CK® and ATLAS™ are trademarks of The MITRE Corporation. © The MITRE Corporation, reproduced with permission. Mapping by TIA, not endorsed by MITRE.</p>
+    </div>
+
 
     <div class="sg-wrap">
       <div class="sg-rail">
@@ -368,6 +381,7 @@
         <h4><span class="sg-gl">🎯</span>Cisco: oprava aktivně zneužívané VPN zranitelnosti v ASA a FTD, která může shodit firewally</h4>
         <p class="sg-meta">The Hacker News <span class="sg-also">+ také: SecurityWeek</span> · exploited · CVE</p>
         <p class="sg-why">Cisco vydalo opravy závažné bezpečnostní chyby v softwaru Secure Firewall Adaptive Security Appliance (ASA) a Secure…</p>
+        <p class="sg-mitre">ATT&amp;CK T1190 Exploit Public-Facing Application</p>
       </a>
       <a class="sg-card sg-red" href="https://www.cisa.gov/news-events/alerts/2026/10/29/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
@@ -398,18 +412,21 @@
         <h4><span class="sg-gl">📦</span>Hugging Face malware campaign returns to hijack GPUs for crypto mining <span class='sg-en'>EN</span></h4>
         <p class="sg-meta">BleepingComputer · AI/agent · supply-chain</p>
         <p class="sg-why">A crypto-mining campaign abusing Hugging Face models returned days after takedown, hijacking GPU servers and planting…</p>
+        <p class="sg-mitre">ATT&amp;CK T1496.001 Compute Hijacking · T1608.001 Upload Malware +1</p>
       </a>
       <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/10/china-linked-hackers-exploited-vmware.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
         <h4><span class="sg-gl">🎯</span>VMware ESX: hackeři napojení na Čínu zneužili zero-day ke snížení viditelnosti auditních záznamů</h4>
         <p class="sg-meta">The Hacker News · exploited · CVE</p>
         <p class="sg-why">Americká agentura Cybersecurity and Infrastructure Security Agency (CISA) ve středu přidala bezpečnostní chybu postihující…</p>
+        <p class="sg-mitre">ATT&amp;CK T1687 Exploitation for Defense Impairment</p>
       </a>
       <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/10/fake-chatgpt-and-claude-apps-abuse.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
         <h4><span class="sg-gl">📦</span>Falešné aplikace ChatGPT a Claude zneužívají podepsané spustitelné soubory k nasazení kryptominerů</h4>
         <p class="sg-meta">The Hacker News · AI/agent · supply-chain</p>
         <p class="sg-why">Útočníci v rámci kampaně nazvané Yoba šíří škodlivé loadery a kryptominery, které vydávají za desktopové aplikace umělé…</p>
+        <p class="sg-mitre">ATT&amp;CK T1036.005 Match Legitimate Resource Name or Location · T1496.001 Compute Hijacking</p>
       </a>
       <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/10/26400-valid-cloud-and-ai-credentials.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
@@ -422,6 +439,7 @@
         <h4><span class="sg-gl">🎣</span>Phishingové e-maily s tématikou Anthropic obcházejí přední bezpečnostní nástroje</h4>
         <p class="sg-meta">Dark Reading · AI/agent · crime</p>
         <p class="sg-why"></p>
+        <p class="sg-mitre">ATT&amp;CK T1566 Phishing</p>
       </a>
       <a class="sg-card sg-yellow" href="https://thehackernews.com/2026/10/googles-gemini-4-carbon-leads.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
