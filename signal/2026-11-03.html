@@ -276,7 +276,7 @@
   <div class="container">
     <div class="sg-top">
       <h2>TODAY&#x27;S CUT</h2>
-      <span class="sg-n">10 items</span>
+      <span class="sg-n">8 items</span>
       <div class="sg-days"><a href="/signal/2026-11-02.html">← 2 Nov</a><b>3 November 2026</b><a href="/signal/" class="sg-arch">ARCHIVE</a></div>
       <span class="sg-cad">◢ Daily 06:00 UTC</span>
     </div>
@@ -295,21 +295,25 @@
           <div class="sd-col"><span class="sd-bars"><i class="sg-green" style="height:6.7%"></i><i class="sg-yellow" style="height:40.0%"></i><i class="sg-red" style="height:20.0%"></i></span><span class="sd-num">10</span><span class="sd-dow">Sat</span></div>
           <div class="sd-col"><span class="sd-bars"><i class="sg-green" style="height:6.7%"></i><i class="sg-yellow" style="height:13.3%"></i><i class="sg-red" style="height:6.7%"></i></span><span class="sd-num">4</span><span class="sd-dow">Sun</span></div>
           <div class="sd-col"><span class="sd-bars"><i class="sg-green" style="height:6.7%"></i><i class="sg-yellow" style="height:33.3%"></i><i class="sg-red" style="height:6.7%"></i></span><span class="sd-num">7</span><span class="sd-dow">Mon</span></div>
-          <div class="sd-col sd-now"><span class="sd-bars"><i class="sg-green" style="height:6.7%"></i><i class="sg-yellow" style="height:26.7%"></i><i class="sg-red" style="height:33.3%"></i></span><span class="sd-num">10</span><span class="sd-dow">Tue</span></div>
+          <div class="sd-col sd-now"><span class="sd-bars"><i class="sg-green" style="height:6.7%"></i><i class="sg-yellow" style="height:26.7%"></i><i class="sg-red" style="height:20.0%"></i></span><span class="sd-num">8</span><span class="sd-dow">Tue</span></div>
         </div>
       </div>
       <div class="iw-panel">
         <h5>ATTACKS IN PRACTICE</h5>
-        <div class="iw-n">6<span>/ 10</span></div><p class="iw-t">exploited flaw 5 · campaign, breach or malware 1 — as the source reports it, not proof of concept</p>
+        <div class="iw-n">4<span>/ 8</span></div><p class="iw-t">exploited flaw 3 · campaign, breach or malware 1 — as the source reports it, not proof of concept</p>
       </div>
     </div>
 
+    <div class="sf-panel" style="border-color:var(--border-hot)">
+      <div class="sd-head"><h5>REVISED · 2026-11-03</h5></div>
+      <p class="sf-why" style="margin-top:6px">Revised on the day of publication. The morning version led with MLflow (CVE-2026-116692) and zip (CVE-2026-115905) vulnerabilities, scored 65 and 59 and tagged “exploited”. For both, the source states <strong>exploitation in the wild is not confirmed</strong>, and neither is in the CISA KEV catalog. The tag contradicted the source and inflated the score, so we removed both from the selection. The “attacks in the wild” indicator dropped accordingly. Both fixes are released and worth applying, but we do not list them as exploited.</p>
+    </div>
       <div class="sf-panel">
         <div class="sd-head">
           <h5>WHAT DID NOT MAKE IT</h5>
-          <span class="sd-sub">99.5% of parsed records are not here.</span>
+          <span class="sd-sub">99.6% of parsed records are not here.</span>
         </div>
-        <div class="sf-rail"><button class="sf-step sf-on" data-why="records parsed from the source feeds — before the time window and de-duplication" type="button" aria-label="parsed"><b>1 993</b><i>parsed</i></button><s>▸</s><button class="sf-step" data-why="left after the 30-hour window and de-duplication" type="button" aria-label="candidates"><b>45</b><i>candidates</i></button><s>▸</s><button class="sf-step" data-why="cleared the reporting threshold" type="button" aria-label="qualified"><b>22</b><i>qualified</i></button><s>▸</s><button class="sf-step" data-why="made it onto this page" type="button" aria-label="published"><b>10</b><i>published</i></button></div>
+        <div class="sf-rail"><button class="sf-step sf-on" data-why="records parsed from the source feeds — before the time window and de-duplication" type="button" aria-label="parsed"><b>1 993</b><i>parsed</i></button><s>▸</s><button class="sf-step" data-why="left after the 30-hour window and de-duplication" type="button" aria-label="candidates"><b>45</b><i>candidates</i></button><s>▸</s><button class="sf-step" data-why="cleared the reporting threshold" type="button" aria-label="qualified"><b>22</b><i>qualified</i></button><s>▸</s><button class="sf-step" data-why="made it onto this page" type="button" aria-label="published"><b>8</b><i>published</i></button></div>
         <p class="sf-why" data-default="records parsed from the source feeds — before the time window and de-duplication">records parsed from the source feeds — before the time window and de-duplication</p>
         <p class="sf-meta">23 dropped by rule · 10 held by the daily cap · −1 removed from today&#x27;s cut — the same link and headline already went out on an earlier day. This is the only place where we subtract from the selection, which is why it is stated here. · +1 pulled back from the agent-security lane (12 + 1) — items the daily cap held. They ship without an editorial rationale, because held items do not carry one. · config <code>3F928741</code> — unchanged since 2026-11-01</p>
         <p class="sf-lim">The digest hands us counts, not the discarded items — so this shows how many and why, not which.</p>
@@ -329,7 +333,7 @@
 
     <div class="sf-panel sg-mitre-panel">
       <div class="sd-head"><h5>MITRE ATT&amp;CK® IN TODAY'S CUT</h5></div>
-      <p class="sf-why" style="margin-top:6px">3 of 10 items carry an ATT&amp;CK technique</p>
+      <p class="sf-why" style="margin-top:6px">3 of 8 items carry an ATT&amp;CK technique</p>
       <ul class="mi-list"><li><a href="https://attack.mitre.org/techniques/T1190/" target="_blank" rel="noopener">T1190</a> <b>Exploit Public-Facing Application</b> · <span class="mi-it">Over 1,000 GitLab servers vulnerable to ongoing RCE attacks</span><br><q>Internet-exposed GitLab servers are still unpatched against a maximum-severity flaw actively exploited</q><br><span class="mi-it">public entry: </span><q>Over 1,000 Internet-exposed GitLab servers are still unpatched against a maximum-severity flaw actively exploited in remote code execution attacks.</q></li><li><a href="https://attack.mitre.org/techniques/T1190/" target="_blank" rel="noopener">T1190</a> <b>Exploit Public-Facing Application</b> · <span class="mi-it">Attackers Target Unpatched CryptoPayment Gateway Flaw That Can Expose Wallet Credentials</span><br><q>Threat actors are attempting to exploit an unpatched maximum-severity security vulnerability in the CryptoPayment Gateway WordPress plugin</q><br><span class="mi-it">public entry: </span><q>Attackers Target Unpatched CryptoPayment Gateway Flaw That Can Expose Wallet Credentials</q></li><li><a href="https://attack.mitre.org/techniques/T1190/" target="_blank" rel="noopener">T1190</a> <b>Exploit Public-Facing Application</b> · <span class="mi-it">Ivanti patches two more Connect Secure zero-days chained in attacks</span><br><q>Connect Secure (ICS) remote access gateway flaws that have been chained in zero-day attacks</q><br><span class="mi-it">public entry: </span><q>Ivanti released security updates to patch two more Connect Secure (ICS) remote access gateway flaws that have been chained in zero-day attacks since at least October 1.</q></li></ul>
       <p class="sf-why mi-note">A model assigns techniques only from the closed ATT&amp;CK v20 vocabulary and must back each one with a verbatim quote from OUR summary of the story (not the full article). A vulnerability with no described attack gets none. The method passed a blind second-reviewer check 22/27 (28. 10. 2026) on a different sample; <b>today's assignments have not been seen by a second reviewer yet</b>. Threat-actor names and AI-specific techniques (ATLAS) are not shown yet — their check fell short of our bar or has not been run. The „attacks in practice“ count above comes from a different detector (source wording), so a technique may appear on an item it does not count — and vice versa.</p>
       <p class="sf-why mi-note">The technique mapping is ours; MITRE neither makes nor endorses it. MITRE ATT&amp;CK® and ATT&amp;CK® are registered trademarks of The MITRE Corporation. Technique names and IDs: MITRE ATT&amp;CK® Enterprise v20 (<a href='https://attack.mitre.org/resources/legal-and-branding/terms-of-use/' target='_blank' rel='noopener'>Terms of Use</a>), provided 'AS IS' without warranty. © 2026 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation.</p>
@@ -348,41 +352,29 @@
       <div class="sg-rail">
         <section>
           <h5>ATTENTION</h5>
-          <div class="sg-split"><i class="sg-red" style="width:50.0%"></i><i class="sg-yellow" style="width:40.0%"></i><i class="sg-green" style="width:10.0%"></i></div>
-          <div class="sg-legend"><span class="sg-lg"><b class="sg-red"></b>5</span> <span class="sg-lg"><b class="sg-yellow"></b>4</span> <span class="sg-lg"><b class="sg-green"></b>1</span></div>
+          <div class="sg-split"><i class="sg-red" style="width:37.5%"></i><i class="sg-yellow" style="width:50.0%"></i><i class="sg-green" style="width:12.5%"></i></div>
+          <div class="sg-legend"><span class="sg-lg"><b class="sg-red"></b>3</span> <span class="sg-lg"><b class="sg-yellow"></b>4</span> <span class="sg-lg"><b class="sg-green"></b>1</span></div>
         </section>
         <section>
           <h5>CATEGORIES</h5>
-        <div class="sg-row"><span class="sg-k">CVE</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">4</span></div>
-        <div class="sg-row"><span class="sg-k">active-exploitation</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">4</span></div>
-        <div class="sg-row"><span class="sg-k">exploited</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">4</span></div>
-        <div class="sg-row"><span class="sg-k">patch-or-mitigation</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">4</span></div>
-        <div class="sg-row"><span class="sg-k">unauthenticated</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">4</span></div>
-        <div class="sg-row"><span class="sg-k">AI/agent</span><span class="sg-bar"><i style="width:75%"></i></span><span class="sg-v">3</span></div>
+        <div class="sg-row"><span class="sg-k">AI/agent</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">3</span></div>
+        <div class="sg-row"><span class="sg-k">maximum-severity</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">3</span></div>
+        <div class="sg-row"><span class="sg-k">unauthenticated</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">3</span></div>
+        <div class="sg-row"><span class="sg-k">CVE</span><span class="sg-bar"><i style="width:67%"></i></span><span class="sg-v">2</span></div>
+        <div class="sg-row"><span class="sg-k">active-exploitation</span><span class="sg-bar"><i style="width:67%"></i></span><span class="sg-v">2</span></div>
+        <div class="sg-row"><span class="sg-k">cvss-critical</span><span class="sg-bar"><i style="width:67%"></i></span><span class="sg-v">2</span></div>
         </section>
         <section>
           <h5>SOURCES</h5>
         <div class="sg-row"><span class="sg-k">The Hacker News</span><span class="sg-bar"><i style="width:100%"></i></span><span class="sg-v">4</span></div>
-        <div class="sg-row"><span class="sg-k">External Sensor: omni</span><span class="sg-bar"><i style="width:75%"></i></span><span class="sg-v">3</span></div>
         <div class="sg-row"><span class="sg-k">BleepingComputer</span><span class="sg-bar"><i style="width:50%"></i></span><span class="sg-v">2</span></div>
+        <div class="sg-row"><span class="sg-k">External Sensor: omni</span><span class="sg-bar"><i style="width:25%"></i></span><span class="sg-v">1</span></div>
         <div class="sg-row"><span class="sg-k">SecurityWeek</span><span class="sg-bar"><i style="width:25%"></i></span><span class="sg-v">1</span></div>
         </section>
         <p class="sg-note">Attention classes are how much attention we gave an item. They are not severity verdicts.</p>
       </div>
 
       <div class="sg-grid">
-      <a class="sg-card sg-red" href="https://github.com/mlflow/mlflow/security/advisories/GHSA-26p8-2jq9-3vq9" target="_blank" rel="noopener nofollow">
-        <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🎯</span>CVE-2026-116692 (GHSA-26p8-2jq9-3vq9) - MLflow vulnerable to remote code execution on unauthenticated servers via third-party scorer deserialization importing caller-placed artifact modules</h4>
-        <p class="sg-meta">External Sensor: omni · exploited · CVE</p>
-        <p class="sg-why">Maintainer advisory CVE-2026-116692 (GHSA-26p8-2jq9-3vq9) uvádí zranitelnost pro mlflow (&gt;= 3.12.0rc0, &lt; 3.17.0, opraveno v…</p>
-      </a>
-      <a class="sg-card sg-red" href="https://github.com/zip-rs/zip2/security/advisories/GHSA-m665-v7pm-7grj" target="_blank" rel="noopener nofollow">
-        <span class="sg-dot"></span>
-        <h4><span class="sg-gl">🎯</span>CVE-2026-115905 (GHSA-m665-v7pm-7grj) - zip: Critical Parser Differential &amp; Security Control Bypass via Dual-Header Inconsistencies (Zip Cloaking) Leading to Arbitrary File Overwrite &amp; RCE</h4>
-        <p class="sg-meta">External Sensor: omni · exploited · CVE</p>
-        <p class="sg-why">Maintainer advisory CVE-2026-115905 (GHSA-m665-v7pm-7grj) uvádí zranitelnost pro zip (&lt;= 9.0.4, opraveno v 9.0.5) - zip:…</p>
-      </a>
       <a class="sg-card sg-red" href="https://thehackernews.com/2026/11/attackers-exploit-critical-siemens.html" target="_blank" rel="noopener nofollow">
         <span class="sg-dot"></span>
         <h4><span class="sg-gl">🎯</span>Attackers Exploit Critical Siemens IoT2050 Flaw to Plant Remote Command Backdoors</h4>
